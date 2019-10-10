@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Handle\SendoHandler;
 use Illuminate\Support\Facades\DB;
 use Alert;
+
+
 class OrderController extends Controller
 {
     private $sendo;
@@ -115,13 +117,13 @@ class OrderController extends Controller
                         
                     ]);
                 }
-                //Cập nhật lại DB //chắc có tên Thành phố rồi đấy, chừ có đơn mới, mới test đc
+                //Cập nhật thêm thông tin từ response API Order Detail, vào bảng order_tb 
                 $this->updateOrder($orderNumber);
                 
             }
-        return 1;
+            return 1;
         } else {
-            echo ' ko có dơn hang moi';
+            echo 'ko co don hang moi';
         }
 
         
@@ -188,8 +190,6 @@ class OrderController extends Controller
      */
     public function getProductFromOrder($response, $orderNumber)
     {
-        // nhiều product vô 1 order thì add sao
-        //hắn là cái array thôi chứ sao
         if (count($response->result->salesOrderDetails) > 0) {
             $productsList = $response->result->salesOrderDetails;
 
@@ -221,12 +221,14 @@ class OrderController extends Controller
         }
 
     } 
+
     public function getRegionsSendo()
     {
         $this->sendo->getRegionsSendo();
     }
-    public function confirmOrderSendo($orderID){
 
+    public function confirmOrderSendo($orderID)
+    {
         $this->sendo->confirmOrderSendo($orderID);
     }
 }

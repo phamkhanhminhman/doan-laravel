@@ -128,7 +128,6 @@ class ProductController extends Controller
             }
         }
 
-        dd('update product');
         alert('Product Updated', 'Successfully', 'success');
         return redirect('admin/product/');
     }
@@ -192,7 +191,8 @@ class ProductController extends Controller
     }
 
     /**
-     * 
+     * Insert Product Variation
+     * @param $product - response API product list 
      */
     public function insertProductVariation($product)
     {
@@ -213,7 +213,7 @@ class ProductController extends Controller
         $finalPriceMax = $product->finalPriceMax;
         $productCost = 0;
 
-
+        //get product detail
         $responseProductDetail = $this->sendo->getProductDetail($productID);
 
         $productVariants = $responseProductDetail->result->variants;

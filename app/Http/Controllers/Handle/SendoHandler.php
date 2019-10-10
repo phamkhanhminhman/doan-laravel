@@ -192,6 +192,10 @@ class SendoHandler
         return $response;
     }
 
+    /**
+     * API UPDATE PRODUCT
+     * @param $body - format response api detail product
+     */
     public function updateProduct($body) 
     {   
         $token = $this->getSendoToken();
@@ -214,7 +218,12 @@ class SendoHandler
         return $response;
     }
 
-    public function confirmOrderSendo($orderID){
+    /**
+     * API CONFIRM ORDER
+     * @param $orderID
+     */
+    public function confirmOrderSendo($orderID)
+    {
         $token = $this->getSendoToken();
         $client = new \GuzzleHttp\Client([
             'verify' => false,

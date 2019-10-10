@@ -139,6 +139,7 @@ class admin_controller extends Controller
 			$user = $request->session()->get('name');
     	    DB::table('history')->insert(['name'=>$history, 'user' =>$user]);
             alert('Login Successfully','Welcome', 'success');
+            // toast('Login Successfully', 'Welcome', $position = 'bottom-right');
 			return redirect('/admin');
 		}
 		else 
