@@ -143,8 +143,9 @@
     </a>
     <div>
     <a href="@{{pp.orderLink}}" class="col-md-2"target="_blank" style="color:red;font-weight:bold"><h4 ng-model="pp.orderID" style="font-size:21px " ng-if="pp.orderChannel === 'Sen Đỏ' " >@{{pp.orderID}}</h4> </a>
-    <!-- <a href="@{{pp.orderLink}}" class="col-md-2"target="_blank" style="color:#FA5430;font-weight:bold"><h4 ng-model="pp.orderID" style="font-size:21px " ng-if="pp.orderChannel === 'Shopee' " >@{{pp.orderID}}</h4> </a> -->
+    <a href="@{{pp.orderLink}}" class="col-md-2"target="_blank" style="color:#FA5430;font-weight:bold"><h4 ng-model="pp.orderID" style="font-size:21px " ng-if="pp.orderChannel === 'Shopee' " >@{{pp.orderID}}</h4> </a>
     </div>
+    
     <div class="col-md-2"><h4>@{{pp.orderDate | date : "dd.MM.y" }}</h4></div>
     <div class="col-md-3" style="margin-top:10px">
       <!-- <a href="@{{pp.orderShipLink}}" target="_blank"><h4 class="label label-warning" style="font-size:16px;font-weight: 90">@{{pp.orderShip}}-@{{pp.orderShipID}}</h4>
