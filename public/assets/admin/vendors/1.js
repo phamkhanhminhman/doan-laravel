@@ -1,5 +1,7 @@
-var app = angular.module('myApp', ['ngMaterial']);
-app.controller('MyController', function ($scope, $http, $mdToast, $location) {
+var app = angular.module('myApp', ['ngMaterial', 'chieffancypants.loadingBar', 'ngAnimate']).config(function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = true;
+  });
+app.controller('MyController', function ($scope, $http, $mdToast, $location, $timeout, cfpLoadingBar) {
 
 
   pageIndex = 1;

@@ -42,7 +42,9 @@
   <!-- <link rel="stylesheet" href="{{asset('assets/admin/vendors/angular-material.min.css')}}"> -->
   <link href="{{asset('assets/admin/vendors/pnotify/dist/pnotify.css')}}" rel="stylesheet">
   <link href="{{asset('assets/admin/vendors/pnotify/dist/pnotify.buttons.css')}}" rel="stylesheet">
+
   <link rel='stylesheet' href="{{asset('assets/js/loading-bar.min.css')}}" media='all' />
+  <link rel='stylesheet' href="{{asset('assets/css/loading.css')}}" media='all' />
 
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
 </head>
