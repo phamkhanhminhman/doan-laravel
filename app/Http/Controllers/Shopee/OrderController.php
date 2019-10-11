@@ -10,6 +10,7 @@ use App\Http\Controllers\Entities\ProductList;
 use App\Http\Controllers\Handle\ShopeeHandler;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Alert;
 
 class OrderController extends Controller
 {
@@ -54,6 +55,7 @@ class OrderController extends Controller
 
         $orders = $responseOrderList->data['orders'];
 
+        $countNewOrder = 0;
         foreach ($orders as $order) {
             $orderNumber = $order['ordersn'];
 
@@ -83,6 +85,9 @@ class OrderController extends Controller
 
             //Check not duplicate orderID -> insert
             if (count($duplicateOrder) === 0) {
+
+                $countNewOrder++;
+
                 DB::table('order_tb')->insert([
                     'orderID' => $orderNumber,
                     'orderLink' => 'linkshopee',
@@ -132,6 +137,7 @@ class OrderController extends Controller
             }            
         }
 
+        // alert('Có ' + $countNewOrder + ' đơn hàng mới từ SHOPEE', 'Successfully', 'success');
         return 1;
     }
 }

@@ -74,7 +74,9 @@ class OrderController extends Controller
         $response = $this->sendo->getOrderList($orderStatus); //call API GET ORDER LIST - SENDO
         // dd($response);
         $orderLinkSendo = self::ORDER_LINK_SENDO;
+
         if (count($response->result->data) > 0) {
+            $countNewOrder = 0;
             // thêm đơn hàng mới vào DB
             foreach ($response->result->data as $key => $p) {
                 $orderNumber = $p->salesOrder->orderNumber;
@@ -87,14 +89,18 @@ class OrderController extends Controller
                 $orderAddress = 01;
                 $orderDate = $p->salesOrder->orderDate;
                 $orderChannel = "Sen Đỏ";
-                $shipToRegionId=$p->salesOrder->shipToRegionId;
+                $shipToRegionId= $p->salesOrder->shipToRegionId;
                 
+                //convert RegionId -> RegionName
                 $region = DB::table('city')->where('cityId', $shipToRegionId)->select('cityName')->first();
                 $shipToRegionName = $region->cityName;
 
                 // thêm order mới
                 $duplicateOrder = DB::table('order_tb')->where('orderID', $orderNumber)->get();
                 if (count($duplicateOrder) === 0) {
+
+                    $countNewOrder++;
+
                     DB::table('order_tb')->insert(['orderID' => $orderNumber,
                         'orderLink' => $orderLinkSendo . $orderNumber,
                         'orderStatus' => $orderStatus,
@@ -121,9 +127,10 @@ class OrderController extends Controller
                 $this->updateOrder($orderNumber);
                 
             }
+            alert('Có ' + $countNewOrder + ' đơn hàng mới từ SENDO', 'Successfully', 'success');
             return 1;
         } else {
-            echo 'ko co don hang moi';
+            alert('Không có đơn mới','Successfully', 'success');
         }
 
         
@@ -148,7 +155,8 @@ class OrderController extends Controller
                 $this->updateOrder($p->orderID);
             }
         }
-        alert('Order Updated','Successfully', 'success');
+
+        alert('Đã cập nhật ' + count($arrayOrderNumber) + ' đơn hàng','Successfully', 'success');
         return redirect('admin/order/'); 
     }
 
