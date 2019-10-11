@@ -6,15 +6,16 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
   pageLimit = 10;
 
   var absUrl = $location.absUrl();
+  var host   = $location.host();
+  var port   = $location.port();
 
-  var url_string = absUrl; //window.location.href
-  var url = new URL(url_string);
-  var c = url.searchParams.get("limit");
-  console.log(c);
-
+  $scope.baseURL = 'http://' + host + ':' + port;
 
 
-
+  // var url_string = absUrl; //window.location.href
+  // var url = new URL(url_string);
+  // var c = url.searchParams.get("limit");
+  // console.log(c);
 
   $scope.page = 1;
   $scope.pagination = function (page, limit) {
@@ -22,21 +23,18 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
     $scope.page = page;
     console.log(limit);
 
-    $http.get('http://127.0.0.1:1111/admin/api-order-all?page=' + $scope.page + '&limit=' + pageLimit).then(function (res) { $scope.all = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/api-order-all?page=' + $scope.page + '&limit=' + pageLimit).then(function (res) { $scope.all = res.data; }, function (res) { });
   }
 
 
 
-
-
-
-  $http.get('http://127.0.0.1:1111/admin/best-selling').then(function (res) { $scope.all = res.data; }, function (res) { });
+  $http.get($scope.baseURL + '/admin/best-selling').then(function (res) { $scope.all = res.data; }, function (res) { });
   //START AUTO GET ORDER RA DS DON HANG----------------------------------------------------------------------------------------------
-  $http.get('http://127.0.0.1:1111/admin/api-order-all?page=' + $scope.page + '&limit=' + pageLimit).then(function (res) { $scope.all = res.data;}, function (res) { });
+  $http.get($scope.baseURL + '/admin/api-order-all?page=' + $scope.page + '&limit=' + pageLimit).then(function (res) { $scope.all = res.data;}, function (res) { });
 
-  $http.get('http://127.0.0.1:1111/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; }, function (res) { });
+  $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; }, function (res) { });
   //COUNT SỐ LOẠI ĐƠN THEO orderStatus----------------------------------------
-  $http.get('http://127.0.0.1:1111/admin/count-order-all').then(function (res) {
+  $http.get($scope.baseURL + '/admin/count-order-all').then(function (res) {
     $scope.count_all = res.data;
     $scope.arrayPageIndex = [];
     console.log($scope.count_all);
@@ -47,16 +45,16 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
 
 
   }, function (res) { });
-  $http.get('http://127.0.0.1:1111/admin/count-order-ship-and-received').then(function (res) { $scope.count_ship_and_received = res.data; }, function (res) { });
-  $http.get('http://127.0.0.1:1111/admin/count-order-shipping').then(function (res) { $scope.count_shipping = res.data; }, function (res) { });
-  $http.get('http://127.0.0.1:1111/admin/count-order-received').then(function (res) { $scope.count_received = res.data; }, function (res) { });
-  $http.get('http://127.0.0.1:1111/admin/count-order-done_and_returnok').then(function (res) { $scope.count_done_and_returnok = res.data; }, function (res) { });
-  $http.get('http://127.0.0.1:1111/admin/count-order-done').then(function (res) { $scope.count_done = res.data; }, function (res) { });
-  $http.get('http://127.0.0.1:1111/admin/count-order-returnok').then(function (res) { $scope.count_returnok = res.data; }, function (res) { });
-  $http.get('http://127.0.0.1:1111/admin/count-order-returning-and-complain').then(function (res) { $scope.count_returning_and_complain = res.data; }, function (res) { });
-  $http.get('http://127.0.0.1:1111/admin/count-order-returning').then(function (res) { $scope.count_returning = res.data; }, function (res) { });
-  $http.get('http://127.0.0.1:1111/admin/count-order-complain').then(function (res) { $scope.count_complain = res.data; }, function (res) { });
-  $http.get('http://127.0.0.1:1111/sendo/add-new-order').then(function (res) { }, function (res) { });
+  $http.get($scope.baseURL + '/admin/count-order-ship-and-received').then(function (res) { $scope.count_ship_and_received = res.data; }, function (res) { });
+  $http.get($scope.baseURL + '/admin/count-order-shipping').then(function (res) { $scope.count_shipping = res.data; }, function (res) { });
+  $http.get($scope.baseURL + '/admin/count-order-received').then(function (res) { $scope.count_received = res.data; }, function (res) { });
+  $http.get($scope.baseURL + '/admin/count-order-done_and_returnok').then(function (res) { $scope.count_done_and_returnok = res.data; }, function (res) { });
+  $http.get($scope.baseURL + '/admin/count-order-done').then(function (res) { $scope.count_done = res.data; }, function (res) { });
+  $http.get($scope.baseURL + '/admin/count-order-returnok').then(function (res) { $scope.count_returnok = res.data; }, function (res) { });
+  $http.get($scope.baseURL + '/admin/count-order-returning-and-complain').then(function (res) { $scope.count_returning_and_complain = res.data; }, function (res) { });
+  $http.get($scope.baseURL + '/admin/count-order-returning').then(function (res) { $scope.count_returning = res.data; }, function (res) { });
+  $http.get($scope.baseURL + '/admin/count-order-complain').then(function (res) { $scope.count_complain = res.data; }, function (res) { });
+  $http.get($scope.baseURL + '/sendo/add-new-order').then(function (res) { }, function (res) { });
 
 
   //COUNT SỐ LOẠI ĐƠN THEO orderStatus----------------------------------------
@@ -74,7 +72,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
 
 
   $scope.updateExceptDone = function () {
-    $http.get('http://127.0.0.1:1111/sendo/update-order-except-done').then(function (res) { $scope.all = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/sendo/update-order-except-done').then(function (res) { $scope.all = res.data; }, function (res) { });
   }
 
 
@@ -94,7 +92,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
         'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
       }
     }
-    $http.post('http://127.0.0.1:1111/admin/api-selected-orderShip', data, config)
+    $http.post($scope.baseURL + '/admin/api-selected-orderShip', data, config)
       .then(function (res) {
         $scope.all = res.data;
         console.log("update thcong " + $scope.nhieunguoi);
@@ -114,7 +112,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
         'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
       }
     }
-    $http.post('http://127.0.0.1:1111/admin/api-selected-orderStatus', data, config)
+    $http.post($scope.baseURL + '/admin/api-selected-orderStatus', data, config)
       .then(function (res) {
         $scope.all = res.data;
         console.log("update thcong " + $scope.nhieunguoi);
@@ -127,8 +125,8 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
   $scope.get_all = function () {
     $scope.page = 1;
     pageLimit = 10;
-    $http.get('http://127.0.0.1:1111/admin/api-order-all?page=' + $scope.page + '&limit=' + pageLimit).then(function (res) { $scope.all = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/api-order-all?page=' + $scope.page + '&limit=' + pageLimit).then(function (res) { $scope.all = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; }, function (res) { });
   }
   //END GET ORDER RA DS DON HANG--------------------------------------------------------------------------------------------------
 
@@ -138,7 +136,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
     if ($scope.display == true) {
       $scope.display = !$scope.display;
     }
-    $http.get('http://127.0.0.1:1111/admin/count-order-ship-and-received').then(function (res) {
+    $http.get($scope.baseURL + '/admin/count-order-ship-and-received').then(function (res) {
       $scope.count_ship_and_received = res.data;
       $scope.arrayPageIndex = [];
 
@@ -148,22 +146,22 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
       }
 
     }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/api-order-dhvc').then(function (res) { $scope.all = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/api-order-dhvc').then(function (res) { $scope.all = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; }, function (res) { });
   }
   //END GET ORDER VOI STATUS=SHIPPING,RECEIVED--------------------------------------------------------------------------------------------
 
   //START GET ORDER VOI STATUS=SHIPPING,-------------------------------------------------------------------------------------------
   $scope.get_shipping = function () {
-    $http.get('http://127.0.0.1:1111/admin/api-order-shipping').then(function (res) { $scope.all = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/api-order-shipping').then(function (res) { $scope.all = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; }, function (res) { });
   }
   //END GET ORDER VOI STATUS=SHIPPING,--------------------------------------------------------------------------------------------
 
   //START GET ORDER VOI STATUS=Received------------------------------------------------------------------------------------------
   $scope.get_dnh = function () {
-    $http.get('http://127.0.0.1:1111/admin/api-order-dnh').then(function (res) { $scope.all = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/api-order-allv2').then(function (res) {
+    $http.get($scope.baseURL + '/admin/api-order-dnh').then(function (res) { $scope.all = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) {
       $scope.allv2 = res.data;
       $('.labels').addClass('label-primary');
     }, function (res) { });
@@ -172,8 +170,8 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
 
   //START GET ORDER VOI STATUS=Done------------------------------------------------------------------------------------------
   $scope.get_dnt = function () {
-    $http.get('http://127.0.0.1:1111/admin/api-order-dnt').then(function (res) { $scope.all = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/api-order-allv2').then(function (res) {
+    $http.get($scope.baseURL + '/admin/api-order-dnt').then(function (res) { $scope.all = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) {
       $scope.allv2 = res.data;
       $('.labels').addClass('label-info');
     }, function (res) { });
@@ -182,8 +180,8 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
 
   //START GET ORDER VOI STATUS=ReturnOK------------------------------------------------------------------------------------------
   $scope.get_dnl = function () {
-    $http.get('http://127.0.0.1:1111/admin/api-order-dnl').then(function (res) { $scope.all = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/api-order-allv2').then(function (res) {
+    $http.get($scope.baseURL + '/admin/api-order-dnl').then(function (res) { $scope.all = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) {
       $scope.allv2 = res.data;
       $('.labels').addClass('label-info');
     }, function (res) { });
@@ -194,8 +192,8 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
   $scope.get_dhht = function () {
     console.log($scope.display);
     $scope.display = !$scope.display;
-    $http.get('http://127.0.0.1:1111/admin/api-order-dhht').then(function (res) { $scope.all = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/api-order-allv2').then(function (res) {
+    $http.get($scope.baseURL + '/admin/api-order-dhht').then(function (res) { $scope.all = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) {
       $scope.allv2 = res.data;
       $('.labels').addClass('label-success');
     }, function (res) { });
@@ -204,8 +202,8 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
 
   //START GET ORDER VOI STATUS=RETURNING, COMPLAIN----------------------------------------------------------------------------------------------
   $scope.get_dhsc = function () {
-    $http.get('http://127.0.0.1:1111/admin/api-order-dhsc').then(function (res) { $scope.all = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/api-order-allv2').then(function (res) {
+    $http.get($scope.baseURL + '/admin/api-order-dhsc').then(function (res) { $scope.all = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) {
       $scope.allv2 = res.data;
       $('.labels').addClass('label-danger');
     }, function (res) { });
@@ -214,8 +212,8 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
 
   //START GET ORDER VOI STATUS=RETURNING,----------------------------------------------------------------------------------------------
   $scope.get_ch = function () {
-    $http.get('http://127.0.0.1:1111/admin/api-order-ch').then(function (res) { $scope.all = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/api-order-allv2').then(function (res) {
+    $http.get($scope.baseURL + '/admin/api-order-ch').then(function (res) { $scope.all = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) {
       $scope.allv2 = res.data;
       $('.labels').addClass('label-danger');
     }, function (res) { });
@@ -224,8 +222,8 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
 
   //START GET ORDER VOI STATUS=RETURNING,----------------------------------------------------------------------------------------------
   $scope.get_kn = function () {
-    $http.get('http://127.0.0.1:1111/admin/api-order-kn').then(function (res) { $scope.all = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/api-order-allv2').then(function (res) {
+    $http.get($scope.baseURL + '/admin/api-order-kn').then(function (res) { $scope.all = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) {
       $scope.allv2 = res.data;
       $('.labels').addClass('label-danger');
     }, function (res) { });
@@ -243,22 +241,22 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
         'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
       }
     }
-    $http.post('http://127.0.0.1:1111/admin/api-change-orderStatus', data, config).then(function (res) { $scope.all = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/api-order-allv2').then(function (res) {
+    $http.post($scope.baseURL + '/admin/api-change-orderStatus', data, config).then(function (res) { $scope.all = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) {
       $scope.allv2 = res.data;
       $('.labels').addClass('label-primary');
     }, function (res) { });
 
-    $http.get('http://127.0.0.1:1111/admin/count-order-all').then(function (res) { $scope.count_all = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-ship-and-received').then(function (res) { $scope.count_ship_and_received = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-shipping').then(function (res) { $scope.count_shipping = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-received').then(function (res) { $scope.count_received = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-done_and_returnok').then(function (res) { $scope.count_done_and_returnok = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-done').then(function (res) { $scope.count_done = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-returnok').then(function (res) { $scope.count_returnok = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-returning-and-complain').then(function (res) { $scope.count_returning_and_complain = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-returning').then(function (res) { $scope.count_returning = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-complain').then(function (res) { $scope.count_complain = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-all').then(function (res) { $scope.count_all = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-ship-and-received').then(function (res) { $scope.count_ship_and_received = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-shipping').then(function (res) { $scope.count_shipping = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-received').then(function (res) { $scope.count_received = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-done_and_returnok').then(function (res) { $scope.count_done_and_returnok = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-done').then(function (res) { $scope.count_done = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-returnok').then(function (res) { $scope.count_returnok = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-returning-and-complain').then(function (res) { $scope.count_returning_and_complain = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-returning').then(function (res) { $scope.count_returning = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-complain').then(function (res) { $scope.count_complain = res.data; }, function (res) { });
   }
   // END CLICK button DHVC de change status------------------------------------------------------------------------------
 
@@ -273,24 +271,24 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
         'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
       }
     }
-    $http.post('http://127.0.0.1:1111/admin/api-change-orderStatusv2', data, config).then(function (res) {
+    $http.post($scope.baseURL + '/admin/api-change-orderStatusv2', data, config).then(function (res) {
       $scope.all = res.data;
       console.log("update thcong " + $scope.all);
     }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/api-order-allv2').then(function (res) {
+    $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) {
       $scope.allv2 = res.data;
       $('.labels').addClass('label-info');
     }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-all').then(function (res) { $scope.count_all = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-ship-and-received').then(function (res) { $scope.count_ship_and_received = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-shipping').then(function (res) { $scope.count_shipping = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-received').then(function (res) { $scope.count_received = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-done_and_returnok').then(function (res) { $scope.count_done_and_returnok = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-done').then(function (res) { $scope.count_done = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-returnok').then(function (res) { $scope.count_returnok = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-returning-and-complain').then(function (res) { $scope.count_returning_and_complain = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-returning').then(function (res) { $scope.count_returning = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-complain').then(function (res) { $scope.count_complain = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-all').then(function (res) { $scope.count_all = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-ship-and-received').then(function (res) { $scope.count_ship_and_received = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-shipping').then(function (res) { $scope.count_shipping = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-received').then(function (res) { $scope.count_received = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-done_and_returnok').then(function (res) { $scope.count_done_and_returnok = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-done').then(function (res) { $scope.count_done = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-returnok').then(function (res) { $scope.count_returnok = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-returning-and-complain').then(function (res) { $scope.count_returning_and_complain = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-returning').then(function (res) { $scope.count_returning = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-complain').then(function (res) { $scope.count_complain = res.data; }, function (res) { });
   }
   // END CLICK button DHVC de change status------------------------------------------------------------------------------
 
@@ -305,24 +303,24 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
         'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
       }
     }
-    $http.post('http://127.0.0.1:1111/admin/api-change-orderStatusv3', data, config).then(function (res) {
+    $http.post($scope.baseURL + '/admin/api-change-orderStatusv3', data, config).then(function (res) {
       $scope.all = res.data;
       console.log("update thcong " + $scope.all);
     }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/api-order-allv2').then(function (res) {
+    $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) {
       $scope.allv2 = res.data;
       $('.labels').addClass('label-danger');
     }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-all').then(function (res) { $scope.count_all = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-ship-and-received').then(function (res) { $scope.count_ship_and_received = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-shipping').then(function (res) { $scope.count_shipping = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-received').then(function (res) { $scope.count_received = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-done_and_returnok').then(function (res) { $scope.count_done_and_returnok = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-done').then(function (res) { $scope.count_done = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-returnok').then(function (res) { $scope.count_returnok = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-returning-and-complain').then(function (res) { $scope.count_returning_and_complain = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-returning').then(function (res) { $scope.count_returning = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-complain').then(function (res) { $scope.count_complain = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-all').then(function (res) { $scope.count_all = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-ship-and-received').then(function (res) { $scope.count_ship_and_received = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-shipping').then(function (res) { $scope.count_shipping = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-received').then(function (res) { $scope.count_received = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-done_and_returnok').then(function (res) { $scope.count_done_and_returnok = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-done').then(function (res) { $scope.count_done = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-returnok').then(function (res) { $scope.count_returnok = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-returning-and-complain').then(function (res) { $scope.count_returning_and_complain = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-returning').then(function (res) { $scope.count_returning = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-complain').then(function (res) { $scope.count_complain = res.data; }, function (res) { });
   }
   //END CLICK button DHSC de change status RETURNING và return số lượng sp-------------------------------------------------------------------
 
@@ -336,24 +334,24 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
         'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
       }
     }
-    $http.post('http://127.0.0.1:1111/admin/api-change-orderStatusv4', data, config).then(function (res) {
+    $http.post($scope.baseURL + '/admin/api-change-orderStatusv4', data, config).then(function (res) {
       $scope.all = res.data;
       console.log("update thcong " + $scope.all);
     }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/api-order-allv2').then(function (res) {
+    $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) {
       $scope.allv2 = res.data;
       $('.labels').addClass('label-danger');
     }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-all').then(function (res) { $scope.count_all = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-ship-and-received').then(function (res) { $scope.count_ship_and_received = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-shipping').then(function (res) { $scope.count_shipping = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-received').then(function (res) { $scope.count_received = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-done_and_returnok').then(function (res) { $scope.count_done_and_returnok = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-done').then(function (res) { $scope.count_done = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-returnok').then(function (res) { $scope.count_returnok = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-returning-and-complain').then(function (res) { $scope.count_returning_and_complain = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-returning').then(function (res) { $scope.count_returning = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-complain').then(function (res) { $scope.count_complain = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-all').then(function (res) { $scope.count_all = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-ship-and-received').then(function (res) { $scope.count_ship_and_received = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-shipping').then(function (res) { $scope.count_shipping = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-received').then(function (res) { $scope.count_received = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-done_and_returnok').then(function (res) { $scope.count_done_and_returnok = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-done').then(function (res) { $scope.count_done = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-returnok').then(function (res) { $scope.count_returnok = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-returning-and-complain').then(function (res) { $scope.count_returning_and_complain = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-returning').then(function (res) { $scope.count_returning = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-complain').then(function (res) { $scope.count_complain = res.data; }, function (res) { });
   }
   //END CLICK button DHSC de change status COMPLAIN và return số lượng sp-------------------------------------------------------------------
 
@@ -367,24 +365,24 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
         'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
       }
     }
-    $http.post('http://127.0.0.1:1111/admin/api-change-orderStatusv5', data, config).then(function (res) {
+    $http.post($scope.baseURL + '/admin/api-change-orderStatusv5', data, config).then(function (res) {
       $scope.all = res.data;
       console.log("update thcong " + $scope.all);
     }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/api-order-allv2').then(function (res) {
+    $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) {
       $scope.allv2 = res.data;
       $('.labels').addClass('label-info');
     }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-all').then(function (res) { $scope.count_all = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-ship-and-received').then(function (res) { $scope.count_ship_and_received = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-shipping').then(function (res) { $scope.count_shipping = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-received').then(function (res) { $scope.count_received = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-done_and_returnok').then(function (res) { $scope.count_done_and_returnok = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-done').then(function (res) { $scope.count_done = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-returnok').then(function (res) { $scope.count_returnok = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-returning-and-complain').then(function (res) { $scope.count_returning_and_complain = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-returning').then(function (res) { $scope.count_returning = res.data; }, function (res) { });
-    $http.get('http://127.0.0.1:1111/admin/count-order-complain').then(function (res) { $scope.count_complain = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-all').then(function (res) { $scope.count_all = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-ship-and-received').then(function (res) { $scope.count_ship_and_received = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-shipping').then(function (res) { $scope.count_shipping = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-received').then(function (res) { $scope.count_received = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-done_and_returnok').then(function (res) { $scope.count_done_and_returnok = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-done').then(function (res) { $scope.count_done = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-returnok').then(function (res) { $scope.count_returnok = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-returning-and-complain').then(function (res) { $scope.count_returning_and_complain = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-returning').then(function (res) { $scope.count_returning = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-complain').then(function (res) { $scope.count_complain = res.data; }, function (res) { });
   }
   //END CLICK button DHSC de change status RETURNOK và return số lượng sp-------------------------------------------------------------------
   $scope.editOrder = function (nguoi) {
@@ -399,7 +397,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
         'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
       }
     }
-    $http.post('http://127.0.0.1:1111/admin/api-edit-order', data, config).then(function (res) {
+    $http.post($scope.baseURL + '/admin/api-edit-order', data, config).then(function (res) {
 
       console.log("update thcong ");
     }, function (res) { });
@@ -428,7 +426,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
         'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
       }
     }
-    $http.post('http://127.0.0.1:1111/admin/product-get-cost', data, config).then(function (res) { $scope.nhieunguoi = res.data; }, function (res) { });
+    $http.post($scope.baseURL + '/admin/product-get-cost', data, config).then(function (res) { $scope.nhieunguoi = res.data; }, function (res) { });
   }
   //GET COST PHAN ADD PRODUCT
 
@@ -443,7 +441,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
         'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
       }
     }
-    $http.post('http://127.0.0.1:1111/admin/order-api-quan', data, config)
+    $http.post($scope.baseURL + '/admin/order-api-quan', data, config)
       .then(function (res) {
         $scope.quanhuyen = res.data;
         console.log("update thcong " + $scope.quanhuyen);
@@ -464,7 +462,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
         'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
       }
     }
-    $http.post('http://127.0.0.1:1111/admin/order-api-product', data, config)
+    $http.post($scope.baseURL + '/admin/order-api-product', data, config)
       .then(function (res) {
         $scope.product = res.data;
         console.log("update thcong " + $scope.product);
@@ -562,7 +560,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location) {
     motnguoi.hienthi = !motnguoi.hienthi;
   }
   console.log("script angular");
-  // $http.get("http://127.0.0.1:1111/admin/get-data-api").then(function(res){ //get data json
+  // $http.get("/admin/get-data-api").then(function(res){ //get data json
   //   $scope.nhieunguoi=res.data;
   //   console.log("api data la "+res.data);
 
