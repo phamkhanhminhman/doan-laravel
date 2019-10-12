@@ -155,8 +155,8 @@ class OrderController extends Controller
                 $this->updateOrder($p->orderID);
             }
         }
-
-        alert('Đã cập nhật ' + count($arrayOrderNumber) + ' đơn hàng','Successfully', 'success');
+        
+        alert('Đã cập nhật ' . count($arrayOrderNumber) . ' đơn hàng','Successfully', 'success');
         return redirect('admin/order/'); 
     }
 

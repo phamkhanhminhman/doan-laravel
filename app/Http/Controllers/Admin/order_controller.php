@@ -84,6 +84,18 @@ class order_controller extends Controller
         echo $shipping;
     }
 
+    public function api_selected_channel(Request $request)
+    {
+        $channel = $request->xyz;
+        $data_order = DB::table('order_tb')->join('customer', 'order_tb.customerID', '=', 'customer.customerID')
+            ->select('*')
+            ->orderBy('orderDate', 'desc')
+            ->where('orderChannel', $channel)
+            ->get();
+        $data_order = json_encode($data_order);
+        echo $data_order;
+    }
+
 
 
 
@@ -754,6 +766,10 @@ class order_controller extends Controller
         $data_order = json_encode($data_order);
         echo $data_order;
     }
+
+    
+
+
     public function add()
     {
         $data_tinhthanh = DB::table('devvn_tinhthanhpho')

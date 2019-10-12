@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('title', 'Loại Sản Phẩm')
 @section('content')
-<div class="right_col" role="main">
+<div class="right_col" role="main" ng-app="myProduct" ng-controller="MyProduct">
   <div class="">
     <div class="page-title">
       <div class="title_left">
@@ -94,4 +94,5 @@
     </div>
   </div>
 </div>
+<script src="{{asset('assets/js/product.js')}}"></script>
 @endsection

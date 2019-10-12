@@ -86,6 +86,7 @@ Route::namespace('Admin')->group(function () {
    Route::post ('/api-selected-orderShip',      'order_controller@api_selected_orderShip');
    Route::post ('/api-selected-orderStatus',    'order_controller@api_selected_orderStatus');
 
+   Route::post('/api-selected-channel' , 'order_controller@api_selected_channel');
 
    //ORDER-------------------------------------------------------------------------------------------------------------------
 

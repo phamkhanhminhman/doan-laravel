@@ -36,17 +36,20 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
 
   $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; }, function (res) { });
   //COUNT SỐ LOẠI ĐƠN THEO orderStatus----------------------------------------
-  $http.get($scope.baseURL + '/admin/count-order-all').then(function (res) {
-    $scope.count_all = res.data;
-    $scope.arrayPageIndex = [];
-    console.log($scope.count_all);
-    for (var i = 1; i < $scope.count_all / pageLimit; i++) {
-      arrayText = { id: i, }
-      $scope.arrayPageIndex.push(arrayText);
-    }
+  arrayPage();
 
-
-  }, function (res) { });
+  function arrayPage() {
+      $http.get($scope.baseURL + '/admin/count-order-all').then(function (res) {
+      $scope.count_all = res.data;
+      $scope.arrayPageIndex = [];
+      console.log($scope.count_all);
+      for (var i = 1; i < $scope.count_all / pageLimit; i++) {
+        arrayText = { id: i, }
+        $scope.arrayPageIndex.push(arrayText);
+      }
+    }, function (res) { });
+  }
+  
   $http.get($scope.baseURL + '/admin/count-order-ship-and-received').then(function (res) { $scope.count_ship_and_received = res.data; }, function (res) { });
   $http.get($scope.baseURL + '/admin/count-order-shipping').then(function (res) { $scope.count_shipping = res.data; }, function (res) { });
   $http.get($scope.baseURL + '/admin/count-order-received').then(function (res) { $scope.count_received = res.data; }, function (res) { });
@@ -79,7 +82,23 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
 
 
 
-
+  $scope.channel = function () {
+    var data = $.param({
+      xyz: $scope.xyz,
+    });
+    console.log(data);
+    var config = {
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+      }
+    }
+    $http.post($scope.baseURL + '/admin/api-selected-channel', data, config)
+      .then(function (res) {
+        $scope.all = res.data;
+        console.log("update thcong " + $scope.nhieunguoi);
+      },
+        function (res) { if (res.data == "thatbai") { console.log("update thatbai ") } });
+  }
 
 
 
@@ -127,6 +146,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
   $scope.get_all = function () {
     $scope.page = 1;
     pageLimit = 10;
+    arrayPage();
     $http.get($scope.baseURL + '/admin/api-order-all?page=' + $scope.page + '&limit=' + pageLimit).then(function (res) { $scope.all = res.data; }, function (res) { });
     $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; }, function (res) { });
   }

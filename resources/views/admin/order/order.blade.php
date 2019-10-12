@@ -6,7 +6,7 @@
 @extends('layouts.admin')
 @section('title', 'Order')
 @section('content')
-<div class="right_col" role="main">
+<div class="right_col" role="main" ng-app="myApp" ng-controller="MyController">
  <div class="">
   <div class="page-title">
     <div class="title_left">
@@ -50,14 +50,10 @@
               </select>
             </div>
             <div class="col-md-3 col-sm-2 col-xs-12">
-              <select class="form-control col-md-7 col-xs-12" name="categoryID" id="" ng-click="shipping()" ng-model="xyz">
-                <option value="">           Nhà Vận Chuyển</option>
-                <option value="GHN" >       GHN</option>
-                <option value="GHTK">       GHTK</option>
-                <option value="VNPost">     VNPost</option>
-                <option value="Viettel">ViettelPost</option>
-                <option value="NJV">        NJV</option>
-                <option value="Home">       Home</option>
+              <select class="form-control col-md-7 col-xs-12" name="categoryID" id="" ng-change="channel()" ng-model="xyz">
+                <option value="">            Channel</option>
+                <option value="Sen Đỏ" >       Sen Đỏ</option>
+                <option value="Shopee">       Shopee</option>
               </select>
             </div>
             <div class="col-md-3 col-sm-2 col-xs-12">
@@ -137,13 +133,14 @@
   <div class="x_title">
     <a href="@{{pp.orderLink}}" class="col-md-1" target="_blank" style="color:blue">
       <div style="margin-top:10px">
-      <h4 ng-model="pp.orderChannel" class ="label" style="font-size:18px;background-color:#FA5430 " ng-if="pp.orderChannel === 'Shopee' ">@{{pp.orderChannel}}</h4>
-        <h4 ng-model="pp.orderChannel" class ="label" style="font-size:18px;background-color:red; " ng-if="pp.orderChannel === 'Sen Đỏ' ">@{{pp.orderChannel}}</h4>
+      <h4 ng-model="pp.orderChannel" class ="label" style="font-size:18px;background-color:#FA5430; margin-left: -15px" ng-if="pp.orderChannel === 'Shopee' ">@{{pp.orderChannel}}</h4>
+        <h4 ng-model="pp.orderChannel" class ="label" style="font-size:18px;background-color:red; margin-left: -15px " ng-if="pp.orderChannel === 'Sen Đỏ' ">@{{pp.orderChannel}}</h4>
       </div>
     </a>
     <div>
-    <a href="@{{pp.orderLink}}" class="col-md-2"target="_blank" style="color:red;font-weight:bold"><h4 ng-model="pp.orderID" style="font-size:21px " ng-if="pp.orderChannel === 'Sen Đỏ' " >@{{pp.orderID}}</h4> </a>
-    <a href="@{{pp.orderLink}}" class="col-md-2"target="_blank" style="color:#FA5430;font-weight:bold"><h4 ng-model="pp.orderID" style="font-size:21px " ng-if="pp.orderChannel === 'Shopee' " >@{{pp.orderID}}</h4> </a>
+    <a href="@{{pp.orderLink}}" class="col-md-2"target="_blank" style="color:red;font-weight:bold" ng-if ="pp.orderChannel === 'Sen Đỏ'"><h4 ng-model="pp.orderID" style="font-size:18px "  >@{{pp.orderID}}</h4> </a>
+    <a href="@{{pp.orderLink}}" class="col-md-2"target="_blank" style="color:orange;font-weight:bold" ng-if ="pp.orderChannel === 'Shopee'"><h4 ng-model="pp.orderID" style="font-size:18px "  >@{{pp.orderID}}</h4> </a>
+    
     </div>
     
     <div class="col-md-2"><h4>@{{pp.orderDate | date : "dd.MM.y" }}</h4></div>
@@ -202,7 +199,7 @@
    
    
    <div class="col" style="float: right">
-     <button  type="button" style="background:#188038;color:white"class="btn btn-success"  onclick="new PNotify({
+     <button  type="button" style="background:#2ecc71;color:white"class="btn btn-success"  onclick="new PNotify({
                                 title: 'Cập nhật thành công',
                                 text: 'Chuyển trạng thái đơn ĐANG VẬN CHUYỂN',
                                 type: 'success',
