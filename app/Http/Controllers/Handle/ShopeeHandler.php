@@ -59,12 +59,15 @@ class ShopeeHandler
     public function getOrderList()
     {
         $client = $this->authorizationShopee();
-        // $items = $client->order->getOrdersList(array('pagination_entries_per_page' => 1, ));
+        // $items = $client->order->getOrdersList(array('pagination_entries_per_page' => 1);
 
         $items = $client->order->getOrdersByStatus(array(
             'order_status' => 'ALL',
-        ));
+            'pagination_entries_per_page' => 30,
+            'pagination_offset' => 3
 
+        ));
+        // dd($items);
         return $items;
     }
 

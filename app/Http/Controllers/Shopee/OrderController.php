@@ -23,6 +23,29 @@ class OrderController extends Controller
         $this->shopee = $shopee;
     }
 
+    public function parseOrderStatus($orderStatusDes)
+    {
+        switch ($orderStatusDes) {
+
+            case "READY_TO_SHIP" : $orderStatus = 2;
+                break;
+            case "SHIPPED" : $orderStatus = 6;
+                break;
+            case "TO_CONFIRM_RECEIVE" : $orderStatus = 7;
+                break;
+            case "COMPLETED":$orderStatus = 8;
+                break;
+            case "TO_RETURN":$orderStatus = 22;
+                break;
+            case "CANCELLED":$orderStatus = 13;
+                break;
+
+            default: $orderStatus = 0;
+                break;
+        }
+        return $orderStatus;
+    }
+
     public function getOrderList()
     {
         $response = $this->shopee->getOrderList();
@@ -62,6 +85,7 @@ class OrderController extends Controller
             $responseOrderDetail = $this->shopee->getOrderDetail($orderNumber);
             $orderDetail = $responseOrderDetail->data['orders'][0];
             $orderStatusDes = $orderDetail['order_status'];
+            $orderStatus = $this->parseOrderStatus($orderStatusDes);
             $customerID = 180; // sau này xóa
             $customerTel= $orderDetail['recipient_address']['phone'];
             $customerName= $orderDetail['recipient_address']['name'];
@@ -91,7 +115,7 @@ class OrderController extends Controller
                 DB::table('order_tb')->insert([
                     'orderID' => $orderNumber,
                     'orderLink' => 'linkshopee',
-                    'orderStatus' => 6,
+                    'orderStatus' => $orderStatus,
                     'orderStatusDes' => $orderStatusDes,
                     'customerID' => $customerID,
                     'customerTel'=> $customerTel,
@@ -116,7 +140,7 @@ class OrderController extends Controller
                     DB::table('order_tb_product')->insert([
                         'orderID' => $orderNumber,
                         'productID' => $items['item_id'],
-                        'variantSKU' => $productSKU,
+                        'variantSKU' => $productSKU,                            //save variant SKU = SKU LỚN + SKU NHỎ
                         'Amount' => $items['variation_quantity_purchased'],
                         'product_Sell' => $items['variation_original_price'],
                         'producttypeID' => 'Shopee',
@@ -124,8 +148,6 @@ class OrderController extends Controller
                 }
             }
             
-
-
             $duplicateCustomer = DB::table('customer')->where('customerTel', $customerTel)->get();
 
             if (count($duplicateCustomer) === 0) {
@@ -139,5 +161,38 @@ class OrderController extends Controller
 
         // alert('Có ' + $countNewOrder + ' đơn hàng mới từ SHOPEE', 'Successfully', 'success');
         return 1;
+    }
+
+    public function updateOrderExceptDone()
+    {
+        $arrayOrderNumber = DB::table('order_tb')
+            ->where('orderStatus', '<>', 8)
+            ->where('orderChannel', '=', 'Shopee')
+            ->select('orderID')
+            ->get();
+
+        // nếu có đơn thì mới chạy hàm updateOrder
+        if (count($arrayOrderNumber) > 0) {
+            foreach ($arrayOrderNumber as $key => $p) {
+                $this->updateOrder($p->orderID);
+            }
+        }
+        
+        alert('Đã cập nhật ' . count($arrayOrderNumber) . ' đơn hàng','Successfully', 'success');
+        return redirect('admin/order/');
+    }
+
+    public function updateOrder($orderNumber)
+    {  
+        $response = $this->shopee->getOrderDetail($orderNumber); //call API ORDER DETAIL - SHOPEE
+        $orderDetail = $responseOrderDetail->data['orders'][0];
+        $orderStatusDes = $orderDetail['order_status'];
+        $orderStatus = $this->parseOrderStatus($orderStatusDes);
+
+        DB::table('order_tb')->where('orderID', $orderNumber)
+            ->update([
+                'orderStatus' => $orderStatus,
+                'orderStatusDes' => $orderStatusDes
+            ]);
     }
 }
