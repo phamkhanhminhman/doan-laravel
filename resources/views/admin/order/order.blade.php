@@ -80,10 +80,10 @@
           </div>
           <div class="col-md-6 col-sm-6 col-xs-6" >
            <div class="col-md-6 col-xs-12">
-             <button class="col-md-12 col-xs-12 btn " id="dhht" style="color:black;font-weight:bold" ng-click="get_dhht()" >Đơn Hoàn Tất (@{{count_done_and_returnok}})</button>
+             <button class="col-md-12 col-xs-12 btn " id="dhht" style="color:black;font-weight:bold" ng-click="get_dhht()" >Đơn Hoàn Tất (@{{count_completed_received}})</button>
            </div>
            <div class="col-md-6 col-xs-12">
-             <button class="col-md-12 col-xs-12 btn " id="dhsc" style="color:black;font-weight:bold" ng-click="get_dhsc()" >Đơn Hàng Sự Cố (@{{count_returning_and_complain}})</button>
+             <button class="col-md-12 col-xs-12 btn " id="dhsc" style="color:black;font-weight:bold" ng-click="get_dhsc()" >Đơn Hàng Sự Cố (@{{count_cancle_return}})</button>
            </div>
          </div>
        </div>

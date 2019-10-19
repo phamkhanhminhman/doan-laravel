@@ -76,7 +76,7 @@ Route::namespace('Admin')->group(function () {
    Route::get ('/count-order-all',              'order_controller@count_order_all');
    Route::get ('/count-order-ship-and-received','order_controller@count_order_ship_and_received');
    Route::get ('/count-order-shipping',         'order_controller@count_order_shipping');
-   Route::get ('/count-order-received',         'order_controller@count_order_received');
+   
    Route::get ('/count-order-done_and_returnok',             'order_controller@count_order_done_and_returnok');
    Route::get ('/count-order-done',             'order_controller@count_order_done');
    Route::get ('/count-order-returnok',         'order_controller@count_order_returnok');
@@ -86,7 +86,13 @@ Route::namespace('Admin')->group(function () {
    Route::post ('/api-selected-orderShip',      'order_controller@api_selected_orderShip');
    Route::post ('/api-selected-orderStatus',    'order_controller@api_selected_orderStatus');
 
-   Route::post('/api-selected-channel' , 'order_controller@api_selected_channel');
+   Route::post('/api-selected-channel' ,        'order_controller@api_selected_channel');
+   Route::get('/search-order',                  'order_controller@searchOrderNumber');
+   Route::get ('/count-order-completed',        'order_controller@count_order_completed');
+   Route::get ('/count-order-received',         'order_controller@count_order_received');
+   Route::get('/count-order-completed-received', 'order_controller@count_order_completed_received');
+   Route::get('/count-order-cancle-return',      'order_controller@count_order_cancle_return');
+
 
    //ORDER-------------------------------------------------------------------------------------------------------------------
 

@@ -92,15 +92,125 @@ class order_controller extends Controller
     public function api_selected_channel(Request $request)
     {
         $channel = $request->xyz;
+        $pageIndex= $request->page;
+        $pageLimit= $request->limit;
+
         $data_order = DB::table('order_tb')->join('customer', 'order_tb.customerID', '=', 'customer.customerID')
             ->select('*')
             ->orderBy('orderDate', 'desc')
             ->where('orderChannel', $channel)
+            ->get()->toArray();
+        
+        $array_start=$pageIndex*10-10;
+        $array_length=$pageLimit;   
+        $array_slice=array_slice($data_order,$array_start,$array_length);
+
+        $data_order = json_encode($array_slice); // convert to JSON 
+        echo $data_order;
+    }
+
+    public function searchOrderNumber(Request $request)
+    {
+        $orderNumber = $request->orderNumber;
+
+        $data_order = DB::table('order_tb')->join('customer', 'order_tb.customerID', '=', 'customer.customerID')
+            ->select('*')
+            ->orderBy('orderDate', 'desc')
+            ->where('orderID','LIKE', "%{$orderNumber}%")
             ->get();
         $data_order = json_encode($data_order);
         echo $data_order;
     }
 
+    public function order_api_dhht(Request $request) //api return ve don co orderStatus="Done","ReturnOK"-----------------------------------------------
+    {
+        $pageIndex= $request->page;
+        $pageLimit= $request->limit;
+
+        $data_order = DB::table('order_tb')->join('customer', 'order_tb.customerID', '=', 'customer.customerID')
+            ->select('*')
+            ->where('orderStatus', 'LIKE', '8')
+            ->orderBy('orderDate', 'desc')
+            ->get()->toArray();
+
+
+        $array_start=$pageIndex*10-10;
+        $array_length=$pageLimit;   
+        $array_slice=array_slice($data_order,$array_start,$array_length);
+
+        $data_order = json_encode($array_slice); // convert to JSON 
+        echo $data_order;
+    }
+
+    public function count_order_completed() //ĐẾM SỐ LƯỢNG ĐƠN STATUS=DONE------------------------------------------------------------------
+    {
+        $completed = DB::table('order_tb')->join('customer', 'order_tb.customerID', '=', 'customer.customerID')
+            ->select('*')
+            ->where('orderStatus', 'LIKE', '8')
+            ->get();
+        $completed = count($completed);
+        $completed = json_encode($completed);
+        echo $completed;
+    }
+
+    public function count_order_received() //ĐẾM SỐ LƯỢNG ĐƠN STATUS=RECEIVED----------------------------------------------------------
+    {
+        $received = DB::table('order_tb')->join('customer', 'order_tb.customerID', '=', 'customer.customerID')
+            ->select('*')
+            ->where('orderStatus', 'LIKE', '7')
+            ->get();
+        $received = count($received);
+        $received = json_encode($received);
+        echo $received;
+    }
+
+    public function count_order_completed_received() 
+    {
+        $completed_received = DB::table('order_tb')->join('customer', 'order_tb.customerID', '=', 'customer.customerID')
+            ->select('*')
+            ->where('orderStatus', 'LIKE', '8')
+            ->orWhere('orderStatus', 'LIKE' ,'7')
+            ->get();
+
+        $completed_received = count($completed_received);
+        $completed_received = json_encode($completed_received);
+
+        echo $completed_received;
+    }
+
+    public function order_api_dhsc(Request $request) //api return ve don co orderStatus="13"----------------------------------------------------------
+    {
+        $pageIndex= $request->page;
+        $pageLimit= $request->limit;
+
+        $data_order = DB::table('order_tb')->join('customer', 'order_tb.customerID', '=', 'customer.customerID')
+            ->select('*')
+            ->where('orderStatus', 'LIKE', '13')
+            ->orWhere('orderStatus', 'LIKE', '22')
+            ->orderBy('orderDate', 'desc')
+            ->get()->toArray();
+        
+        $array_start=$pageIndex*10-10;
+        $array_length=$pageLimit;   
+        $array_slice=array_slice($data_order,$array_start,$array_length);
+
+        $data_order = json_encode($array_slice); // convert to JSON 
+        echo $data_order;
+    }
+
+    public function count_order_cancle_return() 
+    {
+        $cancle_return = DB::table('order_tb')->join('customer', 'order_tb.customerID', '=', 'customer.customerID')
+            ->select('*')
+            ->where('orderStatus', 'LIKE', '13')
+            ->orWhere('orderStatus', 'LIKE' ,'22')
+            ->get();
+
+        $cancle_return = count($cancle_return);
+        $cancle_return = json_encode($cancle_return);
+
+        echo $cancle_return;
+    }
 
 
 
@@ -138,17 +248,7 @@ class order_controller extends Controller
         $shipping = json_encode($shipping);
         echo $shipping;
     }
-    public function count_order_received() //ĐẾM SỐ LƯỢNG ĐƠN STATUS=RECEIVED----------------------------------------------------------
-
-    {
-        $received = DB::table('order_tb')->join('customer', 'order_tb.customerID', '=', 'customer.customerID')
-            ->select('*')
-            ->where('orderStatus', 'LIKE', 'Received')
-            ->get();
-        $received = count($received);
-        $received = json_encode($received);
-        echo $received;
-    }
+    
     public function count_order_done_and_returnok() //ĐẾM SỐ LƯỢNG ĐƠN STATUS=DONE,RETURNOK-------------------------------------------
 
     {
@@ -161,17 +261,7 @@ class order_controller extends Controller
         $done = json_encode($done);
         echo $done;
     }
-    public function count_order_done() //ĐẾM SỐ LƯỢNG ĐƠN STATUS=DONE------------------------------------------------------------------
-
-    {
-        $done = DB::table('order_tb')->join('customer', 'order_tb.customerID', '=', 'customer.customerID')
-            ->select('*')
-            ->where('orderStatus', 'LIKE', 'Done')
-            ->get();
-        $done = count($done);
-        $done = json_encode($done);
-        echo $done;
-    }
+    
     public function count_order_returnok() //ĐẾM SỐ LƯỢNG ĐƠN STATUS=RETURNOK------------------------------------------------------------------
 
     {
@@ -247,19 +337,7 @@ class order_controller extends Controller
         $data_order = json_encode($data_order);
         echo $data_order;
     }
-    public function order_api_dhht() //api return ve don co orderStatus="Done","ReturnOK"-----------------------------------------------
-
-    {
-        $data_order = DB::table('order_tb')->join('customer', 'order_tb.customerID', '=', 'customer.customerID')
-            ->join('devvn_tinhthanhpho', 'order_tb.orderAddress', '=', 'devvn_tinhthanhpho.matp')
-            ->select('*')
-            ->where('orderStatus', 'LIKE', 'Done')
-            ->orWhere('orderStatus', 'ReturnOK')
-            ->orderBy('orderCreate', 'desc')
-            ->get();
-        $data_order = json_encode($data_order);
-        echo $data_order;
-    }
+    
     public function order_api_dnt() //api return ve don co orderStatus="Done"-----------------------------------------------
 
     {
@@ -284,19 +362,7 @@ class order_controller extends Controller
         $data_order = json_encode($data_order);
         echo $data_order;
     }
-    public function order_api_dhsc() //api return ve don co orderStatus="Returning, Complain"----------------------------------------------------------
-
-    {
-        $data_order = DB::table('order_tb')->join('customer', 'order_tb.customerID', '=', 'customer.customerID')
-            ->join('devvn_tinhthanhpho', 'order_tb.orderAddress', '=', 'devvn_tinhthanhpho.matp')
-            ->select('*')
-            ->where('orderStatus', 'LIKE', 'Returning')
-            ->orWhere('orderStatus', 'LIKE', 'Complain')
-            ->orderBy('orderCreate', 'desc')
-            ->get();
-        $data_order = json_encode($data_order);
-        echo $data_order;
-    }
+    
     public function order_api_ch() //api return ve don co orderStatus="Returning"----------------------------------------------------------
 
     {

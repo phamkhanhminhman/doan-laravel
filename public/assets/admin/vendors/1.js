@@ -3,85 +3,110 @@ var app = angular.module('myApp', ['ngMaterial', 'chieffancypants.loadingBar', '
   });
 app.controller('MyController', function ($scope, $http, $mdToast, $location, $timeout, cfpLoadingBar) {
 
-
   pageIndex = 1;
-  pageLimit = 10;
+  $scope.pageLimit = 10;
 
   var absUrl = $location.absUrl();
   var host   = $location.host();
   var port   = $location.port();
-
   $scope.baseURL = 'http://' + host + ':' + port;
-
-
   // var url_string = absUrl; //window.location.href
   // var url = new URL(url_string);
   // var c = url.searchParams.get("limit");
   // console.log(c);
 
+  // PAGINATION---------------------------------------------------------------------------------------------------------------------------------
   $scope.page = 1;
+  $scope.orderStatus = '';
   $scope.pagination = function (page, limit) {
-    console.log(page);
-    $scope.page = page;
-    console.log(limit);
+    if ($scope.orderStatus === '') {
+      $scope.page = page;
+      $http.get($scope.baseURL + '/admin/api-order-all?page=' + $scope.page + '&limit=' + $scope.pageLimit).then(function (res) { $scope.all = res.data; });
+    }
 
-    $http.get($scope.baseURL + '/admin/api-order-all?page=' + $scope.page + '&limit=' + pageLimit).then(function (res) { $scope.all = res.data; }, function (res) { });
+    if ($scope.orderStatus === 8) {
+      $scope.page = page;
+      $http.get($scope.baseURL + '/admin/api-order-dhht?page=' + $scope.page + '&limit=' + $scope.pageLimit).then(function (res) { $scope.all = res.data; });
+    }
+
+    if ($scope.orderStatus === 13) {
+      $scope.page = page;
+      $http.get($scope.baseURL + '/admin/api-order-dhsc?page=' + $scope.page + '&limit=' + $scope.pageLimit).then(function (res) { $scope.all = res.data; });
+    }
+
+
+    
   }
 
+  $http.get($scope.baseURL + '/admin/best-selling').then(function (res) { $scope.all = res.data; });
 
 
-  $http.get($scope.baseURL + '/admin/best-selling').then(function (res) { $scope.all = res.data; }, function (res) { });
   //START AUTO GET ORDER RA DS DON HANG----------------------------------------------------------------------------------------------
-  $http.get($scope.baseURL + '/admin/api-order-all?page=' + $scope.page + '&limit=' + pageLimit).then(function (res) { $scope.all = res.data;}, function (res) { });
+  $http.get($scope.baseURL + '/admin/api-order-all?page=' + $scope.page + '&limit=' + $scope.pageLimit).then(function (res) { $scope.all = res.data;});
+  $http.get($scope.baseURL + '/admin/count-order-all').then(function (res) { $scope.count_all = res.data; arrayPage(res.data)});
+  $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; });
 
-  $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; }, function (res) { });
-  //COUNT SỐ LOẠI ĐƠN THEO orderStatus----------------------------------------
+  //COUNT SỐ LOẠI ĐƠN THEO orderStatus------------------------------------------------------------------------------------------------------------
   arrayPage();
-
-  function arrayPage() {
-      $http.get($scope.baseURL + '/admin/count-order-all').then(function (res) {
-      $scope.count_all = res.data;
-      $scope.arrayPageIndex = [];
+  function arrayPage($arrayLength) {
+    console.log($arrayLength);
+    $scope.arrayPageIndex = [];
       console.log($scope.count_all);
-      for (var i = 1; i < $scope.count_all / pageLimit; i++) {
+      if ($arrayLength < 10) {
+        $arrayLength = 10;
+      }
+      for (var i = 1; i <= $arrayLength / $scope.pageLimit; i++) {
         arrayText = { id: i, }
         $scope.arrayPageIndex.push(arrayText);
       }
-    }, function (res) { });
   }
   
-  $http.get($scope.baseURL + '/admin/count-order-ship-and-received').then(function (res) { $scope.count_ship_and_received = res.data; }, function (res) { });
-  $http.get($scope.baseURL + '/admin/count-order-shipping').then(function (res) { $scope.count_shipping = res.data; }, function (res) { });
-  $http.get($scope.baseURL + '/admin/count-order-received').then(function (res) { $scope.count_received = res.data; }, function (res) { });
-  $http.get($scope.baseURL + '/admin/count-order-done_and_returnok').then(function (res) { $scope.count_done_and_returnok = res.data; }, function (res) { });
-  $http.get($scope.baseURL + '/admin/count-order-done').then(function (res) { $scope.count_done = res.data; }, function (res) { });
+  $http.get($scope.baseURL + '/admin/count-order-ship-and-received').then(function (res) { $scope.count_ship_and_received = res.data; });
+  $http.get($scope.baseURL + '/admin/count-order-shipping').then(function (res) { $scope.count_shipping = res.data; });
+  
+  // $http.get($scope.baseURL + '/admin/count-order-done_and_returnok').then(function (res) { $scope.count_done_and_returnok = res.data; }, function (res) { });
+  // $http.get($scope.baseURL + '/admin/count-order-done').then(function (res) { $scope.count_done = res.data; }, function (res) { });
   $http.get($scope.baseURL + '/admin/count-order-returnok').then(function (res) { $scope.count_returnok = res.data; }, function (res) { });
-  $http.get($scope.baseURL + '/admin/count-order-returning-and-complain').then(function (res) { $scope.count_returning_and_complain = res.data; }, function (res) { });
-  $http.get($scope.baseURL + '/admin/count-order-returning').then(function (res) { $scope.count_returning = res.data; }, function (res) { });
-  $http.get($scope.baseURL + '/admin/count-order-complain').then(function (res) { $scope.count_complain = res.data; }, function (res) { });
-  $http.get($scope.baseURL + '/sendo/add-new-order').then(function (res) { }, function (res) { });
+  $http.get($scope.baseURL + '/admin/count-order-returning-and-complain').then(function (res) { $scope.count_returning_and_complain = res.data; });
+  $http.get($scope.baseURL + '/admin/count-order-returning').then(function (res) { $scope.count_returning = res.data; });
+  $http.get($scope.baseURL + '/admin/count-order-complain').then(function (res) { $scope.count_complain = res.data; });
+  
+
+  $http.get($scope.baseURL + '/admin/count-order-completed').then(function (res) { $scope.count_done = res.data; });
+  $http.get($scope.baseURL + '/admin/count-order-received').then(function (res) { 
+    $scope.count_received = res.data; 
+    $scope.count_completed_received = parseInt($scope.count_done) + parseInt(res.data) 
+  });
+
+  $http.get($scope.baseURL + '/admin/count-order-cancle-return').then(function (res) { $scope.count_cancle_return = res.data });
+  $http.get($scope.baseURL + '/sendo/add-new-order').then(function (res) { });
+
+  //END AUTO GET ORDER RA DS DON HANG------------------------------------------------------------------------------------------------------------------
 
 
-  //COUNT SỐ LOẠI ĐƠN THEO orderStatus----------------------------------------
-  //END AUTO GET ORDER RA DS DON HANG----------------------------------------------------------------------------------------------
-
-
-
+  // SEARCH ORDER IN DATABASE---------------------------------------------------------------------------------------------------------------------------
   $scope.searchFull = function ($event) {
     var keyCode = $event.which || $event.keyCode;
     if (keyCode === 13) {
-
-      console.log('search');
+      
+      console.log($event.target.value);
+      if ($event.target.value !== '') {
+        $http.get($scope.baseURL + '/admin/search-order?orderNumber=' + $event.target.value ).then(function (res) { $scope.all = res.data; arrayPage(res.data.length);});
+         
+      } else {
+        $http.get($scope.baseURL + '/admin/api-order-all?page=' + $scope.page + '&limit=' + $scope.pageLimit).then(function (res) { $scope.all = res.data; });
+        $http.get($scope.baseURL + '/admin/count-order-all').then(function (res) { arrayPage(res.data)});
+      }
     }
   }
 
-
+  //UPDATE ORDER EXCEPT ORDER STATUS = 8-----------------------------------------------------------------------------------------------------------------
   $scope.updateExceptDone = function () {
     $http.get($scope.baseURL + '/sendo/update-order-except-done').then(function (res) { $scope.all = res.data; }, function (res) { });
   }
 
 
-
+  //SELECT CHANNEL---------------------------------------------------------------------------------------------------------------------------------------
   $scope.channel = function () {
     var data = $.param({
       xyz: $scope.xyz,
@@ -92,15 +117,13 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
         'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
       }
     }
-    $http.post($scope.baseURL + '/admin/api-selected-channel', data, config)
+    $http.post($scope.baseURL + '/admin/api-selected-channel?page=' + $scope.page + '&limit=' + $scope.pageLimit, data, config)
       .then(function (res) {
         $scope.all = res.data;
-        console.log("update thcong " + $scope.nhieunguoi);
+        arrayPage(res.data.length);
       },
         function (res) { if (res.data == "thatbai") { console.log("update thatbai ") } });
   }
-
-
 
   //START SELECT ĐƠN VỊ GIAO HÀNG----------------------------------------------------------------------------------------------------
   $scope.shipping = function () {
@@ -120,7 +143,6 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
       },
         function (res) { if (res.data == "thatbai") { console.log("update thatbai ") } });
   }
-  //END SELECT ĐƠN VỊ GIAO HÀNG----------------------------------------------------------------------------------------------------
 
   //START SELECT TRẠNG THÁI ĐƠN HÀNG----------------------------------------------------------------------------------------------------
   $scope.order_status = function () {
@@ -144,13 +166,11 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
 
   //START GET ORDER RA DS DON HANG-------------------------------------------------------------------------------------------------
   $scope.get_all = function () {
-    $scope.page = 1;
-    pageLimit = 10;
-    arrayPage();
-    $http.get($scope.baseURL + '/admin/api-order-all?page=' + $scope.page + '&limit=' + pageLimit).then(function (res) { $scope.all = res.data; }, function (res) { });
+    $scope.orderStatus = '';
+    $http.get($scope.baseURL + '/admin/api-order-all?page=' + $scope.page + '&limit=' + $scope.pageLimit).then(function (res) { $scope.all = res.data; });
     $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-all').then(function (res) { arrayPage(res.data)});
   }
-  //END GET ORDER RA DS DON HANG--------------------------------------------------------------------------------------------------
 
   //START GET ORDER VOI STATUS=SHIPPING,RECEIVED-------------------------------------------------------------------------------------------
   $scope.get_dhvc = function () {
@@ -162,7 +182,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
       $scope.count_ship_and_received = res.data;
       $scope.arrayPageIndex = [];
 
-      for (var i = 1; i < $scope.count_ship_and_received / pageLimit; i++) {
+      for (var i = 1; i < $scope.count_ship_and_received / $scope.pageLimit; i++) {
         arrayText = { id: i, }
         $scope.arrayPageIndex.push(arrayText);
       }
@@ -171,14 +191,55 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
     $http.get($scope.baseURL + '/admin/api-order-dhvc').then(function (res) { $scope.all = res.data; }, function (res) { });
     $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; }, function (res) { });
   }
-  //END GET ORDER VOI STATUS=SHIPPING,RECEIVED--------------------------------------------------------------------------------------------
 
   //START GET ORDER VOI STATUS=SHIPPING,-------------------------------------------------------------------------------------------
   $scope.get_shipping = function () {
     $http.get($scope.baseURL + '/admin/api-order-shipping').then(function (res) { $scope.all = res.data; }, function (res) { });
     $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; }, function (res) { });
   }
-  //END GET ORDER VOI STATUS=SHIPPING,--------------------------------------------------------------------------------------------
+  
+  //START GET ORDER VOI STATUS=DONE----------------------------------------------------------------------------------------------
+  $scope.get_dhht = function () {
+    $scope.orderStatus = 8;
+    console.log($scope.display);
+    $scope.display = !$scope.display;
+    $http.get($scope.baseURL + '/admin/api-order-dhht?page=' + $scope.page + '&limit=' + $scope.pageLimit).then(function (res) { $scope.all = res.data; });
+    $http.get($scope.baseURL + '/admin/count-order-completed-received').then(function (res) { arrayPage(res.data) }, function (res) { });
+  }
+
+  //START GET ORDER VOI STATUS=RETURNING, COMPLAIN----------------------------------------------------------------------------------------------
+  $scope.get_dhsc = function () {
+    $scope.orderStatus = 13;
+    $http.get($scope.baseURL + '/admin/api-order-dhsc?page=' + $scope.page + '&limit=' + $scope.pageLimit).then(function (res) { $scope.all = res.data; });
+    $http.get($scope.baseURL + '/admin/count-order-cancle-return').then(function (res) { arrayPage(res.data) }, function (res) { });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   //START GET ORDER VOI STATUS=Received------------------------------------------------------------------------------------------
   $scope.get_dnh = function () {
@@ -188,7 +249,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
       $('.labels').addClass('label-primary');
     }, function (res) { });
   }
-  //END GET ORDER VOI STATUS=Received--------------------------------------------------------------------------------------------
+
 
   //START GET ORDER VOI STATUS=Done------------------------------------------------------------------------------------------
   $scope.get_dnt = function () {
@@ -198,7 +259,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
       $('.labels').addClass('label-info');
     }, function (res) { });
   }
-  //END GET ORDER VOI STATUS=Done--------------------------------------------------------------------------------------------
+
 
   //START GET ORDER VOI STATUS=ReturnOK------------------------------------------------------------------------------------------
   $scope.get_dnl = function () {
@@ -208,29 +269,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
       $('.labels').addClass('label-info');
     }, function (res) { });
   }
-  //END GET ORDER VOI STATUS=ReturnOK--------------------------------------------------------------------------------------------
 
-  //START GET ORDER VOI STATUS=DONE----------------------------------------------------------------------------------------------
-  $scope.get_dhht = function () {
-    console.log($scope.display);
-    $scope.display = !$scope.display;
-    $http.get($scope.baseURL + '/admin/api-order-dhht').then(function (res) { $scope.all = res.data; }, function (res) { });
-    $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) {
-      $scope.allv2 = res.data;
-      $('.labels').addClass('label-success');
-    }, function (res) { });
-  }
-  //END GET ORDER VOI STATUS=DONE-------------------------------------------------------------------------------------------
-
-  //START GET ORDER VOI STATUS=RETURNING, COMPLAIN----------------------------------------------------------------------------------------------
-  $scope.get_dhsc = function () {
-    $http.get($scope.baseURL + '/admin/api-order-dhsc').then(function (res) { $scope.all = res.data; }, function (res) { });
-    $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) {
-      $scope.allv2 = res.data;
-      $('.labels').addClass('label-danger');
-    }, function (res) { });
-  }
-  //END GET ORDER VOI STATUS=RETURNING, COMPLAIN-------------------------------------------------------------------------------------------
 
   //START GET ORDER VOI STATUS=RETURNING,----------------------------------------------------------------------------------------------
   $scope.get_ch = function () {
@@ -240,7 +279,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
       $('.labels').addClass('label-danger');
     }, function (res) { });
   }
-  //END GET ORDER VOI STATUS=RETURNING,------------------------------------------------------------------------------------------
+
 
   //START GET ORDER VOI STATUS=RETURNING,----------------------------------------------------------------------------------------------
   $scope.get_kn = function () {
@@ -250,7 +289,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
       $('.labels').addClass('label-danger');
     }, function (res) { });
   }
-  //END GET ORDER VOI STATUS=RETURNING,------------------------------------------------------------------------------------------  
+
 
   //START CLICK button DHVC de change status SHIPPING->Received và return số lượng sp-------------------------------------------------------------------
   $scope.changeOrderStatus = function (nguoi) {
@@ -613,44 +652,44 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
         function (res) { if (res.data == "thatbai") { console.log("update thatbai ") } });
 
   }
-  // var last = {
-  //   bottom: true,
-  //   top: false,
-  //   left: false,
-  //   right: true
-  // };
+  var last = {
+    bottom: false,
+    top: true,
+    left: false,
+    right: true
+  };
 
-  // $scope.toastPosition = angular.extend({},last);
+  $scope.toastPosition = angular.extend({},last);
 
-  // $scope.getToastPosition = function() {
-  //   sanitizePosition();
+  $scope.getToastPosition = function() {
+    sanitizePosition();
 
-  //   return Object.keys($scope.toastPosition)
-  //   .filter(function(pos) { return $scope.toastPosition[pos]; })
-  //   .join(' ');
-  // };
+    return Object.keys($scope.toastPosition)
+    .filter(function(pos) { return $scope.toastPosition[pos]; })
+    .join(' ');
+  };
 
-  // function sanitizePosition() {
-  //   var current = $scope.toastPosition;
+  function sanitizePosition() {
+    var current = $scope.toastPosition;
 
-  //   if ( current.bottom && last.top ) current.top = false;
-  //   if ( current.top && last.bottom ) current.bottom = false;
-  //   if ( current.right && last.left ) current.left = false;
-  //   if ( current.left && last.right ) current.right = false;
+    if ( current.bottom && last.top ) current.top = false;
+    if ( current.top && last.bottom ) current.bottom = false;
+    if ( current.right && last.left ) current.left = false;
+    if ( current.left && last.right ) current.right = false;
 
-  //   last = angular.extend({},current);
-  // }
+    last = angular.extend({},current);
+  }
 
-  // $scope.showSimpleToast = function() {
-  //   var pinTo = $scope.getToastPosition();
+  $scope.showSimpleToast = function() {
+    var pinTo = $scope.getToastPosition();
 
-  //   $mdToast.show(
-  //     $mdToast.simple()
-  //     .textContent('update thanh cong')
-  //     .position(pinTo )
-  //     .hideDelay(3000)
-  //     );
-  // };
+    $mdToast.show(
+      $mdToast.simple()
+      .textContent('update thanh cong')
+      .position(pinTo )
+      .hideDelay(3000)
+      );
+  };
 
 
 

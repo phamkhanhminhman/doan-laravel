@@ -140,7 +140,7 @@ class OrderController extends Controller
                     $this->updateOrder($orderNumber);
                     
                 }
-                // alert('Có ' + $countNewOrder + ' đơn hàng mới từ SENDO', 'Successfully', 'success');
+                // alert('Có ' . $countNewOrder . ' đơn hàng mới từ SENDO', 'Successfully', 'success');
                 return 1;
             } else {
                 alert('Không có đơn mới','Successfully', 'success');

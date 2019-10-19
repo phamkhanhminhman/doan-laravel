@@ -1,4 +1,4 @@
-//start click tất cả thì tắt các chức năng khác---------------------------------------------------------------------------------
+//click tất cả thì tắt các chức năng khác---------------------------------------------------------------------------------
 $('#all').on('click', function(event)
 {
     $('#dhht').css({
@@ -9,64 +9,21 @@ $('#all').on('click', function(event)
       background:'',
       color: 'black'
     });
-    $('#ch').removeClass('btn-danger');
-    $("#ch").prop("disabled",true);
-    $('#dnl').removeClass('btn-danger');
-    $("#dnl").prop("disabled",true);
-    $('#kn').removeClass('btn-danger');
-    $("#kn").prop("disabled",true);
-    $('#dhvc').css({
-      background:'',
-      color: 'black'
-    });
-    $('#clh').removeClass('btn-success');
-    $("#clh").prop("disabled",true);
-    $('#dvc').removeClass('btn-success');
-    $("#dvc").prop("disabled",true);
-    $('#dnh').removeClass('btn-success');
-    $("#dnh").prop("disabled",true);
-    $('#dnt').removeClass('btn-info');
-    $("#dnt").prop("disabled",true);
-    $('#dnl').removeClass('btn-info');
-    $("#dnl").prop("disabled",true);
+    disableAll();
 });
-//end click tất cả thì tắt các chức năng khác---------------------------------------------------------------------------------
 
-//start click DHVC thì tắt các chức năng khác---------------------------------------------------------------------------------
+//click DHVC thì tắt các chức năng khác---------------------------------------------------------------------------------
 $("#dhvc").on('click', function()
 {
     $(this).css({
       background: '#007DBD',
       color: 'white'
     });
-    // --------------START bat nut cho lay hang,dang van chuyen, DA NHAN HANG---------------
-    $("#clh").addClass('btn-success');
-    if($("#clh").prop("disabled") ==true)
-    {
-      $('#clh').prop("disabled",false);
-    }else{
-      $("#clh").prop("disabled",true);
-      $("#clh").removeClass('btn-success');
-    };
-    $("#dvc").addClass('btn-success');
-    if($("#dvc").prop("disabled") ==true)
-    {
-      $('#dvc').prop("disabled",false);
-    }else{
-      $("#dvc").prop("disabled",true);
-      $("#dvc").removeClass('btn-success');
-    };
-    $('#dnh').addClass('btn-success');
-    if($("#dnh").prop("disabled") ==true)
-    {
-      $('#dnh').prop("disabled",false);
-    }else{
-      $("#dnh").prop("disabled",true);
-      $("#dnh").removeClass('btn-success');
-    };
-    // --------------END bat nut cho lay hang,dang van chuyen, DA NHAN HANG-----------------------------------
+    // bat nut cho lay hang,dang van chuyen,
+    button_cholayhang();
+    button_dangvanchuyen();
 
-    // ---------------START tat cac chuc nang khac------------------------------------------------------------
+    // tat cac chuc nang khac------------------------------------------------------------
     $('#dhht').css({
       background: '',
       color: 'black'
@@ -75,19 +32,15 @@ $("#dhvc").on('click', function()
       background:'',
       color: 'black'
     });
-    $('#ch').removeClass('btn-danger');
-    $("#ch").prop("disabled",true);
-    $('#dnl').removeClass('btn-info');
-    $("#dnl").prop("disabled",true);
-    $('#kn').removeClass('btn-danger');
-    $("#kn").prop("disabled",true);
-    $('#dnt').removeClass('btn-info');
-    $("#dnt").prop("disabled",true);
-// ---------------END tat cac chuc nang khac------------------------------------------------------------------------
+   
+    disable_dnl();
+    disable_kn();
+    disable_dnt();
+    disable_dnh();
+    disable_ch();
 });
-//END click DHVC thì tắt các chức năng khác---------------------------------------------------------------------------------
 
-//START click DHHT thì tắt các chức năng khác---------------------------------------------------------------------------------
+//click DHHT thì tắt các chức năng khác---------------------------------------------------------------------------------
 $('#dhht').on('click',function()
 {
     $(this).css({
@@ -98,64 +51,136 @@ $('#dhht').on('click',function()
       background:'',
       color: 'black'
     });
-    // ---------------START tat cac chuc nang khac------------------------------------------------------------
-    $('#ch').removeClass('btn-danger');
-    $("#ch").prop("disabled",true);
-    $('#kn').removeClass('btn-danger');
-    $("#kn").prop("disabled",true);
+    // tat cac chuc nang khac------------------------------------------------------------
+    disable_ch();
+    disable_kn();
 
     $('#dhvc').css({
       background:'',
       color: 'black'
     });
-    $('#clh').removeClass('btn-success');
-    $("#clh").prop("disabled",true);
-    $('#dvc').removeClass('btn-success');
-    $("#dvc").prop("disabled",true);
-    $('#dnh').removeClass('btn-success');
-    $("#dnh").prop("disabled",true);
-    // ---------------END tat cac chuc nang khac------------------------------------------------------------
 
-    // --------------START bat nut DA NHAN LAI, DA NHAN TIEN-----------------------------------
-    $('#dnl').addClass('btn-info');
-    if($("#dnl").prop("disabled") ==true)
-    {
-      $('#dnl').prop("disabled",false);
-    }else{
-      $("#dnl").prop("disabled",true);
-      $("#dnl").removeClass('btn-info');
-    };
-    $('#dnt').addClass('btn-info');
-    if($("#dnt").prop("disabled") ==true)
-    {
-      $('#dnt').prop("disabled",false);
-    }else{
-      $("#dnt").prop("disabled",true);
-      $("#dnt").removeClass('btn-info');
-    };
-    // --------------END bat nut DA NHAN LAI, DA NHAN TIEN-----------------------------------
+    disable_clh();
+    disable_dvc();
+    disable_dnl();
+
+    //bat nut DA NHAN LAI, DA NHAN TIEN-----------------------------------
+    // button_danhanlai();
+    button_danhantien();
+    button_danhanhang();
 });
-//END click DHHT thì tắt các chức năng khác---------------------------------------------------------------------------------
 
 //START click DHSC thì tắt các chức năng khác---------------------------------------------------------------------------------
 $('#dhsc').on('click', function(event)
 {
-    $('.labels').addClass('label-danger');
+    // $('.labels').addClass('label-danger');
     $(this).css({
       background:'#585858',
       color: 'white'
     });
     // --------------START bat nut CHUYEN HOAN, KHIEU NAI-----------------------------------
-    $('#ch').addClass('btn-danger');
-    if($("#ch").prop("disabled") ==true)
-    {
-      $('#ch').prop("disabled",false);
-    }else{
-      $("#ch").prop("disabled",true);
-      $("#ch").removeClass('btn-danger');
-    };
+    button_danhanlai();
+    button_chuyenhoan();
+    button_khieunai();
+    // --------------END bat nut CHUYEN HOAN, KHIEU NAI-----------------------------------
+    $('#dhvc').css({
+      background:'',
+      color: 'black'
+    });
+    // ---------------START tat cac chuc nang khac------------------------------------------------------------
+    disable_clh();
+    disable_dvc();
+    $('#dhht').css({
+      background: '',
+      color: 'black'
+    });
+    disable_dnh();
+    disable_dnt();
 
-    $('#kn').addClass('btn-danger');
+    // ---------------END tat cac chuc nang khac------------------------------------------------------------
+});
+//END click DHSC thì tắt các chức năng khác---------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+function button_cholayhang() {
+  $("#clh").addClass('btn-success');
+  if($("#clh").prop("disabled") ==true)
+  {
+    $('#clh').prop("disabled",false);
+  }else{
+    $("#clh").prop("disabled",true);
+    $("#clh").removeClass('btn-success');
+  };
+}
+
+function button_dangvanchuyen() {
+  $("#dvc").addClass('btn-success');
+  if($("#dvc").prop("disabled") ==true)
+  {
+    $('#dvc').prop("disabled",false);
+  }else{
+    $("#dvc").prop("disabled",true);
+    $("#dvc").removeClass('btn-success');
+  };
+}
+
+function button_danhanhang() {
+  $('#dnh').addClass('btn-info');
+  if($("#dnh").prop("disabled") ==true)
+  {
+    $('#dnh').prop("disabled",false);
+  }else{
+    $("#dnh").prop("disabled",true);
+    $("#dnh").removeClass('btn-info');
+  };
+}
+
+function button_danhantien() {
+  $('#dnt').addClass('btn-info');
+  if($("#dnt").prop("disabled") ==true)
+  {
+    $('#dnt').prop("disabled",false);
+  }else{
+    $("#dnt").prop("disabled",true);
+    $("#dnt").removeClass('btn-info');
+  };
+}
+
+function button_danhanlai() {
+  $('#dnl').addClass('btn-danger');
+  if($("#dnl").prop("disabled") ==true)
+  {
+    $('#dnl').prop("disabled",false);
+  }else{
+    $("#dnl").prop("disabled",true);
+    $("#dnl").removeClass('btn-danger');
+  };
+}
+
+function button_chuyenhoan() {
+  $('#ch').addClass('btn-danger');
+  if($("#ch").prop("disabled") ==true)
+  {
+    $('#ch').prop("disabled",false);
+  }else{
+    $("#ch").prop("disabled",true);
+    $("#ch").removeClass('btn-danger');
+  };
+}
+
+function button_khieunai() {
+  $('#kn').addClass('btn-danger');
     if($("#kn").prop("disabled") ==true)
     {
       $('#kn').prop("disabled",false);
@@ -163,26 +188,62 @@ $('#dhsc').on('click', function(event)
       $("#kn").prop("disabled",true);
       $("#kn").removeClass('btn-danger');
     };
-    // --------------END bat nut CHUYEN HOAN, KHIEU NAI-----------------------------------
-    $('#dhvc').css({
-      background:'',
-      color: 'black'
-    });
-    // ---------------START tat cac chuc nang khac------------------------------------------------------------
-    $('#clh').removeClass('btn-success');
-    $("#clh").prop("disabled",true);
-    $('#dvc').removeClass('btn-success');
-    $("#dvc").prop("disabled",true);
-    $('#dhht').css({
-      background: '',
-      color: 'black'
-    });
-    $('#dnh').removeClass('btn-success');
-    $("#dnh").prop("disabled",true);
-    $('#dnl').removeClass('btn-info');
-    $("#dnl").prop("disabled",true);
-    $('#dnt').removeClass('btn-info');
-    $("#dnt").prop("disabled",true);
-    // ---------------END tat cac chuc nang khac------------------------------------------------------------
-});
-//END click DHSC thì tắt các chức năng khác---------------------------------------------------------------------------------
+}
+
+function disable_clh() {
+  $('#clh').removeClass('btn-success');
+  $("#clh").prop("disabled",true);
+}
+
+function disable_dvc() {
+  $('#dvc').removeClass('btn-success');
+  $("#dvc").prop("disabled",true);     
+}
+
+function disable_dnh() {
+  $('#dnh').removeClass('btn-info');
+  $("#dnh").prop("disabled",true);
+}
+
+function disable_dnt() {
+  $('#dnt').removeClass('btn-info');
+  $("#dnt").prop("disabled",true);
+}
+
+function disable_dnl() {
+  $('#dnl').removeClass('btn-danger');
+  $("#dnl").prop("disabled",true);
+}
+
+function disable_kn() {
+  $('#kn').removeClass('btn-danger');
+  $("#kn").prop("disabled",true);
+}
+
+function disable_ch() {
+  $('#ch').removeClass('btn-danger');
+  $("#ch").prop("disabled",true);
+}
+
+function disableAll() {
+  $('#ch').removeClass('btn-danger');
+  $("#ch").prop("disabled",true);
+  $('#dnl').removeClass('btn-danger');
+  $("#dnl").prop("disabled",true);
+  $('#kn').removeClass('btn-danger');
+  $("#kn").prop("disabled",true);
+  $('#dhvc').css({
+    background:'',
+    color: 'black'
+  });
+  $('#clh').removeClass('btn-success');
+  $("#clh").prop("disabled",true);
+  $('#dvc').removeClass('btn-success');
+  $("#dvc").prop("disabled",true);
+  $('#dnh').removeClass('btn-info');
+  $("#dnh").prop("disabled",true);
+  $('#dnt').removeClass('btn-info');
+  $("#dnt").prop("disabled",true);
+  $('#dnl').removeClass('btn-info');
+  $("#dnl").prop("disabled",true);
+}
