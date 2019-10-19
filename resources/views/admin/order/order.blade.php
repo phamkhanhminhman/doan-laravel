@@ -157,15 +157,18 @@
       </a>
       <a href="@{{pp.orderShipLink}}" target="_blank"><h4 class="label" style="font-size:16px;font-weight: 90; background-color: #DB0037;color:white" ng-if="pp.CarrierName === 'NJV-STANDARD' ">@{{pp.CarrierName}} @{{pp.shipToRegionName}}</h4>
       </a>
+      <a href="@{{pp.orderShipLink}}" target="_blank"><h4 class="label" style="font-size:16px;font-weight: 90; background-color: #196F3D ;color:white; align-content:center" ng-if="pp.CarrierName === 'Giao Hàng Tiết Kiệm' ">GHTK @{{pp.shipToRegionName}}</h4>
+      </a>
     </div>
     <div class="col-md-1 col-xs-4"><h4>@{{pp.user}}</h4></div>
     <div style="margin-top:10px;margin-left:-108px" class="col-md-2 col-xs-4">
       <!-- <h4 class="label labels label-primary " id="orderStatus" style="font-size:16px;font-weight: 90">@{{pp.orderStatus_vi}}</h4> -->
-      <h4 class="label labels" id="orderStatus" style="font-size:16px;font-weight: 90;background:#04A862" ng-if="pp.orderStatusDes === 'Mới'">@{{pp.orderStatusDes}}</h4>
-      <h4 class="label labels" id="orderStatus" style="font-size:16px;font-weight: 90;background:#007DBD" ng-if="pp.orderStatusDes === 'Đang Vận Chuyển'">@{{pp.orderStatusDes}}</h4>
-      <h4 class="label labels" id="orderStatus" style="font-size:16px;font-weight: 90;background:#47B347" ng-if="pp.orderStatusDes === 'Đã Giao Hàng'">@{{pp.orderStatusDes}}</h4>
-      <h4 class="label labels" id="orderStatus" style="font-size:16px;font-weight: 90;background:green"   ng-if="pp.orderStatusDes === 'Đã Hoàn Tất'">@{{pp.orderStatusDes}}</h4>
-      <h4 class="label labels" id="orderStatus" style="font-size:16px;font-weight: 90;background:black"   ng-if="pp.orderStatusDes === 'Hủy'">@{{pp.orderStatusDes}}</h4>
+      <h4 class="label labels" id="orderStatus" style="font-size:16px;font-weight: 90;background:#04A862" ng-if="pp.orderStatus === '2'">@{{pp.orderStatusDes}}</h4>
+      <h4 class="label labels" id="orderStatus" style="font-size:16px;font-weight: 90;background:#7D3C98" ng-if="pp.orderStatus === '3'">@{{pp.orderStatusDes}}</h4>
+      <h4 class="label labels" id="orderStatus" style="font-size:16px;font-weight: 90;background:#007DBD" ng-if="pp.orderStatus === '6'">@{{pp.orderStatusDes}}</h4>
+      <h4 class="label labels" id="orderStatus" style="font-size:16px;font-weight: 90;background:#47B347" ng-if="pp.orderStatus === '7'">@{{pp.orderStatusDes}}</h4>
+      <h4 class="label labels" id="orderStatus" style="font-size:16px;font-weight: 90;background:green"   ng-if="pp.orderStatus === '8'">@{{pp.orderStatusDes}}</h4>
+      <h4 class="label labels" id="orderStatus" style="font-size:16px;font-weight: 90;background:black"   ng-if="pp.orderStatus === '13'">@{{pp.orderStatusDes}}</h4>
     </div>
     <div class="col-md-1 " style="color: red;margin-left:10px"><h4 style="font-weight:bold">@{{pp.orderSell-pp.orderCost |number:0}} đ</h4></div>
     <div class="clearfix"></div>

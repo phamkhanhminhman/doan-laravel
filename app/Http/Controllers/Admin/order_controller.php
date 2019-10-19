@@ -40,7 +40,12 @@ class order_controller extends Controller
 
     public function order_api_allv2() //api return ve sp trong 1 don------------------------------------------------------------------
     {
-        $test = DB::table('order_tb_product')->leftjoin('product', 'order_tb_product.productID', '=', 'product.productID')
+        // $test = DB::table('order_tb_product')->leftjoin('product', 'order_tb_product.productID', '=', 'product.productID')
+        //     ->select('*')
+        //     ->get();
+        // -------------------------------------------------------------------------------------------------------------------------------
+
+        $test = DB::table('order_tb_product')->leftjoin('product_variation', 'order_tb_product.variantSKU', '=', 'product_variation.productVariationID')
             ->select('*')
             ->get();
         $test = json_encode($test);

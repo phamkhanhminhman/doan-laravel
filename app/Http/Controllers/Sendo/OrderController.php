@@ -70,70 +70,83 @@ class OrderController extends Controller
      */
     public function addNewOrder()
     {
-        $orderStatus = 2; // 2 = new order
-        $response = $this->sendo->getOrderList($orderStatus); //call API GET ORDER LIST - SENDO
-        // dd($response);
-        $orderLinkSendo = self::ORDER_LINK_SENDO;
-
-        if (count($response->result->data) > 0) {
-            $countNewOrder = 0;
-            // thêm đơn hàng mới vào DB
-            foreach ($response->result->data as $key => $p) {
-                $orderNumber = $p->salesOrder->orderNumber;
-                $orderStatus = $p->salesOrder->orderStatus;
-                $orderStatusDes = $this->parseOrderStatus($orderStatus);
-                $customerID = 180; // sau này xóa
-                $customerTel=$p->salesOrder->shippingContactPhone;
-                $customerName=$p->salesOrder->receiverName;
-                $customerAddress=$p->salesOrder->receiverFullAddress;
-                $orderAddress = 01;
-                $orderDate = $p->salesOrder->orderDate;
-                $orderChannel = "Sen Đỏ";
-                $shipToRegionId= $p->salesOrder->shipToRegionId;
-                
-                //convert RegionId -> RegionName
-                $region = DB::table('city')->where('cityId', $shipToRegionId)->select('cityName')->first();
-                $shipToRegionName = $region->cityName;
-
-                // thêm order mới
-                $duplicateOrder = DB::table('order_tb')->where('orderID', $orderNumber)->get();
-                if (count($duplicateOrder) === 0) {
-
-                    $countNewOrder++;
-
-                    DB::table('order_tb')->insert(['orderID' => $orderNumber,
-                        'orderLink' => $orderLinkSendo . $orderNumber,
-                        'orderStatus' => $orderStatus,
-                        'orderStatusDes' => $orderStatusDes,
-                        'customerID' => $customerID,
-                        'customerTel'=>$customerTel,
-                        'orderAddress' => $orderAddress,
-                        'orderDate' => $orderDate,
-                        'orderChannel'=> $orderChannel,
-                        'shipToRegionID'=> $shipToRegionId, 
-                        'shipToRegionName'=> $shipToRegionName,
-                    ]);
-                }
-                // thêm khách hàng của order vào DB
-                $duplicateCustomer = DB::table('customer')->where('customerTel', $customerTel)->get();
-                if (count($duplicateCustomer) === 0) {
-                    DB::table('customer')->insert(['customerTel' => $customerTel,
-                        'customerName' => $customerName,
-                        'customerAddress' => $customerAddress,
-                        
-                    ]);
-                }
-                //Cập nhật thêm thông tin từ response API Order Detail, vào bảng order_tb 
-                $this->updateOrder($orderNumber);
-                
+        // $orderStatus = 2; // 2 = new order
+        for ($i=0; $i < 3 ; $i++) { 
+            if ($i === 0) {
+                $orderStatus = 2;
             }
-            alert('Có ' + $countNewOrder + ' đơn hàng mới từ SENDO', 'Successfully', 'success');
-            return 1;
-        } else {
-            alert('Không có đơn mới','Successfully', 'success');
-        }
 
-        
+            if ($i === 1) {
+                $orderStatus = 3;
+            }
+
+            if ($i === 2) {
+                $orderStatus = 6;
+            }
+
+            $response = $this->sendo->getOrderList(6); //call API GET ORDER LIST - SENDO
+
+            $orderLinkSendo = self::ORDER_LINK_SENDO;
+
+            if (count($response->result->data) > 0) {
+                $countNewOrder = 0;
+                // thêm đơn hàng mới vào DB
+                foreach ($response->result->data as $key => $p) {
+                    $orderNumber = $p->salesOrder->orderNumber;
+                    $orderStatus = $p->salesOrder->orderStatus;
+                    $orderStatusDes = $this->parseOrderStatus($orderStatus);
+                    $customerID = 180; // sau này xóa
+                    $customerTel=$p->salesOrder->shippingContactPhone;
+                    $customerName=$p->salesOrder->receiverName;
+                    $customerAddress=$p->salesOrder->receiverFullAddress;
+                    $orderAddress = 01;
+                    $orderDate = $p->salesOrder->orderDate;
+                    $orderChannel = "Sen Đỏ";
+                    $shipToRegionId= $p->salesOrder->shipToRegionId;
+                    
+                    //convert RegionId -> RegionName
+                    $region = DB::table('city')->where('cityId', $shipToRegionId)->select('cityName')->first();
+                    $shipToRegionName = $region->cityName;
+
+                    // thêm order mới
+                    $duplicateOrder = DB::table('order_tb')->where('orderID', $orderNumber)->get();
+                    if (count($duplicateOrder) === 0) {
+
+                        $countNewOrder++;
+
+                        DB::table('order_tb')->insert(['orderID' => $orderNumber,
+                            'orderLink' => $orderLinkSendo . $orderNumber,
+                            'orderStatus' => $orderStatus,
+                            'orderStatusDes' => $orderStatusDes,
+                            'customerID' => $customerID,
+                            'customerTel'=>$customerTel,
+                            'orderAddress' => $orderAddress,
+                            'orderDate' => $orderDate,
+                            'orderChannel'=> $orderChannel,
+                            'shipToRegionID'=> $shipToRegionId, 
+                            'shipToRegionName'=> $shipToRegionName,
+                        ]);
+                    }
+                    // thêm khách hàng của order vào DB
+                    $duplicateCustomer = DB::table('customer')->where('customerTel', $customerTel)->get();
+                    if (count($duplicateCustomer) === 0) {
+                        DB::table('customer')->insert(['customerTel' => $customerTel,
+                            'customerName' => $customerName,
+                            'customerAddress' => $customerAddress,
+                            
+                        ]);
+                    }
+                    //Cập nhật thêm thông tin từ response API Order Detail, vào bảng order_tb 
+                    $this->updateOrder($orderNumber);
+                    
+                }
+                // alert('Có ' + $countNewOrder + ' đơn hàng mới từ SENDO', 'Successfully', 'success');
+                return 1;
+            } else {
+                alert('Không có đơn mới','Successfully', 'success');
+            } 
+        }
+         
     }
     /**
      * Update dữ liệu cho đơn hàng cũ, trừ những đơn đã hoàn thành ( orderStatus # 8 )

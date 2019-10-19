@@ -142,11 +142,10 @@ class ProductController extends Controller
 
         $arrOrderNumber = explode(',', $orderNumber);
 
-        $arrProductID = DB::table('product')->select('productID')->orderBy('productID', 'desc')->take(5)->get();
+        $arrProductID = DB::table('product')->select('productID')->orderBy('productID', 'desc')->where('productID', '12171068')->get();
 
         foreach ($arrProductID as $orderNumber) {
             $response = $this->sendo->getProductDetail($orderNumber->productID);
-
             $body = $response->result;
             $name = $body->name;
 
@@ -174,7 +173,7 @@ class ProductController extends Controller
             }
 
             $body->name = $productName;
-
+            
             $this->sendo->updateProduct($body);
         }
         echo 1;

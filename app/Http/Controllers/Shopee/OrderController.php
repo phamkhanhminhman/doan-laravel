@@ -55,7 +55,7 @@ class OrderController extends Controller
 
     public function getOrderDetail()
     {
-        $response = $this->shopee->getOrderDetail('19101001280VG75');
+        $response = $this->shopee->getOrderDetail('19101021190KXY3');
 
         dd($response->data['orders'][0]);
     }
@@ -127,7 +127,7 @@ class OrderController extends Controller
                     'CarrierName' => $carrierName,
                     'ordershipID' => $orderShipID,
                     'ordershipLink' => $orderShipLink,
-                    'orderSell' => $orderSell,
+                    'orderSell' => $orderReceive,
                 ]);
 
                 $productItems = $orderDetail['items'];
