@@ -12,6 +12,7 @@ use App\Http\Controllers\Handle\SendoHandler;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Alert;
+use Mail;
 
 class ProductController extends Controller
 {
@@ -142,7 +143,7 @@ class ProductController extends Controller
 
         $arrOrderNumber = explode(',', $orderNumber);
 
-        $arrProductID = DB::table('product')->select('productID')->orderBy('productID', 'desc')->where('productID', '12171068')->get();
+        $arrProductID = DB::table('product')->select('productID')->orderBy('productID', 'desc')->get();
 
         foreach ($arrProductID as $orderNumber) {
             $response = $this->sendo->getProductDetail($orderNumber->productID);
@@ -174,7 +175,14 @@ class ProductController extends Controller
 
             $body->name = $productName;
             
-            $this->sendo->updateProduct($body);
+            $res = $this->sendo->updateProduct($body);
+
+            if ($res->result->status === false) {
+                Mail::send('mailfb', array('email' => $orderNumber->productID,'name'=> $name, 'content' => $res->result->message), function($message){
+                    $message->to('nqputcung97@gmail.com', 'ADMIN')->subject('Notification Failed Update Product Name!!!!!!');
+                 });
+            }
+             
         }
         echo 1;
     }

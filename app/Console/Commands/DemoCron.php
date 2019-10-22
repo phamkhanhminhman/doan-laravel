@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Http\Controllers\Handle\SendoHandler;
 use DB;
+use Mail;
 
 class DemoCron extends Command
 {
@@ -74,7 +75,13 @@ class DemoCron extends Command
 
             $body->name = $productName;
 
-            $this->sendo->updateProduct($body);
+            $res = $this->sendo->updateProduct($body);
+
+            if ($res->result->status === false) {
+                Mail::send('mailfb', array('email' => $orderNumber->productID,'name'=> $name, 'content' => $res->result->message), function($message){
+                    $message->to('nqputcung97@gmail.com', 'ADMIN')->subject('Notification Failed Update Product Name!!!!!!');
+                 });
+            }
         }
         echo 1;
     }
