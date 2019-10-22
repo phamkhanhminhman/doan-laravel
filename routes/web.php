@@ -23,36 +23,36 @@ Route::namespace('Admin')->group(function () {
     Route::post('/login',                       'admin_controller@check_login');
     
 });
- Route::group(['prefix' => 'admin','namespace'=>'Admin','middleware'=>'checklogin'], function () {
-   Route::get('/signup',                       'admin_controller@signup');
-   Route::post('/dangky',                       'admin_controller@dangky');
-   Route::get('/',				                  'admin_controller@index');
-   Route::get('/history',                       'admin_controller@history');
-   Route::get('/staff',                         'admin_controller@staff');
-   Route::get('/staff-edit/{id}',               'admin_controller@edit');
-   Route::get('/staff-profile/{id}',            'admin_controller@profile');
-   Route::get('/staff-delete/{id}',             'admin_controller@delete');
-   Route::post('/staff-update',                 'admin_controller@update');
+Route::group(['prefix' => 'admin','namespace'=>'Admin','middleware'=>'checklogin'], function () {
+ Route::get('/signup',                       'admin_controller@signup');
+ Route::post('/dangky',                       'admin_controller@dangky');
+ Route::get('/',				                  'admin_controller@index');
+ Route::get('/history',                       'admin_controller@history');
+ Route::get('/staff',                         'admin_controller@staff');
+ Route::get('/staff-edit/{id}',               'admin_controller@edit');
+ Route::get('/staff-profile/{id}',            'admin_controller@profile');
+ Route::get('/staff-delete/{id}',             'admin_controller@delete');
+ Route::post('/staff-update',                 'admin_controller@update');
 
-   Route::get ('/category'    ,                 'category_controller@index');
-   Route::get ('/category-add',                 'category_controller@add')->middleware('checklogin');
-   Route::post('/category-insert',              'category_controller@insert');
-   Route::get ('/category-edit/{id}',           'category_controller@edit');
-   Route::post('/category-update',              'category_controller@update');
-   Route::get ('/category-delete/{id}',         'category_controller@delete');
-   Route::get ('/get-data-api',                 'category_controller@get_data_api');
+ Route::get ('/category'    ,                 'category_controller@index');
+ Route::get ('/category-add',                 'category_controller@add')->middleware('checklogin');
+ Route::post('/category-insert',              'category_controller@insert');
+ Route::get ('/category-edit/{id}',           'category_controller@edit');
+ Route::post('/category-update',              'category_controller@update');
+ Route::get ('/category-delete/{id}',         'category_controller@delete');
+ Route::get ('/get-data-api',                 'category_controller@get_data_api');
    // CATEGORY----------------------------------------------------------------------------------------------------------------------------
-   
-   Route::get ('/order'    ,                    'order_controller@index');
-   Route::get ('/order-add'    ,                'order_controller@add');
-   Route::post('/order-search',                 'order_controller@fetch')->name('autocomplete.fetch');
-   Route::post('/order-search-gia',             'order_controller@fetch_gia')->name('autocomplete.fetch2');
-   Route::post('/order-api-quan',               'order_controller@get_api_quanhuyen');
-   Route::post('/order-api-product',            'order_controller@get_api_product');
-   Route::post('/order-insert',                 'order_controller@insert_order');
-   Route::get ('/searchajax',                   ['as'=>'searchajax','uses'=>'order_controller@searchResponse']);
-   Route::get ('/order-detail',                 'order_controller@order_detail')->name('order_detail');
-  
+
+ Route::get ('/order'    ,                    'order_controller@index');
+ Route::get ('/order-add'    ,                'order_controller@add');
+ Route::post('/order-search',                 'order_controller@fetch')->name('autocomplete.fetch');
+ Route::post('/order-search-gia',             'order_controller@fetch_gia')->name('autocomplete.fetch2');
+ Route::post('/order-api-quan',               'order_controller@get_api_quanhuyen');
+ Route::post('/order-api-product',            'order_controller@get_api_product');
+ Route::post('/order-insert',                 'order_controller@insert_order');
+ Route::get ('/searchajax',                   ['as'=>'searchajax','uses'=>'order_controller@searchResponse']);
+ Route::get ('/order-detail',                 'order_controller@order_detail')->name('order_detail');
+
    Route::get ('/api-order-all',                'order_controller@order_api_all');//return các đơn----------------------------------------
    Route::get ('/api-order-allv2',              'order_controller@order_api_allv2');//return sp trong 1 đơn-------------------------------
    Route::get ('/api-order-dhvc',               'order_controller@order_api_dhvc');//return các đơn status=shipping,received--------------
@@ -86,12 +86,14 @@ Route::namespace('Admin')->group(function () {
    Route::post ('/api-selected-orderShip',      'order_controller@api_selected_orderShip');
    Route::post ('/api-selected-orderStatus',    'order_controller@api_selected_orderStatus');
 
-   Route::post('/api-selected-channel' ,        'order_controller@api_selected_channel');
-   Route::get('/search-order',                  'order_controller@searchOrderNumber');
-   Route::get ('/count-order-completed',        'order_controller@count_order_completed');
-   Route::get ('/count-order-received',         'order_controller@count_order_received');
+   Route::post('/api-selected-channel' ,         'order_controller@api_selected_channel');
+   Route::get('/search-order',                   'order_controller@searchOrderNumber');
+   Route::get ('/count-order-completed',         'order_controller@count_order_completed');
+   Route::get ('/count-order-received',          'order_controller@count_order_received');
    Route::get('/count-order-completed-received', 'order_controller@count_order_completed_received');
    Route::get('/count-order-cancle-return',      'order_controller@count_order_cancle_return');
+   Route::get('/count-order-shipping-ready',     'order_controller@count_order_shipping_ready');
+
 
 
    //ORDER-------------------------------------------------------------------------------------------------------------------
@@ -118,6 +120,9 @@ Route::namespace('Admin')->group(function () {
    Route::get ('/product-searchajax',           ['as'=>'product-searchajax','uses'=>'product_controller@searchResponse']);//auto
 
    //PRODUCT----------------------------------------------------------------------------------------------------------------
+
+   Route::get ('/product-variation',                      'product_variation@index');
+
 
    Route::get ('/customer',                     'customer_controller@index');
    Route::get ('/customer-table',               'customer_controller@table');
@@ -147,8 +152,14 @@ Route::namespace('Admin')->group(function () {
    Route::get('/test-getorderlist', 'test_controller@test_getorderlist');  
    Route::get('/test-adddb', 'test_controller@test_adddb');  
    Route::get('/testshopee', 'test_controller@test_shopee');
-  
- });
+
+});
+
+
+
+
+
+
 Route::group(['prefix' => 'sendo','namespace'=>'Sendo'], function () {
   // Route::get('/getSendoToken', 'OrderController@testSendo');  
   Route::get('/add-new-order', 'OrderController@addNewOrder'); 

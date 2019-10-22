@@ -61,7 +61,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
       }
   }
   
-  $http.get($scope.baseURL + '/admin/count-order-ship-and-received').then(function (res) { $scope.count_ship_and_received = res.data; });
+  $http.get($scope.baseURL + '/admin/count-order-shipping-ready').then(function (res) { $scope.count_ship_and_received = res.data; });
   $http.get($scope.baseURL + '/admin/count-order-shipping').then(function (res) { $scope.count_shipping = res.data; });
   
   // $http.get($scope.baseURL + '/admin/count-order-done_and_returnok').then(function (res) { $scope.count_done_and_returnok = res.data; }, function (res) { });
@@ -79,7 +79,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
   });
 
   $http.get($scope.baseURL + '/admin/count-order-cancle-return').then(function (res) { $scope.count_cancle_return = res.data });
-  $http.get($scope.baseURL + '/sendo/add-new-order').then(function (res) { });
+  // $http.get($scope.baseURL + '/sendo/add-new-order').then(function (res) { });
 
   //END AUTO GET ORDER RA DS DON HANG------------------------------------------------------------------------------------------------------------------
 
@@ -178,24 +178,13 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
     if ($scope.display == true) {
       $scope.display = !$scope.display;
     }
-    $http.get($scope.baseURL + '/admin/count-order-ship-and-received').then(function (res) {
-      $scope.count_ship_and_received = res.data;
-      $scope.arrayPageIndex = [];
-
-      for (var i = 1; i < $scope.count_ship_and_received / $scope.pageLimit; i++) {
-        arrayText = { id: i, }
-        $scope.arrayPageIndex.push(arrayText);
-      }
-
-    }, function (res) { });
-    $http.get($scope.baseURL + '/admin/api-order-dhvc').then(function (res) { $scope.all = res.data; }, function (res) { });
-    $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/count-order-shipping-ready').then(function (res) { arrayPage(res.data)});
+    $http.get($scope.baseURL + '/admin/api-order-dhvc?page=' + $scope.page + '&limit=' + $scope.pageLimit).then(function (res) { $scope.all = res.data; }, function (res) { });
   }
 
   //START GET ORDER VOI STATUS=SHIPPING,-------------------------------------------------------------------------------------------
   $scope.get_shipping = function () {
-    $http.get($scope.baseURL + '/admin/api-order-shipping').then(function (res) { $scope.all = res.data; }, function (res) { });
-    $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/admin/api-order-shipping').then(function (res) { $scope.all = res.data; });
   }
   
   //START GET ORDER VOI STATUS=DONE----------------------------------------------------------------------------------------------

@@ -17,6 +17,7 @@
    
       <li><a href="{{url('admin/order')}}"><i class="fa fa-calculator"></i> Đơn Hàng</a></li>
       <!-- <span class="glyphicon glyphicon-knight" aria-hidden="true"></span> -->
+      <li><a href="{{url('admin/product-variation')}}"><i class="fa fa-edit"></i>Phân cấp sản phẩm</a></li>
       <li><a href="{{url('admin/product')}}"><i class="fa fa-edit"></i>Sản Phẩm</a></li>
       <li><a href="{{url('admin/product-type')}}"><i class="fa fa-edit"></i>Loại Sản Phẩm</a></li>
       <li><a href="{{url('admin/category')}}"><i class="fa fa-shopping-cart"></i>Ngành Hàng</a> </li>

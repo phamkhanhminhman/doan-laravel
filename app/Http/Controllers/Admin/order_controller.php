@@ -64,21 +64,41 @@ class order_controller extends Controller
     }
 
 
-    public function order_api_dhvc() //api return ve don co orderStatus="Shipping,Received"-----------------------------------------------------
+    public function order_api_dhvc(Request $request) //api return ve don co orderStatus="Shipping,Received"-----------------------------------------------------
     {
-        
-        $data_order = DB::table('order_tb')->join('customer', 'order_tb.customerTel', '=', 'customer.customerTel')
-        ->select('*')
-        ->where('orderStatus',6)
-        ->orderBy('orderDate', 'desc')
-        ->get();
+        $pageIndex= $request->page;
+        $pageLimit= $request->limit;
 
-        $data_order = json_encode($data_order);
+        $data_order = DB::table('order_tb')->join('customer', 'order_tb.customerTel', '=', 'customer.customerTel')
+            ->select('*')
+            ->where('orderStatus',6)
+            ->orWhere('orderStatus', 2)
+            ->orWhere('orderStatus', 3)
+            ->orderBy('orderDate', 'desc')
+            ->get()->toArray();
+
+        $array_start=$pageIndex*10-10;
+        $array_length=$pageLimit;   
+        $array_slice=array_slice($data_order,$array_start,$array_length);
+
+        $data_order = json_encode($array_slice); // convert to JSON 
         echo $data_order;
     }
 
-    public function count_order_ship_and_received() //ĐẾM SỐ LƯỢNG ĐƠN STATUS=SHIPPINNG,RECEIVED--------------------------------------------
+    public function count_order_shipping_ready()
+    {
+        $shipping_ready = DB::table('order_tb')->join('customer', 'order_tb.customerID', '=', 'customer.customerID')
+            ->select('*')
+            ->where('orderStatus', 6)
+            ->orWhere('orderStatus', 2)
+            ->orWhere('orderStatus', 3)
+            ->get();
+        $shipping_ready = count($shipping_ready);
+        $shipping_ready = json_encode($shipping_ready);
+        echo $shipping_ready;
+    }
 
+    public function count_order_shipping() //ĐẾM SỐ LƯỢNG ĐƠN STATUS=6 ---------------------------------------------------------
     {
         $shipping = DB::table('order_tb')->join('customer', 'order_tb.customerID', '=', 'customer.customerID')
             ->select('*')
@@ -236,18 +256,17 @@ class order_controller extends Controller
         return view('admin/order/order', compact('data_order', 'test'));
     }
     
-    
-    public function count_order_shipping() //ĐẾM SỐ LƯỢNG ĐƠN STATUS=SHIPPINNG---------------------------------------------------------
-
+    public function count_order_ship_and_received() //ĐẾM SỐ LƯỢNG ĐƠN STATUS=SHIPPINNG,RECEIVED--------------------------------------------
     {
         $shipping = DB::table('order_tb')->join('customer', 'order_tb.customerID', '=', 'customer.customerID')
             ->select('*')
-            ->where('orderStatus', 'LIKE', 'Shipping')
+            ->where('orderStatus', 6)
             ->get();
         $shipping = count($shipping);
         $shipping = json_encode($shipping);
         echo $shipping;
     }
+
     
     public function count_order_done_and_returnok() //ĐẾM SỐ LƯỢNG ĐƠN STATUS=DONE,RETURNOK-------------------------------------------
 
