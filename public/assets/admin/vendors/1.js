@@ -14,11 +14,12 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
   // var url = new URL(url_string);
   // var c = url.searchParams.get("limit");
   // console.log(c);
-
+  
   // PAGINATION---------------------------------------------------------------------------------------------------------------------------------
   $scope.page = 1;
   $scope.orderStatus = '';
   $scope.pagination = function (page, limit) {
+  
     if ($scope.orderStatus === '') {
       $scope.page = page;
       $http.get($scope.baseURL + '/admin/api-order-all?page=' + $scope.page + '&limit=' + $scope.pageLimit).then(function (res) { $scope.all = res.data; });
@@ -79,7 +80,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
   });
 
   $http.get($scope.baseURL + '/admin/count-order-cancle-return').then(function (res) { $scope.count_cancle_return = res.data });
-  // $http.get($scope.baseURL + '/sendo/add-new-order').then(function (res) { });
+  $http.get($scope.baseURL + '/sendo/add-new-order').then(function (res) { toastr.success('Có n Order từ SENDO vừa mới đc thêm vào') });
 
   //END AUTO GET ORDER RA DS DON HANG------------------------------------------------------------------------------------------------------------------
 
@@ -615,32 +616,32 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
   //   console.log("api data la "+res.data);
 
   // });
-  $scope.luudulieu = function (req) {
-    var data = $.param({
-      so: req.so,
-      gia: req.gia,
-      loai: req.loai,
+  // $scope.luudulieu = function (req) {
+  //   var data = $.param({
+  //     so: req.so,
+  //     gia: req.gia,
+  //     loai: req.loai,
 
-    });
-    console.log(data);
+  //   });
+  //   console.log(data);
 
-    $scope.showSimpleToast();
-    var config = {
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
-      }
-    }
-    console.log("da lay dc data ->>");
-    $http.post('http://127.0.0.1/post', data, config)
-      .then(function (res) {
-        if (res.data == "thanhcong") {
-          console.log("update thcong ");
-          $scope.showSimpleToast();
-        }
-      },
-        function (res) { if (res.data == "thatbai") { console.log("update thatbai ") } });
+  //   $scope.showSimpleToast();
+  //   var config = {
+  //     headers: {
+  //       'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+  //     }
+  //   }
+  //   console.log("da lay dc data ->>");
+  //   $http.post('http://127.0.0.1/post', data, config)
+  //     .then(function (res) {
+  //       if (res.data == "thanhcong") {
+  //         console.log("update thcong ");
+  //         $scope.showSimpleToast();
+  //       }
+  //     },
+  //       function (res) { if (res.data == "thatbai") { console.log("update thatbai ") } });
 
-  }
+  // }
   var last = {
     bottom: false,
     top: true,
@@ -674,13 +675,11 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
 
     $mdToast.show(
       $mdToast.simple()
-      .textContent('update thanh cong')
+      .textContent('Add new order')
       .position(pinTo )
       .hideDelay(3000)
       );
   };
-
-
 
 })
 
