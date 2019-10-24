@@ -184,7 +184,7 @@ class OrderController extends Controller
     public function updateOrder($orderNumber)
     {  
         $response = $this->shopee->getOrderDetail($orderNumber); //call API ORDER DETAIL - SHOPEE
-        $orderDetail = $responseOrderDetail->data['orders'][0];
+        $orderDetail = $response->data['orders'][0];
         $orderStatusDes = $orderDetail['order_status'];
         $orderStatus = $this->parseOrderStatus($orderStatusDes);
 

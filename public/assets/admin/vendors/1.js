@@ -77,8 +77,8 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
   });
 
   $http.get($scope.baseURL + '/admin/count-order-cancle-return').then(function (res) { $scope.count_cancle_return = res.data });
-  $http.get($scope.baseURL + '/sendo/add-new-order').then(function (res) { toastr.success('Có ' + res.data + 'order từ SENDO vừa mới đc thêm vào')});
-  $http.get($scope.baseURL + '/shopee/add').then(function(res) { toastr.success('Có ' + res.data + 'order từ SHOPEE vừa mới đc thêm vào')})
+  $http.get($scope.baseURL + '/sendo/add-new-order').then(function (res) { toastr.success('Có ' + res.data + ' order từ SENDO vừa mới đc thêm vào')});
+  $http.get($scope.baseURL + '/shopee/add').then(function(res) { toastr.success('Có ' + res.data + ' order từ SHOPEE vừa mới đc thêm vào')})
 
   //END AUTO GET ORDER RA DS DON HANG------------------------------------------------------------------------------------------------------------------
 
@@ -103,13 +103,12 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
   $scope.updateExceptDone = function () {
     $http.get($scope.baseURL + '/sendo/update-order-except-done').then(
       function (res) { 
-        $scope.all = res.data;
-        toastr.success('Có ' + res.data + 'order của SENDO vừa cập nhật trạng thái mới'); 
+        toastr.success('Có ' + res.data + ' order của SENDO vừa cập nhật trạng thái mới'); 
     });
 
     $http.get($scope.baseURL + '/shopee/update-order-except-done').then(
       function (res) {
-        toastr.success('Có ' + res.data + 'order của SHOPEE vừa cập nhật trạng thái mới'); 
+        toastr.success('Có ' + res.data + ' order của SHOPEE vừa cập nhật trạng thái mới'); 
       }
     )
   }

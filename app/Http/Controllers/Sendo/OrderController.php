@@ -84,7 +84,7 @@ class OrderController extends Controller
                 $orderStatus = 6;
             }
 
-            $response = $this->sendo->getOrderList($orderstatus); //call API GET ORDER LIST - SENDO
+            $response = $this->sendo->getOrderList($orderStatus); //call API GET ORDER LIST - SENDO
 
             $orderLinkSendo = self::ORDER_LINK_SENDO;
 
@@ -170,7 +170,7 @@ class OrderController extends Controller
             }
         }
         
-        return count($arrayOrderNumber)
+        return count($arrayOrderNumber);
     }
 
     /**
