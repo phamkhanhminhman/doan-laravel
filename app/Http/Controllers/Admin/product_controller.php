@@ -138,6 +138,15 @@ class product_controller extends Controller
                          ->get();
         return view('admin/product/product_edit',compact('data_product'));
     }
+
+    public function variation($sku)
+    {
+        $data_product = DB::table('product_variation')
+                    ->where('productSKU','LIKE', "%{$sku}%")
+                    ->get();
+        return view('admin/product_variation/product_variation', compact('data_product'));
+    }
+
     public function update(Request $request)
     {
         $productID   = $request->productID;

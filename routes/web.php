@@ -119,6 +119,8 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin','middleware'=>'checklogin
    Route::post('/product-get-cost',             'product_controller@get_cost')->name('product.getcost');
    Route::get ('/product-searchajax',           ['as'=>'product-searchajax','uses'=>'product_controller@searchResponse']);//auto
 
+   Route::get('/variation/{sku}',                   'product_controller@variation');
+
    //PRODUCT----------------------------------------------------------------------------------------------------------------
 
    Route::get ('/product-variation',                      'product_variation@index');

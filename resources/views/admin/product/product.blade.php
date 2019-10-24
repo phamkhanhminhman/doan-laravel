@@ -71,7 +71,7 @@
                 <tr>
                   <!-- <td class="text-center"><img src="../{{$p->productImage}}" alt="AASD" width="80px" height="80px"></td> -->
                   <td class="text-center"><a href="{{$p->productLink}}"><img src="{{$p->productImage}}" alt="AASD" width="80px" height="80px"></a></td> 
-                  <td class="text-center" width="10%">{{$p->productSKU}}</td>
+                  <td><a href="{{url('admin/variation',$p->productSKU)}}">{{$p->productSKU}}</a></td>
                   <td class="text-center" width="15%;">{{$p->productName}}</td>
                   <td>{{$p->productID}}</td>
                   <td>{{$p->stockQuantity}}</td>
@@ -81,7 +81,7 @@
                   <td><?php echo date('d-m-Y H:m',strtotime("$p->Updated"));?></td>
 
                   <td>{{$p->productStatus}}</td>
-                  <td><a href="{{url('admin/product-edit',$p->productID)}}" class="btn btn-warning"><i class="fa fa-pencil"></i></i></a></td>
+                  <td><a href="{{url('admin/product-edit',$p->productID)}}" class="btn btn-warning"><i class="fa fa-pencil"></i></a></td>
                   <!-- <td><a href="{{url('admin/product-delete',$p->productID)}}" onclick="return confirm('Are you sure?')" class="btn btn-danger"><i class="fa fa-close"></i></a></td> -->
                   
                 </tr>

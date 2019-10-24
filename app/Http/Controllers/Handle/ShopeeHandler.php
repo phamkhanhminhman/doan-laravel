@@ -63,7 +63,7 @@ class ShopeeHandler
 
         $items = $client->order->getOrdersByStatus(array(
             'order_status' => 'ALL',
-            'pagination_entries_per_page' => 100,
+            'pagination_entries_per_page' => 10,
             'pagination_offset' => 0
 
         ));
