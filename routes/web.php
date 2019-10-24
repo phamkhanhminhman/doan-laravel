@@ -162,14 +162,16 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin','middleware'=>'checklogin
 
 Route::group(['prefix' => 'sendo','namespace'=>'Sendo'], function () {
   // Route::get('/getSendoToken', 'OrderController@testSendo');  
-  Route::get('/add-new-order', 'OrderController@addNewOrder'); 
+  Route::get('/add-new-order',            'OrderController@addNewOrder'); 
   Route::get('/update-order-except-done', 'OrderController@updateOrderExceptDone'); //sẽ có 1 event gọi ra cái ni click nút update đơn hàng đã có gì đó
-  Route::get('/get-product-list','ProductController@getProductList');
-  Route::get('/get-product-detail','ProductController@getProductDetail');
-  Route::get('/update-product' , 'ProductController@updateAllProduct');
-  Route::get('/add-product-order', 'OrderController@getProductFromOrder'); 
-  Route::get('/get-region' , 'OrderController@getRegionsSendo');
-  Route::get('/123', 'ProductController@updateProduct');
+  Route::get('/add-product-order',        'OrderController@getProductFromOrder'); 
+  Route::get('/get-region' ,              'OrderController@getRegionsSendo');
+  
+  Route::get('/get-product-list',         'ProductController@getProductList');
+  Route::get('/get-product-detail',       'ProductController@getProductDetail');
+  Route::get('/update-product' ,          'ProductController@updateAllProduct');
+
+  Route::get('/123',                      'ProductController@updateProduct');
 });
 
 
@@ -196,4 +198,5 @@ Route::group(['prefix' => 'shopee','namespace'=>'Shopee'], function () {
 
 
   Route::get('add', 'OrderController@addNewOrder');
+  Route::get('/update-order-except-done' , 'OrderController@updateOrderExceptDone');
 });

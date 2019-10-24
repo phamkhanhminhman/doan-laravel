@@ -34,9 +34,6 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
       $scope.page = page;
       $http.get($scope.baseURL + '/admin/api-order-dhsc?page=' + $scope.page + '&limit=' + $scope.pageLimit).then(function (res) { $scope.all = res.data; });
     }
-
-
-    
   }
 
   $http.get($scope.baseURL + '/admin/best-selling').then(function (res) { $scope.all = res.data; });
@@ -48,7 +45,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
   $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; });
 
   //COUNT SỐ LOẠI ĐƠN THEO orderStatus------------------------------------------------------------------------------------------------------------
-  arrayPage();
+  // arrayPage();
   function arrayPage($arrayLength) {
     console.log($arrayLength);
     $scope.arrayPageIndex = [];
@@ -80,7 +77,8 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
   });
 
   $http.get($scope.baseURL + '/admin/count-order-cancle-return').then(function (res) { $scope.count_cancle_return = res.data });
-  $http.get($scope.baseURL + '/sendo/add-new-order').then(function (res) { toastr.success('Có n Order từ SENDO vừa mới đc thêm vào') });
+  $http.get($scope.baseURL + '/sendo/add-new-order').then(function (res) { toastr.success('Có ' + res.data + 'order từ SENDO vừa mới đc thêm vào')});
+  $http.get($scope.baseURL + '/shopee/add').then(function(res) { toastr.success('Có ' + res.data + 'order từ SHOPEE vừa mới đc thêm vào')})
 
   //END AUTO GET ORDER RA DS DON HANG------------------------------------------------------------------------------------------------------------------
 
@@ -101,10 +99,21 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
     }
   }
 
-  //UPDATE ORDER EXCEPT ORDER STATUS = 8-----------------------------------------------------------------------------------------------------------------
+  //UPDATE ORDER EXCEPT ORDER SENDO STATUS = 8-----------------------------------------------------------------------------------------------------------------
   $scope.updateExceptDone = function () {
-    $http.get($scope.baseURL + '/sendo/update-order-except-done').then(function (res) { $scope.all = res.data; }, function (res) { });
+    $http.get($scope.baseURL + '/sendo/update-order-except-done').then(
+      function (res) { 
+        $scope.all = res.data;
+        toastr.success('Có ' + res.data + 'order của SENDO vừa cập nhật trạng thái mới'); 
+    });
+
+    $http.get($scope.baseURL + '/shopee/update-order-except-done').then(
+      function (res) {
+        toastr.success('Có ' + res.data + 'order của SHOPEE vừa cập nhật trạng thái mới'); 
+      }
+    )
   }
+
 
 
   //SELECT CHANNEL---------------------------------------------------------------------------------------------------------------------------------------
@@ -169,7 +178,6 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
   $scope.get_all = function () {
     $scope.orderStatus = '';
     $http.get($scope.baseURL + '/admin/api-order-all?page=' + $scope.page + '&limit=' + $scope.pageLimit).then(function (res) { $scope.all = res.data; });
-    $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; }, function (res) { });
     $http.get($scope.baseURL + '/admin/count-order-all').then(function (res) { arrayPage(res.data)});
   }
 
@@ -610,76 +618,5 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
   $scope.hienra = function (motnguoi) {
     motnguoi.hienthi = !motnguoi.hienthi;
   }
-  console.log("script angular");
-  // $http.get("/admin/get-data-api").then(function(res){ //get data json
-  //   $scope.nhieunguoi=res.data;
-  //   console.log("api data la "+res.data);
-
-  // });
-  // $scope.luudulieu = function (req) {
-  //   var data = $.param({
-  //     so: req.so,
-  //     gia: req.gia,
-  //     loai: req.loai,
-
-  //   });
-  //   console.log(data);
-
-  //   $scope.showSimpleToast();
-  //   var config = {
-  //     headers: {
-  //       'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
-  //     }
-  //   }
-  //   console.log("da lay dc data ->>");
-  //   $http.post('http://127.0.0.1/post', data, config)
-  //     .then(function (res) {
-  //       if (res.data == "thanhcong") {
-  //         console.log("update thcong ");
-  //         $scope.showSimpleToast();
-  //       }
-  //     },
-  //       function (res) { if (res.data == "thatbai") { console.log("update thatbai ") } });
-
-  // }
-  var last = {
-    bottom: false,
-    top: true,
-    left: false,
-    right: true
-  };
-
-  $scope.toastPosition = angular.extend({},last);
-
-  $scope.getToastPosition = function() {
-    sanitizePosition();
-
-    return Object.keys($scope.toastPosition)
-    .filter(function(pos) { return $scope.toastPosition[pos]; })
-    .join(' ');
-  };
-
-  function sanitizePosition() {
-    var current = $scope.toastPosition;
-
-    if ( current.bottom && last.top ) current.top = false;
-    if ( current.top && last.bottom ) current.bottom = false;
-    if ( current.right && last.left ) current.left = false;
-    if ( current.left && last.right ) current.right = false;
-
-    last = angular.extend({},current);
-  }
-
-  $scope.showSimpleToast = function() {
-    var pinTo = $scope.getToastPosition();
-
-    $mdToast.show(
-      $mdToast.simple()
-      .textContent('Add new order')
-      .position(pinTo )
-      .hideDelay(3000)
-      );
-  };
-
 })
 

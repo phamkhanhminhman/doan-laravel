@@ -84,6 +84,7 @@ class OrderController extends Controller
 
             $responseOrderDetail = $this->shopee->getOrderDetail($orderNumber);
             $orderDetail = $responseOrderDetail->data['orders'][0];
+
             $orderStatusDes = $orderDetail['order_status'];
             $orderStatus = $this->parseOrderStatus($orderStatusDes);
             $customerID = 180; // sau này xóa
@@ -99,8 +100,6 @@ class OrderController extends Controller
             $orderShipLink = 'linkcarrier'; 
             $orderSell = $orderDetail['total_amount'] - $orderDetail['estimated_shipping_fee'];
             $orderReceive = $orderDetail['escrow_amount'];
-
-
 
             $shipToRegionId= 1;
             $shipToRegionName = $orderDetail['recipient_address']['state'];
@@ -159,15 +158,16 @@ class OrderController extends Controller
             }            
         }
 
-        // alert('Có ' + $countNewOrder + ' đơn hàng mới từ SHOPEE', 'Successfully', 'success');
-        return 1;
+        return $countNewOrder;
     }
 
     public function updateOrderExceptDone()
     {
+        $month = date('m');
         $arrayOrderNumber = DB::table('order_tb')
             ->where('orderStatus', '<>', 8)
             ->where('orderChannel', '=', 'Shopee')
+            ->whereMonth('orderDate', $month)
             ->select('orderID')
             ->get();
 
@@ -178,8 +178,7 @@ class OrderController extends Controller
             }
         }
         
-        // alert('Đã cập nhật ' . count($arrayOrderNumber) . ' đơn hàng','Successfully', 'success');
-        return redirect('admin/order/');
+        return count($arrayOrderNumber);
     }
 
     public function updateOrder($orderNumber)

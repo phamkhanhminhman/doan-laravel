@@ -84,7 +84,7 @@ class OrderController extends Controller
                 $orderStatus = 6;
             }
 
-            $response = $this->sendo->getOrderList(6); //call API GET ORDER LIST - SENDO
+            $response = $this->sendo->getOrderList($orderstatus); //call API GET ORDER LIST - SENDO
 
             $orderLinkSendo = self::ORDER_LINK_SENDO;
 
@@ -140,10 +140,9 @@ class OrderController extends Controller
                     $this->updateOrder($orderNumber);
                     
                 }
-                // alert('Có ' . $countNewOrder . ' đơn hàng mới từ SENDO', 'Successfully', 'success');
-                return 1;
+                return $countNewOrder;
             } else {
-                alert('Không có đơn mới','Successfully', 'success');
+
             } 
         }
          
@@ -154,12 +153,14 @@ class OrderController extends Controller
      */
     public function updateOrderExceptDone() //cái ni là đơn đã full thông tin rồi chỉ update lại cái status
     {
+        $month = date('m');
         // lấy mã đơn hàng cũ từ DB
         $arrayOrderNumber = DB::table('order_tb')
             ->where('orderStatus', '<>', 8)
             ->where('orderStatus', '<>', 'Done') // sau này bỏ ( dữ liệu giả)
             ->where('orderStatus', '<>', 'ReturnOK') // sau này bỏ ( dữ liệu giả)
             ->where('orderChannel', '=', 'Sen Đỏ')
+            ->whereMonth('orderDate', $month)
             ->select('orderID')
             ->get();
         // nếu có đơn thì mới chạy hàm updateOrder
@@ -169,8 +170,7 @@ class OrderController extends Controller
             }
         }
         
-        alert('Đã cập nhật ' . count($arrayOrderNumber) . ' đơn hàng','Successfully', 'success');
-        return redirect('admin/order/'); 
+        return count($arrayOrderNumber)
     }
 
     /**
