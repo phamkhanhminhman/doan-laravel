@@ -136,24 +136,24 @@ function button_dangvanchuyen() {
 }
 
 function button_danhanhang() {
-  $('#dnh').addClass('btn-info');
+  $('#dnh').addClass('btn-success');
   if($("#dnh").prop("disabled") ==true)
   {
     $('#dnh').prop("disabled",false);
   }else{
     $("#dnh").prop("disabled",true);
-    $("#dnh").removeClass('btn-info');
+    $("#dnh").removeClass('btn-success');
   };
 }
 
 function button_danhantien() {
-  $('#dnt').addClass('btn-info');
+  $('#dnt').addClass('btn-success');
   if($("#dnt").prop("disabled") ==true)
   {
     $('#dnt').prop("disabled",false);
   }else{
     $("#dnt").prop("disabled",true);
-    $("#dnt").removeClass('btn-info');
+    $("#dnt").removeClass('btn-success');
   };
 }
 
@@ -201,12 +201,12 @@ function disable_dvc() {
 }
 
 function disable_dnh() {
-  $('#dnh').removeClass('btn-info');
+  $('#dnh').removeClass('btn-success');
   $("#dnh").prop("disabled",true);
 }
 
 function disable_dnt() {
-  $('#dnt').removeClass('btn-info');
+  $('#dnt').removeClass('btn-success');
   $("#dnt").prop("disabled",true);
 }
 
@@ -240,9 +240,9 @@ function disableAll() {
   $("#clh").prop("disabled",true);
   $('#dvc').removeClass('btn-success');
   $("#dvc").prop("disabled",true);
-  $('#dnh').removeClass('btn-info');
+  $('#dnh').removeClass('btn-success');
   $("#dnh").prop("disabled",true);
-  $('#dnt').removeClass('btn-info');
+  $('#dnt').removeClass('btn-success');
   $("#dnt").prop("disabled",true);
   $('#dnl').removeClass('btn-info');
   $("#dnl").prop("disabled",true);

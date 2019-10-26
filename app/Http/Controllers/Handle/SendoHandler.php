@@ -234,9 +234,9 @@ class SendoHandler
             ],
         ]);
         $url = '/shop/salesOrder/confirmorder?ordernumber='.$orderID;
-        $request = $client->post($url, [
-                'body' => json_encode($body)
-            ]);
+        
+        $request = $client->post($url);
+
         $response = json_decode($request->getBody()->getContents());
         return $response;
     }

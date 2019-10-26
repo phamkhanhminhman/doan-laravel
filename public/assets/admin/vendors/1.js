@@ -113,6 +113,13 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
     )
   }
 
+  $scope.confirmOrderSendo = function (orderID) {
+    $http.get($scope.baseURL + '/sendo/confirm-order-sendo/' + orderID).then(
+      function (res) { 
+        toastr.success('Đơn hàng Sen Đỏ ' + orderID + ' đã được xác nhận'); 
+    });
+  }
+
 
 
   //SELECT CHANNEL---------------------------------------------------------------------------------------------------------------------------------------

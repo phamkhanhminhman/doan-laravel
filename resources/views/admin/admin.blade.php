@@ -28,13 +28,13 @@
           </div>
           <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
             <span class="count_top"><i class="fa fa-user"></i> Đơn Chưa Hoàn Thành</span>
-            <div class="count"style="color:#ff3d00"><?php echo $don_chua_hoan_thanh ?></div>
+            <div class="count"style="color:#ff3d00"><?php echo number_format($r->tongsodonchuahoanthanh,0,",",".");?></div>
             <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i></i> Available</span>
           </div>
           <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
             <span class="count_top"><i class="fa fa-user"></i> Tiền Hàng Đóng Băng</span>
-            <div class="count"style="color:#37474f">5.000.000</div>
-            <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> So Với Tháng Trước</span>
+            <div class="count"style="color:#37474f"><?php echo number_format($r->tiendongbang,0,",",".");?></div>
+            <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>update sau% </i> So Với Tháng Trước</span>
           </div>
   
         </div>
@@ -63,7 +63,7 @@
           </div>
           <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
             <span class="count_top"><i class="fa fa-user"></i> Khiếu Nại </span>
-            <div class="count"style="color:#d50000 "><?php echo $r->tongsokhieunai ?></div>
+            <div class="count"style="color:#d50000 ">0$</div>
             <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i></i> Available</span>
           </div>
           <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">

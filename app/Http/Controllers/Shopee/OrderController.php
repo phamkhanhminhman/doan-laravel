@@ -92,7 +92,7 @@ class OrderController extends Controller
             $customerName= $orderDetail['recipient_address']['name'];
             $customerAddress= $orderDetail['recipient_address']['full_address'];
             $orderAddress = 01;
-            $orderDate = $orderDetail['create_time'];
+            $orderDate = $orderDetail['update_time'];
             $orderDate = gmdate("Y-m-d H:i:s", $orderDate);
             $orderChannel = "Shopee";
             $carrierName = $orderDetail['shipping_carrier'];

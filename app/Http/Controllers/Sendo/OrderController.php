@@ -213,7 +213,7 @@ class OrderController extends Controller
     {
         if (count($response->result->salesOrderDetails) > 0) {
             $productsList = $response->result->salesOrderDetails;
-
+            $orderCost = 0;
             foreach ($productsList as $key => $p) {
                 $productID = $p->productVariantId;
                 $productSKU= $p->storeSku;
@@ -235,8 +235,17 @@ class OrderController extends Controller
                             'product_Sell' => $productSell,
                             'Amount' => $quantity,
                         ]);
+
+                $product_variation = DB::table('product_variation')
+                        ->where('productVariationID', $productSKU)
+                        ->first();
+
+                $cost = intval($product_variation->productCost) * intval($quantity); 
+                $orderCost = $orderCost + $cost;
                 } 
             }
+
+            DB::table('order_tb')->where('orderID', $orderNumber)->update(['orderCost' => $orderCost]);
         } else {
             echo 'loi ';
         }
@@ -252,4 +261,66 @@ class OrderController extends Controller
     {
         $this->sendo->confirmOrderSendo($orderID);
     }
+
+    public function update_report_thang()
+    {
+        $month = date('m');
+        $year = date('Y');
+        // dd($year);
+
+        $order = DB::table('order_tb')
+                    ->whereYear('orderDate',$year)
+                    ->whereMonth('orderDate', $month)
+                    ->get();
+
+        $doanhthu = 0;
+        $loinhuan = 0;
+        $tongvon = 0;
+        $tongsobomhang = 0;
+        $tiendongbang = 0;
+        $tongsodonchuahoanthanh = 0;
+
+        foreach ($order as $k) {
+            if ($k->orderStatus != 13 || $k->orderStatus != 22) {
+                $doanhthu = $doanhthu + $k->orderSell;
+                $tongvon = $tongvon + $k->orderCost;
+            }
+
+            if ( $k->orderStatus != 8 && $k->orderStatus != 13 ) {
+                $tiendongbang = $tiendongbang + $k->orderSell;
+                $tongsodonchuahoanthanh++;
+            }
+
+            if ($k->orderStatus == 13) {
+                $tongsobomhang++;
+            }
+        } 
+
+
+
+        $loinhuan = $doanhthu - $tongvon;
+        $tongsodonhang = count($order);
+
+        DB::table('report_thang')
+                ->where('report_thang_id' , $month)
+                ->where('report_nam_id' , $year)
+                ->update([
+                    'doanhthu' => $doanhthu,
+                    'loinhuan' => $loinhuan,
+                    'tongvon' => $tongvon,
+                    'tongsodonhang' => $tongsodonhang,
+                    'tongsobombhang' => $tongsobomhang,
+                    'tiendongbang' => $tiendongbang,
+                    'tongsodonchuahoanthanh' => $tongsodonchuahoanthanh
+                ]);
+
+
+
+        var_dump($doanhthu);
+        var_dump($loinhuan);
+        var_dump($tongsodonhang);
+        var_dump($tongsobomhang);
+        var_dump($tiendongbang);
+    }
+
 }

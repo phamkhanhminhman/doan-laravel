@@ -69,7 +69,7 @@
           <div class="row">
            <div class="col-md-6 col-sm-6 col-xs-6">
              <div class="col-md-6 col-xs-12">
-               <button class="col-md-12 col-xs-12 btn" id="all" style="background:#dacfed; color:black;font-weight:bold" ng-click=get_all()>Tất cả (@{{count_all}})
+               <button class="col-md-12 col-xs-12 btn" id="all" style="background: orange; color:black;font-weight:bold" ng-click=get_all()>Tất cả (@{{count_all}})
                </button>
              </div>
              <div class="col-md-6 col-xs-12">
@@ -202,12 +202,7 @@
    
    
    <div class="col" style="float: right">
-     <button  type="button" style="background:#2ecc71;color:white"class="btn btn-success"  onclick="new PNotify({
-                                title: 'Cập nhật thành công',
-                                text: 'Chuyển trạng thái đơn ĐANG VẬN CHUYỂN',
-                                type: 'success',
-                                styling: 'bootstrap3'
-                                });">Xác Nhận Đơn</button>
+     <button  type="button" style="background:#2ecc71;color:white"class="btn btn-success" ng-click="confirmOrderSendo(pp.orderID)">Xác Nhận Đơn</button>
      <button  type="button" style="background:#FF5230;color:white" class="btn"  onclick="new PNotify({
                                 title: 'Cập nhật thành công',
                                 text: 'Chuyển trạng thái đơn ĐANG VẬN CHUYỂN',

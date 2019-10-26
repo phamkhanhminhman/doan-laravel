@@ -174,6 +174,10 @@ Route::group(['prefix' => 'sendo','namespace'=>'Sendo'], function () {
   Route::get('/update-product' ,          'ProductController@updateAllProduct');
 
   Route::get('/123',                      'ProductController@updateProduct');
+
+  Route::get('/confirm-order-sendo/{orderID}' , 'OrderController@confirmOrderSendo');
+
+  Route::get('/update-report-thang', 'OrderController@update_report_thang');  
 });
 
 

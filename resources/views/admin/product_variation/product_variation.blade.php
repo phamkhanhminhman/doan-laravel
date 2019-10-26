@@ -53,9 +53,9 @@
               <thead>
                 <tr>
                   <th class="text-center">Ảnh</th>
-                  <th class="text-center">Tên Loại Sản Phẩm</th>
+                  <th class="text-center">SKU</th>
                   <th class="text-center">Tên Sản Phẩm</th>
-                  <th class="text-center">ID Sản Phẩm</th>
+                  <th class="text-center">PID SENDO</th>
                   <th class="text-center">Tồn Kho</th>                         
                   <th class="text-center">Giá Nhập</th>
                   <th class="text-center">Giá Bán</th>
@@ -73,14 +73,14 @@
                   <td class="text-center"><a href="{{$p->productLink}}"><img src="{{$p->productImage}}" alt="AASD" width="80px" height="80px"></a></td> 
                   <td class="text-center" width="10%">{{$p->productSKU}}</td>
                   <td class="text-center" width="15%;">{{$p->productName}}</td>
-                  <td>{{$p->productID}}</td>
-                  <td>{{$p->stockQuantity}}</td>
-                  <td>{{$p->productCost}}</td>
-                  <td>{{$p->productSell}}</td>
+                  <td class="text-center">{{$p->productID}}</td>
+                  <td class="text-center">{{$p->stockQuantity}}</td>
+                  <td class="text-center">{{$p->productCost}}</td>
+                  <td class="text-center">{{$p->productSell}}</td>
                   <!-- <td><?php echo date('d-m-Y H:m',strtotime("$p->Created"));?></td> -->
-                  <td><?php echo date('d-m-Y H:m',strtotime("$p->Updated"));?></td>
+                  <td class="text-center"><?php echo date('d-m-Y H:m',strtotime("$p->Updated"));?></td>
 
-                  <td>{{$p->productStatus}}</td>
+                  <td class="text-center">{{$p->productStatus}}</td>
                   <td><a href="{{url('admin/product-edit',$p->productID)}}" class="btn btn-warning"><i class="fa fa-pencil"></i></i></a></td>
                   <!-- <td><a href="{{url('admin/product-delete',$p->productID)}}" onclick="return confirm('Are you sure?')" class="btn btn-danger"><i class="fa fa-close"></i></a></td> -->
                   
