@@ -244,8 +244,10 @@ class OrderController extends Controller
                 $orderCost = $orderCost + $cost;
                 } 
             }
-
-            DB::table('order_tb')->where('orderID', $orderNumber)->update(['orderCost' => $orderCost]);
+            if (count($duplicateOrder) === 0) {
+                DB::table('order_tb')->where('orderID', $orderNumber)->update(['orderCost' => $orderCost]);
+            }
+            
         } else {
             echo 'loi ';
         }
@@ -266,7 +268,6 @@ class OrderController extends Controller
     {
         $month = date('m');
         $year = date('Y');
-        // dd($year);
 
         $order = DB::table('order_tb')
                     ->whereYear('orderDate',$year)
@@ -314,13 +315,11 @@ class OrderController extends Controller
                     'tongsodonchuahoanthanh' => $tongsodonchuahoanthanh
                 ]);
 
-
-
-        var_dump($doanhthu);
-        var_dump($loinhuan);
-        var_dump($tongsodonhang);
-        var_dump($tongsobomhang);
-        var_dump($tiendongbang);
+        // var_dump($doanhthu);
+        // var_dump($loinhuan);
+        // var_dump($tongsodonhang);
+        // var_dump($tongsobomhang);
+        // var_dump($tiendongbang);
     }
 
 }

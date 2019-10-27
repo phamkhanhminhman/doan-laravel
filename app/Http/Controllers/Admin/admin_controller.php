@@ -16,6 +16,7 @@ class admin_controller extends Controller
 {
 	public function index()
 	{
+        $this->update_report_thang();
 		$product  =   DB::table('producttype')
                                 ->select('*')
                                 ->orderBy('amount_sell','desc')
@@ -81,6 +82,8 @@ class admin_controller extends Controller
 			$tongvon_up = 500;
             $tongsodonhang_up = ($tongsodonhang_hientai/$tongsodonhang_truoc)*100 - 100;
         }
+
+
         return view('admin/admin',compact('product','history','report_thang_hientai','doanhthu_up','loinhuan_up','tongvon_up','tongsodonhang_up','tonkho','don_chua_hoan_thanh','complain'));
 	}
 	public function signup()
@@ -212,6 +215,79 @@ class admin_controller extends Controller
            alert('Staff Deleted','Nothing', 'success');
         }   
         return redirect('/admin/staff');
+    }
+
+    public function update_report_thang()
+    {
+        $month = date('m');
+        $year = date('Y');
+
+        $order = DB::table('order_tb')
+                    ->whereYear('orderDate',$year)
+                    ->whereMonth('orderDate', $month)
+                    ->get();
+
+        $doanhthu = 0;
+        $loinhuan = 0;
+        $tongvon = 0;
+        $tienhangdaban = 0;
+        $tongsobomhang = 0;
+        $tiendongbang = 0;
+        $tongsodonchuahoanthanh = 0;
+
+        foreach ($order as $k) {
+            if ($k->orderStatus != 13 || $k->orderStatus != 22) {
+                $doanhthu = $doanhthu + $k->orderSell;
+                $tongvon = $tongvon + $k->orderCost;
+                $tienhangdaban = $tienhangdaban + $k->orderCost;
+            }
+
+            if ( $k->orderStatus != 8 && $k->orderStatus != 13 ) {
+                $tiendongbang = $tiendongbang + $k->orderSell;
+                $tongsodonchuahoanthanh++;
+            }
+
+            if ($k->orderStatus == 13) {
+                $tongsobomhang++;
+            }
+        } 
+
+
+
+        $loinhuan = $doanhthu - $tongvon;
+        $tongsodonhang = count($order);
+
+        $expense = DB::table('expense')
+                    ->whereMonth('updated', $month)
+                    ->whereYear('updated', $year)
+                    ->select('*')
+                    ->get();
+
+        $expense_sum = 0;
+        foreach ($expense as $k) {
+            $expense_sum = $expense_sum + $k->expense_cost;
+        }
+
+        DB::table('report_thang')
+                ->where('report_thang_id' , $month)
+                ->where('report_nam_id' , $year)
+                ->update([
+                    'doanhthu' => $doanhthu,
+                    'loinhuan' => $loinhuan,
+                    'tongvon' => $tongvon,
+                    'tienhangdaban' => $tienhangdaban,
+                    'tongsodonhang' => $tongsodonhang,
+                    'tongsobombhang' => $tongsobomhang,
+                    'tiendongbang' => $tiendongbang,
+                    'tongsodonchuahoanthanh' => $tongsodonchuahoanthanh,
+                    'chiphi' => $expense_sum
+                ]);
+
+        // var_dump($doanhthu);
+        // var_dump($loinhuan);
+        // var_dump($tongsodonhang);
+        // var_dump($tongsobomhang);
+        // var_dump($tiendongbang);
     }
 }
 

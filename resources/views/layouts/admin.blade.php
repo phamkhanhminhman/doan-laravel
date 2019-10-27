@@ -292,6 +292,7 @@
 <script src="{{asset('assets/admin/vendors/1.js')}}"></script>
 <script src="{{asset('assets/admin/vendors/2.js')}}"></script>
 <script src="{{asset('assets/js/product.js')}}"></script>
+<script src="{{asset('assets/js/dashboard.js')}}"></script>
 <script src="{{asset('assets/js/loading-bar.min.js')}}"></script>
 <script src="{{asset('assets/js/toastr.min.js')}}"></scrip
 <script src="{{asset('assets/admin/vendors/pnotify/dist/pnotify.js')}}"></script>

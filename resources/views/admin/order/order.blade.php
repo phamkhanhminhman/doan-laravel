@@ -170,7 +170,8 @@
       <h4 class="label labels" id="orderStatus" style="font-size:16px;font-weight: 90;background:green"   ng-if="pp.orderStatus === '8'">@{{pp.orderStatusDes}}</h4>
       <h4 class="label labels" id="orderStatus" style="font-size:16px;font-weight: 90;background:black"   ng-if="pp.orderStatus === '13'">@{{pp.orderStatusDes}}</h4>
     </div>
-    <div class="col-md-1 " style="color: red;margin-left:10px"><h4 style="font-weight:bold">@{{pp.orderSell-pp.orderCost |number:0}} đ</h4></div>
+    <div class="col-md-1 " style="color: red;margin-left:10px"><h4 style="font-weight:bold">@{{pp.orderSell|number:0}} đ</h4></div>
+    <!-- <div class="col-md-1 " style="color: red;margin-left:10px"><h4 style="font-weight:bold">@{{pp.orderSell-pp.orderCost |number:0}} đ</h4></div> -->
     <div class="clearfix"></div>
   </div>
   <div class="x_content"  ng-repeat="t in allv2" ng-if="t.orderID==pp.orderID" style="padding:0px">

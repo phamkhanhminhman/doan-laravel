@@ -40,6 +40,9 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
 
 
   //START AUTO GET ORDER RA DS DON HANG----------------------------------------------------------------------------------------------
+  $http.get($scope.baseURL + '/sendo/add-new-order').then(function (res) { toastr.success('Có ' + res.data + ' order từ SENDO vừa mới đc thêm vào')});
+  $http.get($scope.baseURL + '/shopee/add').then(function(res) { toastr.success('Có ' + res.data + ' order từ SHOPEE vừa mới đc thêm vào')})
+
   $http.get($scope.baseURL + '/admin/api-order-all?page=' + $scope.page + '&limit=' + $scope.pageLimit).then(function (res) { $scope.all = res.data;});
   $http.get($scope.baseURL + '/admin/count-order-all').then(function (res) { $scope.count_all = res.data; arrayPage(res.data)});
   $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; });
@@ -53,7 +56,8 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
       if ($arrayLength < 10) {
         $arrayLength = 10;
       }
-      for (var i = 1; i <= $arrayLength / $scope.pageLimit; i++) {
+      let totalPage = Math.ceil($arrayLength/ $scope.pageLimit);
+      for (var i = 1; i <= totalPage; i++) {
         arrayText = { id: i, }
         $scope.arrayPageIndex.push(arrayText);
       }
@@ -77,8 +81,7 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
   });
 
   $http.get($scope.baseURL + '/admin/count-order-cancle-return').then(function (res) { $scope.count_cancle_return = res.data });
-  $http.get($scope.baseURL + '/sendo/add-new-order').then(function (res) { toastr.success('Có ' + res.data + ' order từ SENDO vừa mới đc thêm vào')});
-  $http.get($scope.baseURL + '/shopee/add').then(function(res) { toastr.success('Có ' + res.data + ' order từ SHOPEE vừa mới đc thêm vào')})
+  
 
   //END AUTO GET ORDER RA DS DON HANG------------------------------------------------------------------------------------------------------------------
 

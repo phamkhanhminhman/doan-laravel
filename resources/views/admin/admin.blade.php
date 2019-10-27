@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('title', 'Dashboard')
 @section('content')
-<div class="right_col" role="main">
+<div class="right_col" role="main" ng-app="myDashBoard" ng-controller="myDashBoard">
         <!-- top tiles -->
         <div class="row tile_count">
           @foreach($report_thang_hientai as $r)
@@ -41,33 +41,33 @@
         <!-- /top tiles -->
         <div class="row tile_count">
           <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i> Tổng Vốn</span>
+            <span class="count_top"><i class="fa fa-user"></i>Tổng Vốn </span>
             <div class="count red"style="color:#e91e63"><?php echo number_format($r->tongvon,0,",",".");?></div>
             <span class="count_bottom"><i class="green"><?php echo round($tongvon_up);?>% </i> So Với Tháng Trước</span>
           </div>
           <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-clock-o"></i> Chi Phí</span>
-            <div class="count blue"style="color:#ff9100"><?php echo number_format($r->doanhthu - $r->tongvon - $r->loinhuan,0,",",".");?></div>
+            <span class="count_top"><i class="fa fa-clock-o"></i>Tiền hàng đã bán</span>
+            <div class="count blue"style="color:#ff9100"><?php echo number_format($r->tienhangdaban,0,",",".");?></div>
             <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> Available</span>
           </div>
           <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i> Mục Tiêu</span>
-            <div class="count green"style="color:#37474f">70%</div>
+            <span class="count_top"><i class="fa fa-user"></i> Chi Phí</span>
+            <div class="count green"style="color:#37474f"><?php echo number_format($r->chiphi,0,",",".");?></div>
             <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>Good </i> Cố Gắng Hơn !</span>
           </div>
           <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i> Bomb Hàng </span>
+            <span class="count_top"><i class="fa fa-user"></i> Mục Tiêu </span>
             <div class="count"style="color:black"><?php echo $r->tongsobombhang?></div>
             <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> Available</span>
            
           </div>
           <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i> Khiếu Nại </span>
+            <span class="count_top"><i class="fa fa-user"></i> Bomb Hàng </span>
             <div class="count"style="color:#d50000 ">0$</div>
             <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i></i> Available</span>
           </div>
           <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i> Việc Cần Làm</span>
+            <span class="count_top"><i class="fa fa-user"></i> Khiếu Nại</span>
             <div class="count red"style="color:#2962ff">8</div>
             <span class="count_bottom"><i class="green">4% </i> Available</span>
           </div>
