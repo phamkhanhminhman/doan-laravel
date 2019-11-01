@@ -22,7 +22,9 @@
       <li><a href="{{url('admin/product-type')}}"><i class="fa fa-edit"></i>Loại Sản Phẩm</a></li>
       <li><a href="{{url('admin/category')}}"><i class="fa fa-shopping-cart"></i>Ngành Hàng</a> </li>
       <li><a href="{{url('admin/customer')}}"><i class="fa fa-user"></i>Khách hàng</a></li>
-      <li><a href="{{url('admin/statistic_month')}}"><i class="fa fa-line-chart"></i>Thống kê</a>
+      <li><a href="{{url('admin/statistic_month')}}"><i class="fa fa-line-chart"></i>Thống kê tháng</a>
+      </li>
+      <li><a href="{{url('admin/statistic')}}"><i class="fa fa-line-chart"></i>Thống kê ngày</a>
       </li>
       <li><a href="{{url('admin/expense')}}"><i class="fa fa-money"></i>Chi phí</a>
       <li><a href="{{url('admin/staff')}}"><i class="fa fa-group"></i>Nhân sự</a>

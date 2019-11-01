@@ -81,7 +81,7 @@
                   <td class="text-center"><?php echo date('d-m-Y H:m',strtotime("$p->Updated"));?></td>
 
                   <td class="text-center">{{$p->productStatus}}</td>
-                  <td><a href="{{url('admin/product-edit',$p->productID)}}" class="btn btn-warning"><i class="fa fa-pencil"></i></i></a></td>
+                  <td><a href="{{url('admin/product-variation-edit',$p->productVariationID)}}" class="btn btn-warning"><i class="fa fa-pencil"></i></i></a></td>
                   <!-- <td><a href="{{url('admin/product-delete',$p->productID)}}" onclick="return confirm('Are you sure?')" class="btn btn-danger"><i class="fa fa-close"></i></a></td> -->
                   
                 </tr>

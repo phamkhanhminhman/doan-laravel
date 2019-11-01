@@ -124,7 +124,8 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin','middleware'=>'checklogin
    //PRODUCT----------------------------------------------------------------------------------------------------------------
 
    Route::get ('/product-variation',                      'product_variation@index');
-
+   Route::get ('/product-variation-edit/{id}',            'product_variation@edit');
+   Route::post ('/product-variation-update',              'product_variation@update');
 
    Route::get ('/customer',                     'customer_controller@index');
    Route::get ('/customer-table',               'customer_controller@table');
