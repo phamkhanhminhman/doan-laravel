@@ -322,4 +322,59 @@ class OrderController extends Controller
         // var_dump($tiendongbang);
     }
 
+    public function update_report_ngay()
+    {
+        $day = date('D');
+        $month = date('m');
+        $year = date('Y');
+
+        for ($i= intval($day); $i >=1 ; $i--) {
+
+            $order = DB::table('order_tb')
+                    ->whereYear('orderDate',$year)
+                    ->whereMonth('orderDate', $month)
+                    ->whereDay('orderDate', $day)
+                    ->get();
+
+            $doanhthu = 0;
+            $loinhuan = 0;
+            $tongvon = 0;
+            $tongsobomhang = 0;
+            $tiendongbang = 0;
+            $tongsodonchuahoanthanh = 0;
+
+            foreach ($order as $k) {
+                if ($k->orderStatus != 13 || $k->orderStatus != 22) {
+                    $doanhthu = $doanhthu + $k->orderSell;
+                    $tongvon = $tongvon + $k->orderCost;
+                }
+
+                if ( $k->orderStatus != 8 && $k->orderStatus != 13 ) {
+                    $tiendongbang = $tiendongbang + $k->orderSell;
+                    $tongsodonchuahoanthanh++;
+                }
+
+                if ($k->orderStatus == 13) {
+                    $tongsobomhang++;
+                }
+            } 
+
+            $loinhuan = $doanhthu - $tongvon;
+            $tongsodonhang = count($order);
+
+            DB::table('report_ngay')
+                    ->where('report_thang_id' , $month)
+                    ->where('report_nam_id' , $year)
+                    ->update([
+                        'doanhthu' => $doanhthu,
+                        'loinhuan' => $loinhuan,
+                        'tongvon' => $tongvon,
+                        'tongsodonhang' => $tongsodonhang,
+                        'tongsobombhang' => $tongsobomhang,
+                        'tiendongbang' => $tiendongbang,
+                        'tongsodonchuahoanthanh' => $tongsodonchuahoanthanh
+                    ]);
+            }
+    }
+
 }
