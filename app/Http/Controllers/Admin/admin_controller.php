@@ -16,7 +16,9 @@ class admin_controller extends Controller
 {
 	public function index()
 	{
+        $this->update_report_ngay();
         $this->update_report_thang();
+        
 		$product  =   DB::table('producttype')
                                 ->select('*')
                                 ->orderBy('amount_sell','desc')
@@ -288,6 +290,86 @@ class admin_controller extends Controller
         // var_dump($tongsodonhang);
         // var_dump($tongsobomhang);
         // var_dump($tiendongbang);
+    }
+
+    public function update_report_ngay()
+    {
+        $day = date('d');
+        $month = date('m');
+        $year = date('Y');
+
+        //Update từ ngày hiện tại đến từng ngày trở về trước
+        for ($i= intval($day); $i >=1 ; $i--) {
+            $order = DB::table('order_tb')
+                    ->whereYear('orderDate',$year)
+                    ->whereMonth('orderDate', $month)
+                    ->whereDay('orderDate', $i)
+                    ->get();
+
+            $doanhthu = 0;
+            $loinhuan = 0;
+            $tongvon = 0;
+            $tongsobomhang = 0;
+            $tiendongbang = 0;
+            $tongsodonchuahoanthanh = 0;
+
+            foreach ($order as $k) {
+                if ($k->orderStatus != 13 || $k->orderStatus != 22) {
+                    $doanhthu = $doanhthu + $k->orderSell;
+                    $tongvon = $tongvon + $k->orderCost;
+                }
+
+                if ( $k->orderStatus != 8 && $k->orderStatus != 13 ) {
+                    $tiendongbang = $tiendongbang + $k->orderSell;
+                    $tongsodonchuahoanthanh++;
+                }
+
+                if ($k->orderStatus == 13) {
+                    $tongsobomhang++;
+                }
+            } 
+
+            $loinhuan = $doanhthu - $tongvon;
+            $tongsodonhang = count($order);
+
+            $checkExistDate = DB::table('report_ngay')
+                                ->whereYear('date', $year)
+                                ->whereMonth('date', $month)
+                                ->whereDay('date', $day)
+                                ->get();
+
+            if (count($checkExistDate) !== 0) {
+                DB::table('report_ngay')
+                    ->whereYear('date', $year)
+                    ->whereMonth('date', $month)
+                    ->whereDay('date', $day)
+                    ->update([
+                        'doanhthu' => $doanhthu,
+                        'loinhuan' => $loinhuan,
+                        'tongvon' => $tongvon,
+                        'tongsodonhang' => $tongsodonhang,
+                        'tongsobombhang' => $tongsobomhang,
+                        'tiendongbang' => $tiendongbang,
+                        'tongsodonchuahoanthanh' => $tongsodonchuahoanthanh
+                    ]);
+
+            } else {
+                DB::table('report_ngay')
+                    ->whereYear('date', $year)
+                    ->whereMonth('date', $month)
+                    ->whereDay('date', $day)
+                    ->insert([
+                        'doanhthu' => $doanhthu,
+                        'loinhuan' => $loinhuan,
+                        'tongvon' => $tongvon,
+                        'tongsodonhang' => $tongsodonhang,
+                        'tongsobombhang' => $tongsobomhang,
+                        'tiendongbang' => $tiendongbang,
+                        'tongsodonchuahoanthanh' => $tongsodonchuahoanthanh
+
+                    ]);
+            } 
+        }
     }
 }
 

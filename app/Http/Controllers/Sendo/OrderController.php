@@ -324,16 +324,16 @@ class OrderController extends Controller
 
     public function update_report_ngay()
     {
-        $day = date('D');
+        $day = date('d');
         $month = date('m');
         $year = date('Y');
 
+        //Update từ ngày hiện tại đến từng ngày trở về trước
         for ($i= intval($day); $i >=1 ; $i--) {
-
             $order = DB::table('order_tb')
                     ->whereYear('orderDate',$year)
                     ->whereMonth('orderDate', $month)
-                    ->whereDay('orderDate', $day)
+                    ->whereDay('orderDate', $i)
                     ->get();
 
             $doanhthu = 0;
@@ -362,9 +362,17 @@ class OrderController extends Controller
             $loinhuan = $doanhthu - $tongvon;
             $tongsodonhang = count($order);
 
-            DB::table('report_ngay')
-                    ->where('report_thang_id' , $month)
-                    ->where('report_nam_id' , $year)
+            $checkExistDate = DB::table('report_ngay')
+                                ->whereYear('date', $year)
+                                ->whereMonth('date', $month)
+                                ->whereDay('date', $day)
+                                ->get();
+
+            if (count($checkExistDate) !== 0) {
+                DB::table('report_ngay')
+                    ->whereYear('date', $year)
+                    ->whereMonth('date', $month)
+                    ->whereDay('date', $day)
                     ->update([
                         'doanhthu' => $doanhthu,
                         'loinhuan' => $loinhuan,
@@ -374,7 +382,23 @@ class OrderController extends Controller
                         'tiendongbang' => $tiendongbang,
                         'tongsodonchuahoanthanh' => $tongsodonchuahoanthanh
                     ]);
-            }
-    }
 
+            } else {
+                DB::table('report_ngay')
+                    ->whereYear('date', $year)
+                    ->whereMonth('date', $month)
+                    ->whereDay('date', $day)
+                    ->insert([
+                        'doanhthu' => $doanhthu,
+                        'loinhuan' => $loinhuan,
+                        'tongvon' => $tongvon,
+                        'tongsodonhang' => $tongsodonhang,
+                        'tongsobombhang' => $tongsobomhang,
+                        'tiendongbang' => $tiendongbang,
+                        'tongsodonchuahoanthanh' => $tongsodonchuahoanthanh
+
+                    ]);
+            } 
+        }
+    }
 }
