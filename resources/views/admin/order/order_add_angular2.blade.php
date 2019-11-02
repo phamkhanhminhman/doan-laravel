@@ -62,16 +62,14 @@
               
               <!-- MA DON HANG START ------------------------------------------------------------------------------->
               <div class="item form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Mã Đơn Hàng <span class="required">*</span>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Mã Đơn Hàng
                 </label>
                 <div class="col-md-4 col-sm-4 col-xs-8">
-                  <input id="name" name="orderID" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2"  placeholder="Nhập Mã Đơn"  type="text" required="true">
+                  <input id="name" name="orderID" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2"  placeholder="Nhập Mã Đơn"  type="text">
                 </div>
                 <div class="col-md-3 col-sm-2 col-xs-4">
                   <select class="form-control col-md-7 col-xs-12" name="orderChannel" id="">
-                    <option value="Sendo">Sendo</option>
-                    <option value="Home">Home</option>
-                    <option value="Shopee">Shopee</option>
+                    <option value="Store">Store</option>
                   </select>
                 </div>
               </div>
@@ -79,18 +77,14 @@
 
               <!-- MA VAN CHUYEN START ------------------------------------------------------------------------------->
               <div class="item form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Mã Vận Chuyển <span class="required">*</span>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Mã Vận Chuyển <!-- <span class="required">*</span> -->
                 </label>
                 <div class="col-md-4 col-sm-4 col-xs-8">
-                  <input type="text" name="orderShipLink"  class="form-control col-md-7 col-xs-12" required="true">
+                  <input type="text" name="orderShipLink"  class="form-control col-md-7 col-xs-12">
                 </div>
                 <div class="col-md-3 col-sm-2 col-xs-4">
                   <select class="form-control col-md-7 col-xs-12" name="orderShip" id="">
-                    <option value="GHN">GHN</option>
-                    <option value="Viettel">Viettel</option>
-                    <option value="VNPost">VnPost</option>
-                    <option value="NJV">NJV</option>
-                    <option value="Home">Home</option>
+                    <option value="Store">Store</option>
                   </select>
                 </div>
               </div>
@@ -98,7 +92,7 @@
 
               <!-- NOTE START ------------------------------------------------------------------------------->
               <div class="item form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Ghi Chú <span class="required">*</span>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Ghi Chú <!-- <span class="required">*</span> -->
                 </label>
                 <div class="col-md-7 col-sm-6 col-xs-12">
                   <textarea type="text"  cols="30" rows="4"  name="orderNote" class="form-control col-md-7 col-xs-12"></textarea>
@@ -113,7 +107,7 @@
               <span class="section"><i class="fa fa-user"></i>&nbspKhách Hàng</span>
               <!-- MA KHACH HANG START ------------------------------------------------------------------------------->
               <div class="item form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Mã Khách Hàng <span class="required">*</span>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Mã Khách Hàng <!-- <span class="required">*</span> -->
                 </label>
                 @foreach ($customer as $c) 
                 <div class="col-md-4 col-sm-4 col-xs-9">
@@ -128,7 +122,7 @@
 
               <!-- TEN KHACH HANG START ------------------------------------------------------------------------------->
               <div class="item form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Tên Khách Hàng <span class="required">*</span>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Tên Khách Hàng <!-- <span class="required">*</span> -->
                 </label>
                 <div class="col-md-4 col-sm-4 col-xs-8">
                   <input id="name" class="form-control col-md-7 col-xs-12" name="customerName" placeholder="Nhập Tên Khách Hàng"  type="text">
@@ -143,10 +137,10 @@
               <!-- TEN KHACH HANG END ------------------------------------------------------------------------------->
               <!-- TEN KHACH HANG START ------------------------------------------------------------------------------->
               <div class="item form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Thành Phố <span class="required">*</span>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Thành Phố <!-- <span class="required">*</span> -->
                 </label>
                 <div class="col-md-4 col-sm-4 col-xs-8">            
-                  <select class="selectpicker form-control" data-live-search="true" name="customerProvince" ng-model="bbb" ng-change="changeorder(bbb)" required="true">
+                  <select class="selectpicker form-control" data-live-search="true" name="customerProvince" ng-model="bbb" ng-change="changeorder(bbb)">
                     @foreach ($data_tinhthanh as $p)
                     <option value="{{$p->matp}}">{{$p->name}}</option>
                     @endforeach                   
@@ -161,7 +155,7 @@
               <!-- TEN KHACH HANG END ------------------------------------------------------------------------------->
               <!-- DIA CHI KHACH HANG START ------------------------------------------------------------------------------->
               <div class="item form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Địa Chỉ <span class="required">*</span>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Địa Chỉ <!-- <span class="required">*</span> -->
                 </label>
                 <div class="col-md-7 col-sm-4 col-xs-8">
                   <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="customerAddress" placeholder="Nhập Địa Chỉ"  type="text">
@@ -170,16 +164,16 @@
               <!-- DIA CHI KHACH HANG END ------------------------------------------------------------------------------->
               <!-- SDT KHACH HANG START ------------------------------------------------------------------------------->
               <div class="item form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Điện Thoại <span class="required">*</span>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Điện Thoại <!-- <span class="required">*</span> -->
                 </label>
                 <div class="col-md-7 col-sm-4 col-xs-8">
-                  <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="customerTel" placeholder="Nhập Số Điện Thoại" required="true" type="text">
+                  <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="customerTel" placeholder="Nhập Số Điện Thoại" type="text">
                 </div>
               </div>          
               <!-- SDT KHACH HANG END------------------------------------------------------------------------------------- -->
               <!-- EMAIL KHACH HANG START ----------------------------------------------------------------------------------->
               <div class="item form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Email <span class="required">*</span>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Email <!-- <span class="required">*</span> -->
                 </label>
                 <div class="col-md-7 col-sm-4 col-xs-8">
                   <input id="name"class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="customerMail" placeholder="Nhập Email"  type="email">
@@ -196,12 +190,12 @@
                   <thead>
                     <tr>
                       <th><input class='check_all' type='checkbox' onclick="select_all()"/></th>
-                      <th class="col-md-2">Tên SP</th>
-                      <th class="col-md-1">Mã  SP </th>
+                      <th class="col-md-1">Mã SP</th>
+                      <th class="col-md-2">Tên  SP </th>
                       <th class="col-md-1">IMG</th>
                       <th>Giá Nhập (VND)</th>
                       <th>Giá bán  (VND)</th>
-                      <th>Note</th>
+                      <!-- <th>Note</th> -->
                     </tr>
                   </thead>
                   <tbody>
@@ -212,6 +206,7 @@
                       <td><img style="margin: 5px" src=""id='productImage_1' alt="" width="80px" height="80px"></td>
                       <td><input class="form-control productCost" type='text'  id='productCost_1' name='productCost[]'/> </td>
                       <td><input class="form-control productSell" type='text'  id='productSell_1' name='productSell[]'/> </td>
+                      <!-- <td><input class="form-control productSell" type='text'  id='productSell_1' name='productSell[]'/> </td> -->
                       
                       <!-- <td><input class="form-control autocomplete_txt" type='text' data-type="quantity" value="1"   id='quantity' name='quantity[]'/> </td> -->
 
@@ -224,7 +219,7 @@
                       <td style="border: none"></td>
                       <td style="border: none"></td>
                       <td style="border: none"></td>
-                      <td><i class="fa fa-money"></i>&nbspTổng nhập (VND) <input class="form-control" type='text' id='tongnhap' name='tongnhap'/> </td>
+                      <td><i class="fa fa-money"></i>&nbspTổng nhập (VND) <input class="form-control" type='text' id='tongnhap' name='tongnhap' disabled /> </td>
                       <td><i class="fa fa-money"></i>&nbspTổng bán  (VND) <input class="form-control" type='text' id='tongban' name='tongban'/>  </td>
                       <td>Tiền lãi <i class="fa fa-money"></i>&nbsp<input class="form-control" type='text'  id='tienlai' name='tienlai'/></td>
 
@@ -301,8 +296,8 @@
     data+="<td><input class='form-control autocomplete_txt' type='text' data-type='countryname' id='countryname_"+i+"' name='countryname[]'/></td>";
     data+="<td><input class='form-control productID'   type='text' data-type='productID'   id='productID_"+i+"' name='productID[]'/></td>";
     data+="<td><img style='margin: 5px' src='' id='productImage_"+i+"' width='80px' height='80px'></td>";
-    data+="<td><input class='form-control productCost' type='text' data-type='productCost' id='productCost_"+i+"' name='productCost[]'/></td>";
-    data+="<td><input class='form-control productSell' type='text' data-type='productSell' id='productSell_"+i+"' name='productSell[]'/></td>";
+    data+="<td><input disabled class='form-control productCost' type='text' data-type='productCost' id='productCost_"+i+"' name='productCost[]'/></td>";
+    data+="<td><input disabled class='form-control productSell' type='text' data-type='productSell' id='productSell_"+i+"' name='productSell[]'/></td>";
     
     // data+="<td><input class='form-control autocomplete_txt' type='text' data-type='country_code' value='1' id='country_code_"+i+"' name='country_code[]'/></td></tr>";
 
@@ -333,7 +328,7 @@ function updateSerialNo(){
 $(document).on('focus','.autocomplete_txt',function(){
   type = $(this).data('type');
   
-  if(type =='countryname' )autoType='name'; 
+  if(type =='countryname' )autoType='sku'; 
   if(type =='country_code' )autoType='sortname'; 
   
   $(this).autocomplete({
@@ -349,7 +344,8 @@ $(document).on('focus','.autocomplete_txt',function(){
       success: function(data) {
         var array = $.map(data, function (item) {
          return {
-           label: item[autoType]+' '+'Mã'+' '+item.pid,
+           // label: item[autoType]+' '+'Mã'+' '+item.sku,
+           label: item.sku + ' ' + item.name,
            value: item[autoType],
            data : item
          }
@@ -366,9 +362,9 @@ $(document).on('focus','.autocomplete_txt',function(){
    $('#countryname_'+elementId).val(data.name);
    $('#productCost_'+elementId).val(data.cost);
    $('#productSell_'+elementId).val(data.sell);
-   $('#productID_'  +elementId).val(data.pid);
+   $('#productID_'  +elementId).val(data.name);
    console.log(data.pid);
-   $('#productImage_'  +elementId).attr('src', '../'+data.img); 
+   $('#productImage_'  +elementId).attr('src', data.img); 
  }
 });
 });

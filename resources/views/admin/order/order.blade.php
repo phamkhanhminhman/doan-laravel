@@ -135,11 +135,13 @@
       <div style="margin-top:10px">
       <h4 ng-model="pp.orderChannel" class ="label" style="font-size:18px;background-color:#FA5430; margin-left: -15px" ng-if="pp.orderChannel === 'Shopee' ">@{{pp.orderChannel}}</h4>
         <h4 ng-model="pp.orderChannel" class ="label" style="font-size:18px;background-color:red; margin-left: -15px " ng-if="pp.orderChannel === 'Sen Đỏ' ">@{{pp.orderChannel}}</h4>
+        <h4 ng-model="pp.orderChannel" class ="label" style="font-size:18px;background-color:#FFA500; margin-left: -15px " ng-if="pp.orderChannel === 'Store' ">@{{pp.orderChannel}}</h4>
       </div>
     </a>
     <div>
     <a href="@{{pp.orderLink}}" class="col-md-2"target="_blank" style="color:red;font-weight:bold" ng-if ="pp.orderChannel === 'Sen Đỏ'"><h4 ng-model="pp.orderID" style="font-size:18px "  >@{{pp.orderID}}</h4> </a>
     <a href="@{{pp.orderLink}}" class="col-md-2"target="_blank" style="color:orange;font-weight:bold" ng-if ="pp.orderChannel === 'Shopee'"><h4 ng-model="pp.orderID" style="font-size:18px "  >@{{pp.orderID}}</h4> </a>
+    <a href="@{{pp.orderLink}}" class="col-md-2"target="_blank" style="color:orange;font-weight:bold" ng-if ="pp.orderChannel === 'Store'"><h4 ng-model="pp.orderID" style="font-size:18px "  >@{{pp.orderID}}</h4> </a>
     
     </div>
     
@@ -158,6 +160,8 @@
       <a href="@{{pp.orderShipLink}}" target="_blank"><h4 class="label" style="font-size:16px;font-weight: 90; background-color: #DB0037;color:white" ng-if="pp.CarrierName === 'NJV-STANDARD' ">@{{pp.CarrierName}} @{{pp.shipToRegionName}}</h4>
       </a>
       <a href="@{{pp.orderShipLink}}" target="_blank"><h4 class="label" style="font-size:16px;font-weight: 90; background-color: #196F3D ;color:white; align-content:center" ng-if="pp.CarrierName === 'Giao Hàng Tiết Kiệm' ">GHTK @{{pp.shipToRegionName}}</h4>
+      </a>
+      <a href="@{{pp.orderShipLink}}" target="_blank"><h4 class="label" style="font-size:16px;font-weight: 90; background-color: blue ;color:white; align-content:center" ng-if="pp.CarrierName === 'Store' ">Store @{{pp.shipToRegionName}}</h4>
       </a>
     </div>
     <div class="col-md-1 col-xs-4"><h4>@{{pp.user}}</h4></div>
