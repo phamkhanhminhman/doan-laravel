@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 
 class SendoHandler
 {
-    const URL_SENDO = 'http://sapi.sendo.vn';
+    const URL_SENDO = 'https://sapi.sendo.vn';
 
     /**
      * constructor.
@@ -17,57 +17,67 @@ class SendoHandler
     /**
      * authetication for API
      */
-    public function getSendoToken()
+    public function getSendoToken($shopID)
     {
-        $username = '15a3d1d631f043e49be97eb53ed4a367';
+        if ($shopID == null) {
+            $shopID ='15a3d1d631f043e49be97eb53ed4a367';
+        }
+        $username = $shopID;
         $password = '9397f820941f37f2d28383cc419ea34632022b54';
 
-        $curl = curl_init();
+        // $curl = curl_init();
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://sapi.sendo.vn/shop/authentication",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => "grant_type=password&username=" . $username . "&password=" . $password,
-            CURLOPT_HTTPHEADER => array(
-                "Accept: */*",
-                "Accept-Encoding: gzip, deflate",
-                "Cache-Control: no-cache",
-                "Connection: keep-alive",
-                "Content-Length: 111",
-                "Content-Type: application/x-www-form-urlencoded",
-                "Host: sapi.sendo.vn",
-                "Postman-Token: 6ede73a1-2dc0-4d5c-ba02-7725d1472c87,9c0c0007-a54e-40e0-84be-752637b80446",
-                "User-Agent: PostmanRuntime/7.16.3",
-                "cache-control: no-cache",
-            ),
-        ));
+        // curl_setopt_array($curl, array(
+        //     CURLOPT_URL => "https://sapi.sendo.vn/shop/authentication",
+        //     CURLOPT_RETURNTRANSFER => true,
+        //     CURLOPT_ENCODING => "",
+        //     CURLOPT_MAXREDIRS => 10,
+        //     CURLOPT_TIMEOUT => 30,
+        //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        //     CURLOPT_CUSTOMREQUEST => "POST",
+        //     CURLOPT_FOLLOWLOCATION => false,
+        //     CURLOPT_POSTFIELDS => "grant_type=password&username=" . $username . "&password=" . $password,
+        //     CURLOPT_HTTPHEADER => array(
+        //         "Accept: */*",
+        //         "Accept-Encoding: gzip, deflate",
+        //         "Cache-Control: no-cache",
+        //         "Connection: keep-alive",
+        //         "Content-Length: 111",
+        //         "Content-Type: application/x-www-form-urlencoded",
+        //         "Host: sapi.sendo.vn",
+        //         "Postman-Token: 6ede73a1-2dc0-4d5c-ba02-7725d1472c87,9c0c0007-a54e-40e0-84be-752637b80446",
+        //         "User-Agent: PostmanRuntime/7.16.3",
+        //         "cache-control: no-cache",
+        //     ),
+        // ));
 
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
+        $client = new \GuzzleHttp\Client([
+            'verify' => false,
+            'base_uri' => self::URL_SENDO,
+            'headers' => [
+                'Content-Type' => 'application/x-www-form-urlencoded',              
+            ],
+        ]);
 
-        curl_close($curl);
+        $response = $client->request('POST', 'https://sapi.sendo.vn/shop/authentication', [
+            'form_params' => [
+                'username' => $username,
+                'password' => $password,
+                'grant_type' => 'password'
+            ]
+        ]);
 
-        if ($err) {
-            echo "cURL Error #:" . $err;
-        } else {
-            $response = json_decode($response);
-            return $response->access_token;
-        }
-
+        $res = json_decode($response->getBody()->getContents());
+        return $res->access_token;
     }
 
     /**
      * API trả về danh sách đơn hàng từ Sen Đỏ
      */
-    public function getOrderList($orderStatus = null)
+    public function getOrderList($orderStatus = null,$shopID)
     {
         try {
-            $token = $this->getSendoToken();
+            $token = $this->getSendoToken($shopID);
             $currentDay = date('Y-m-d');
             //$fromDate = '2019-09-17'; // currentday-fromdate = 3 ngày
             $fromDate =  date('Y-m-d',strtotime("-3 days"));
@@ -84,19 +94,20 @@ class SendoHandler
             ]);
 
             $url = '/shop/salesOrder/bylastDate?fromDate=' . $fromDate . '&toDate=' . $currentDay .
-                '&offset=' . $offSet . '&limit=' . $limit . '&orderStatus=' . $orderStatus;
+            '&offset=' . $offSet . '&limit=' . $limit . '&orderStatus=' . $orderStatus;
 
             if ($orderStatus === null) {
                 $url = '/shop/salesOrder/bylastDate?fromDate=' . $fromDate . '&toDate=' . $currentDay .
-                    '&offset=' . $offSet . '&limit=' . $limit;
+                '&offset=' . $offSet . '&limit=' . $limit;
             }
+            dd($url);
             $request = $client->get($url);
             $response = json_decode($request->getBody()->getContents());
- 
+
             return $response;
 
         } catch (\Exception $e) {
-            echo 'failed';
+            echo $e;
         }
 
     }
@@ -105,9 +116,9 @@ class SendoHandler
      * API trả về thông tin chi tiết đơn hàng từ Sen Đỏ
      * @param $orderNumber
      */
-    public function getOrderDetail($orderNumber)
+    public function getOrderDetail($orderNumber,$shopID)
     {
-        $token = $this->getSendoToken();
+        $token = $this->getSendoToken($shopID);
         $client = new \GuzzleHttp\Client([
             'verify' => false,
             'base_uri' => self::URL_SENDO,
@@ -211,8 +222,8 @@ class SendoHandler
         $url = '/shop/v2/product/';
 
         $request = $client->post($url, [
-                'body' => json_encode($body)
-            ]);
+            'body' => json_encode($body)
+        ]);
 
         $response = json_decode($request->getBody()->getContents());
         return $response;

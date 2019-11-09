@@ -134,7 +134,7 @@
     <a href="@{{pp.orderLink}}" class="col-md-1" target="_blank" style="color:blue">
       <div style="margin-top:10px">
       <h4 ng-model="pp.orderChannel" class ="label" style="font-size:18px;background-color:#FA5430; margin-left: -15px" ng-if="pp.orderChannel === 'Shopee' ">@{{pp.orderChannel}}</h4>
-        <h4 ng-model="pp.orderChannel" class ="label" style="font-size:18px;background-color:red; margin-left: -15px " ng-if="pp.orderChannel === 'Sen Đỏ' ">@{{pp.orderChannel}}</h4>
+        <h4 ng-model="pp.orderChannel" class ="label" style="font-size:18px;background-color:red; margin-left: -15px " ng-if="pp.orderChannel === 'Sen Đỏ' ">@{{pp.orderChannel}} - @{{pp.orderShopName}}</h4>
         <h4 ng-model="pp.orderChannel" class ="label" style="font-size:18px;background-color:#FFA500; margin-left: -15px " ng-if="pp.orderChannel === 'Store' ">@{{pp.orderChannel}}</h4>
       </div>
     </a>

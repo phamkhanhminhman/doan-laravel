@@ -30,37 +30,37 @@ class OrderController extends Controller
         switch ($orderStatus) {
 
             case 2:$orderStatusDes = "Mới";
-                break;
+            break;
             case 3:$orderStatusDes = "Đang Xử Lý";
-                break;
+            break;
             case 6:$orderStatusDes = "Đang Vận Chuyển";
-                break;
+            break;
             case 7:$orderStatusDes = "Đã Giao Hàng";
-                break;
+            break;
             case 8:$orderStatusDes = "Đã Hoàn Tất";
-                break;
+            break;
             case 10:$orderStatusDes = "Đóng";
-                break;
+            break;
             case 11:$orderStatusDes = "Yêu Cầu Hoãn";
-                break;
+            break;
             case 12:$orderStatusDes = "Đang Hoãn";
-                break;
+            break;
             case 13:$orderStatusDes = "Hủy";
-                break;
+            break;
             case 14:$orderStatusDes = "Yêu Cầu Tách";
-                break;
+            break;
             case 15:$orderStatusDes = "Chờ Tách";
-                break;
+            break;
             case 19:$orderStatusDes = "Chờ Gộp";
-                break;
+            break;
             case 23:$orderStatusDes = "Chờ Sendo Xử Lý";
-                break;
+            break;
             case 21:$orderStatusDes = "Đang Đổi Trả";
-                break;
+            break;
             case 22:$orderStatusDes = "Đổi Trả Thành Công";
-                break;
+            break;
             default:$orderStatusDes = "Not Responding";
-                break;
+            break;
         }
         return $orderStatusDes;
     }
@@ -70,8 +70,12 @@ class OrderController extends Controller
      */
     public function addNewOrder()
     {
-        // $orderStatus = 2; // 2 = new order
-        for ($i=0; $i < 3 ; $i++) { 
+        $shopList = DB::table('shop')->get();
+        foreach ($shopList as $k) {
+            $shopID   = $k->shopID;
+            $shopName = $k->shopName;
+             // $orderStatus = 2; // 2 = new order
+        for ($i=0; $i < 1 ; $i++) { 
             if ($i === 0) {
                 $orderStatus = 2;
             }
@@ -84,7 +88,7 @@ class OrderController extends Controller
                 $orderStatus = 6;
             }
 
-            $response = $this->sendo->getOrderList($orderStatus); //call API GET ORDER LIST - SENDO
+            $response = $this->sendo->getOrderList($orderStatus, $shopID); //call API GET ORDER LIST - SENDO
 
             $orderLinkSendo = self::ORDER_LINK_SENDO;
 
@@ -125,6 +129,8 @@ class OrderController extends Controller
                             'orderChannel'=> $orderChannel,
                             'shipToRegionID'=> $shipToRegionId, 
                             'shipToRegionName'=> $shipToRegionName,
+                            'orderShopID'=>$shopID,
+                            'orderShopName'=>$shopName,
                         ]);
                     }
                     // thêm khách hàng của order vào DB
@@ -137,15 +143,18 @@ class OrderController extends Controller
                         ]);
                     }
                     //Cập nhật thêm thông tin từ response API Order Detail, vào bảng order_tb 
-                    $this->updateOrder($orderNumber);
+                    $this->updateOrder($orderNumber,$shopID);
                     
                 }
-                return $countNewOrder;
+                // return $countNewOrder;
             } else {
-
+                // return $countNewOrder;
             } 
         }
-         
+        }
+
+       
+
     }
     /**
      * Update dữ liệu cho đơn hàng cũ, trừ những đơn đã hoàn thành ( orderStatus # 8 )
@@ -156,7 +165,7 @@ class OrderController extends Controller
         $month = date('m');
         // lấy mã đơn hàng cũ từ DB
         $arrayOrderNumber = DB::table('order_tb')
-            ->where('orderStatus', '<>', 8)
+        ->where('orderStatus', '<>', 8)
             ->where('orderStatus', '<>', 'Done') // sau này bỏ ( dữ liệu giả)
             ->where('orderStatus', '<>', 'ReturnOK') // sau này bỏ ( dữ liệu giả)
             ->where('orderChannel', '=', 'Sen Đỏ')
@@ -164,22 +173,22 @@ class OrderController extends Controller
             ->select('orderID')
             ->get();
         // nếu có đơn thì mới chạy hàm updateOrder
-        if (count($arrayOrderNumber) > 0) {
-            foreach ($arrayOrderNumber as $key => $p) {
-                $this->updateOrder($p->orderID);
+            if (count($arrayOrderNumber) > 0) {
+                foreach ($arrayOrderNumber as $key => $p) {
+                    $this->updateOrder($p->orderID);
+                }
             }
+
+            return count($arrayOrderNumber);
         }
-        
-        return count($arrayOrderNumber);
-    }
 
     /**
      * Update dữ liệu cho đơn hàng khi click event cập nhật đơn hàng
      * @Params: OrderNumber
      */
-    public function updateOrder($orderNumber)
+    public function updateOrder($orderNumber,$shopID)
     {  
-        $response = $this->sendo->getOrderDetail($orderNumber); //call API ORDER DETAIL - SENDO
+        $response = $this->sendo->getOrderDetail($orderNumber,$shopID); //call API ORDER DETAIL - SENDO
         $p = $response->result->salesOrder;
         $orderStatus = $p->orderStatus;                          // mã trạng thái của orderstatus
         $orderStatusDes = $this->parseOrderStatus($orderStatus); // đổi orderstatus sang text
@@ -191,14 +200,14 @@ class OrderController extends Controller
         $duplicateOrder = DB::table('order_tb')->where('orderID', $orderNumber)->get();
         if (count($duplicateOrder) === 1) {
             DB::table('order_tb')->where('orderID', $orderNumber)
-                ->update([
-                    'orderStatus' => $orderStatus,
-                    'orderStatusDes' => $orderStatusDes,
-                    'CarrierName' => $carrierName,
-                    'ordershipID' => $ordershipID,
-                    'ordershipLink' => $ordershipLink,
-                    'orderSell' => $orderSell,
-                ]);
+            ->update([
+                'orderStatus' => $orderStatus,
+                'orderStatusDes' => $orderStatusDes,
+                'CarrierName' => $carrierName,
+                'ordershipID' => $ordershipID,
+                'ordershipLink' => $ordershipLink,
+                'orderSell' => $orderSell,
+            ]);
 
             $this->getProductFromOrder($response, $orderNumber); //Insert list product each order
         }
@@ -221,9 +230,9 @@ class OrderController extends Controller
                 $quantity = $p->quantity;
                 // trùng order và trùng productid thì mới pass chứ ko là mỗi order chỉ có 1 product
                 $duplicateOrder = DB::table('order_tb_product')
-                                        ->where('orderID', $orderNumber)
-                                        ->where('variantSKU', $productSKU)  
-                                        ->get();
+                ->where('orderID', $orderNumber)
+                ->where('variantSKU', $productSKU)  
+                ->get();
 
                 if (count($duplicateOrder) === 0) {
                     DB::table('order_tb_product')->insert(
@@ -236,12 +245,16 @@ class OrderController extends Controller
                             'Amount' => $quantity,
                         ]);
 
-                $product_variation = DB::table('product_variation')
+                    $product_variation = DB::table('product_variation')
                         ->where('productVariationID', $productSKU)
                         ->first();
-
-                $cost = intval($product_variation->productCost) * intval($quantity); 
-                $orderCost = $orderCost + $cost;
+                    if ($product_variation !== null) {
+                        $cost = intval($product_variation->productCost) * intval($quantity); 
+                        $orderCost = $orderCost + $cost;
+                    } else {
+                        echo 'co 1 sp trong order ko co trong db';
+                    }
+                    
                 } 
             }
             if (count($duplicateOrder) === 0) {
@@ -270,9 +283,9 @@ class OrderController extends Controller
         $year = date('Y');
 
         $order = DB::table('order_tb')
-                    ->whereYear('orderDate',$year)
-                    ->whereMonth('orderDate', $month)
-                    ->get();
+        ->whereYear('orderDate',$year)
+        ->whereMonth('orderDate', $month)
+        ->get();
 
         $doanhthu = 0;
         $loinhuan = 0;
@@ -303,17 +316,17 @@ class OrderController extends Controller
         $tongsodonhang = count($order);
 
         DB::table('report_thang')
-                ->where('report_thang_id' , $month)
-                ->where('report_nam_id' , $year)
-                ->update([
-                    'doanhthu' => $doanhthu,
-                    'loinhuan' => $loinhuan,
-                    'tongvon' => $tongvon,
-                    'tongsodonhang' => $tongsodonhang,
-                    'tongsobombhang' => $tongsobomhang,
-                    'tiendongbang' => $tiendongbang,
-                    'tongsodonchuahoanthanh' => $tongsodonchuahoanthanh
-                ]);
+        ->where('report_thang_id' , $month)
+        ->where('report_nam_id' , $year)
+        ->update([
+            'doanhthu' => $doanhthu,
+            'loinhuan' => $loinhuan,
+            'tongvon' => $tongvon,
+            'tongsodonhang' => $tongsodonhang,
+            'tongsobombhang' => $tongsobomhang,
+            'tiendongbang' => $tiendongbang,
+            'tongsodonchuahoanthanh' => $tongsodonchuahoanthanh
+        ]);
 
         // var_dump($doanhthu);
         // var_dump($loinhuan);
@@ -331,10 +344,10 @@ class OrderController extends Controller
         //Update từ ngày hiện tại đến từng ngày trở về trước
         for ($i= intval($day); $i >=1 ; $i--) {
             $order = DB::table('order_tb')
-                    ->whereYear('orderDate',$year)
-                    ->whereMonth('orderDate', $month)
-                    ->whereDay('orderDate', $i)
-                    ->get();
+            ->whereYear('orderDate',$year)
+            ->whereMonth('orderDate', $month)
+            ->whereDay('orderDate', $i)
+            ->get();
 
             $doanhthu = 0;
             $loinhuan = 0;
@@ -363,41 +376,41 @@ class OrderController extends Controller
             $tongsodonhang = count($order);
 
             $checkExistDate = DB::table('report_ngay')
-                                ->whereYear('date', $year)
-                                ->whereMonth('date', $month)
-                                ->whereDay('date', $day)
-                                ->get();
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->whereDay('date', $day)
+            ->get();
 
             if (count($checkExistDate) !== 0) {
                 DB::table('report_ngay')
-                    ->whereYear('date', $year)
-                    ->whereMonth('date', $month)
-                    ->whereDay('date', $day)
-                    ->update([
-                        'doanhthu' => $doanhthu,
-                        'loinhuan' => $loinhuan,
-                        'tongvon' => $tongvon,
-                        'tongsodonhang' => $tongsodonhang,
-                        'tongsobombhang' => $tongsobomhang,
-                        'tiendongbang' => $tiendongbang,
-                        'tongsodonchuahoanthanh' => $tongsodonchuahoanthanh
-                    ]);
+                ->whereYear('date', $year)
+                ->whereMonth('date', $month)
+                ->whereDay('date', $day)
+                ->update([
+                    'doanhthu' => $doanhthu,
+                    'loinhuan' => $loinhuan,
+                    'tongvon' => $tongvon,
+                    'tongsodonhang' => $tongsodonhang,
+                    'tongsobombhang' => $tongsobomhang,
+                    'tiendongbang' => $tiendongbang,
+                    'tongsodonchuahoanthanh' => $tongsodonchuahoanthanh
+                ]);
 
             } else {
                 DB::table('report_ngay')
-                    ->whereYear('date', $year)
-                    ->whereMonth('date', $month)
-                    ->whereDay('date', $day)
-                    ->insert([
-                        'doanhthu' => $doanhthu,
-                        'loinhuan' => $loinhuan,
-                        'tongvon' => $tongvon,
-                        'tongsodonhang' => $tongsodonhang,
-                        'tongsobombhang' => $tongsobomhang,
-                        'tiendongbang' => $tiendongbang,
-                        'tongsodonchuahoanthanh' => $tongsodonchuahoanthanh
+                ->whereYear('date', $year)
+                ->whereMonth('date', $month)
+                ->whereDay('date', $day)
+                ->insert([
+                    'doanhthu' => $doanhthu,
+                    'loinhuan' => $loinhuan,
+                    'tongvon' => $tongvon,
+                    'tongsodonhang' => $tongsodonhang,
+                    'tongsobombhang' => $tongsobomhang,
+                    'tiendongbang' => $tiendongbang,
+                    'tongsodonchuahoanthanh' => $tongsodonchuahoanthanh
 
-                    ]);
+                ]);
             } 
         }
     }
