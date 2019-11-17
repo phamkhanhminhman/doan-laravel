@@ -100,7 +100,7 @@ class SendoHandler
                 $url = '/shop/salesOrder/bylastDate?fromDate=' . $fromDate . '&toDate=' . $currentDay .
                 '&offset=' . $offSet . '&limit=' . $limit;
             }
-            dd($url);
+    
             $request = $client->get($url);
             $response = json_decode($request->getBody()->getContents());
 

@@ -70,92 +70,80 @@ class OrderController extends Controller
      */
     public function addNewOrder()
     {
+        $arrOrderStatus = [2,3,6];
         $shopList = DB::table('shop')->get();
         foreach ($shopList as $k) {
             $shopID   = $k->shopID;
             $shopName = $k->shopName;
              // $orderStatus = 2; // 2 = new order
-        for ($i=0; $i < 1 ; $i++) { 
-            if ($i === 0) {
-                $orderStatus = 2;
-            }
+            for ($i=0; $i < count($arrOrderStatus) ; $i++) { 
 
-            if ($i === 1) {
-                $orderStatus = 3;
-            }
+                $response = $this->sendo->getOrderList($arrOrderStatus[$i], $shopID); //call API GET ORDER LIST - SENDO
 
-            if ($i === 2) {
-                $orderStatus = 6;
-            }
+                $orderLinkSendo = self::ORDER_LINK_SENDO;
 
-            $response = $this->sendo->getOrderList($orderStatus, $shopID); //call API GET ORDER LIST - SENDO
+                if (count($response->result->data) > 0) {
+                    $countNewOrder = 0;
+                    // thêm đơn hàng mới vào DB
+                    foreach ($response->result->data as $key => $p) {
+                        $orderNumber = $p->salesOrder->orderNumber;
+                        $orderStatus = $p->salesOrder->orderStatus;
+                        $orderStatusDes = $this->parseOrderStatus($orderStatus);
+                        $customerID = 180; // sau này xóa
+                        $customerTel=$p->salesOrder->shippingContactPhone;
+                        $customerName=$p->salesOrder->receiverName;
+                        $customerAddress=$p->salesOrder->receiverFullAddress;
+                        $orderAddress = 01;
+                        $orderDate = $p->salesOrder->orderDate;
+                        $orderChannel = "Sen Đỏ";
+                        $shipToRegionId= $p->salesOrder->shipToRegionId;
+                        
+                        //convert RegionId -> RegionName
+                        $region = DB::table('city')->where('cityId', $shipToRegionId)->select('cityName')->first();
+                        $shipToRegionName = $region->cityName;
 
-            $orderLinkSendo = self::ORDER_LINK_SENDO;
+                        // thêm order mới
+                        $duplicateOrder = DB::table('order_tb')->where('orderID', $orderNumber)->get();
+                        if (count($duplicateOrder) === 0) {
 
-            if (count($response->result->data) > 0) {
-                $countNewOrder = 0;
-                // thêm đơn hàng mới vào DB
-                foreach ($response->result->data as $key => $p) {
-                    $orderNumber = $p->salesOrder->orderNumber;
-                    $orderStatus = $p->salesOrder->orderStatus;
-                    $orderStatusDes = $this->parseOrderStatus($orderStatus);
-                    $customerID = 180; // sau này xóa
-                    $customerTel=$p->salesOrder->shippingContactPhone;
-                    $customerName=$p->salesOrder->receiverName;
-                    $customerAddress=$p->salesOrder->receiverFullAddress;
-                    $orderAddress = 01;
-                    $orderDate = $p->salesOrder->orderDate;
-                    $orderChannel = "Sen Đỏ";
-                    $shipToRegionId= $p->salesOrder->shipToRegionId;
-                    
-                    //convert RegionId -> RegionName
-                    $region = DB::table('city')->where('cityId', $shipToRegionId)->select('cityName')->first();
-                    $shipToRegionName = $region->cityName;
+                            $countNewOrder++;
 
-                    // thêm order mới
-                    $duplicateOrder = DB::table('order_tb')->where('orderID', $orderNumber)->get();
-                    if (count($duplicateOrder) === 0) {
-
-                        $countNewOrder++;
-
-                        DB::table('order_tb')->insert(['orderID' => $orderNumber,
-                            'orderLink' => $orderLinkSendo . $orderNumber,
-                            'orderStatus' => $orderStatus,
-                            'orderStatusDes' => $orderStatusDes,
-                            'customerID' => $customerID,
-                            'customerTel'=>$customerTel,
-                            'orderAddress' => $orderAddress,
-                            'orderDate' => $orderDate,
-                            'orderChannel'=> $orderChannel,
-                            'shipToRegionID'=> $shipToRegionId, 
-                            'shipToRegionName'=> $shipToRegionName,
-                            'orderShopID'=>$shopID,
-                            'orderShopName'=>$shopName,
-                        ]);
+                            DB::table('order_tb')->insert(['orderID' => $orderNumber,
+                                'orderLink' => $orderLinkSendo . $orderNumber,
+                                'orderStatus' => $orderStatus,
+                                'orderStatusDes' => $orderStatusDes,
+                                'customerID' => $customerID,
+                                'customerTel'=>$customerTel,
+                                'orderAddress' => $orderAddress,
+                                'orderDate' => $orderDate,
+                                'orderChannel'=> $orderChannel,
+                                'shipToRegionID'=> $shipToRegionId, 
+                                'shipToRegionName'=> $shipToRegionName,
+                                'orderShopID'=>$shopID,
+                                'orderShopName'=>$shopName,
+                            ]);
+                        }
+                        // thêm khách hàng của order vào DB
+                        $duplicateCustomer = DB::table('customer')->where('customerTel', $customerTel)->get();
+                        if (count($duplicateCustomer) === 0) {
+                            DB::table('customer')->insert(['customerTel' => $customerTel,
+                                'customerName' => $customerName,
+                                'customerAddress' => $customerAddress,
+                                
+                            ]);
+                        }
+                        //Cập nhật thêm thông tin từ response API Order Detail, vào bảng order_tb 
+                        $this->updateOrder($orderNumber,$shopID);
+                        
                     }
-                    // thêm khách hàng của order vào DB
-                    $duplicateCustomer = DB::table('customer')->where('customerTel', $customerTel)->get();
-                    if (count($duplicateCustomer) === 0) {
-                        DB::table('customer')->insert(['customerTel' => $customerTel,
-                            'customerName' => $customerName,
-                            'customerAddress' => $customerAddress,
-                            
-                        ]);
-                    }
-                    //Cập nhật thêm thông tin từ response API Order Detail, vào bảng order_tb 
-                    $this->updateOrder($orderNumber,$shopID);
-                    
-                }
-                // return $countNewOrder;
-            } else {
-                // return $countNewOrder;
-            } 
+                    echo $countNewOrder;
+                } else {
+                    echo 0;
+                } 
+            }   
         }
-        }
-
-       
-
     }
+
     /**
      * Update dữ liệu cho đơn hàng cũ, trừ những đơn đã hoàn thành ( orderStatus # 8 )
      * @Params: OrderNumber
@@ -246,8 +234,8 @@ class OrderController extends Controller
                         ]);
 
                     $product_variation = DB::table('product_variation')
-                        ->where('productVariationID', $productSKU)
-                        ->first();
+                    ->where('productVariationID', $productSKU)
+                    ->first();
                     if ($product_variation !== null) {
                         $cost = intval($product_variation->productCost) * intval($quantity); 
                         $orderCost = $orderCost + $cost;
