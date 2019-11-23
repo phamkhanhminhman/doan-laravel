@@ -260,9 +260,9 @@ class OrderController extends Controller
         $this->sendo->getRegionsSendo();
     }
 
-    public function confirmOrderSendo($orderID)
+    public function confirmOrderSendo($orderID, $orderShopID)
     {
-        $this->sendo->confirmOrderSendo($orderID);
+        $this->sendo->confirmOrderSendo($orderID, $orderShopID);
     }
 
     public function update_report_thang()

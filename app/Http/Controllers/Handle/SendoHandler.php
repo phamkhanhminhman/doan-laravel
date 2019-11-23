@@ -233,9 +233,9 @@ class SendoHandler
      * API CONFIRM ORDER
      * @param $orderID
      */
-    public function confirmOrderSendo($orderID)
+    public function confirmOrderSendo($orderID, $orderShopID)
     {
-        $token = $this->getSendoToken();
+        $token = $this->getSendoToken($orderShopID);
         $client = new \GuzzleHttp\Client([
             'verify' => false,
             'base_uri' => self::URL_SENDO,
