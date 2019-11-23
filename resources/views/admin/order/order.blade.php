@@ -163,6 +163,8 @@
       </a>
       <a href="@{{pp.orderShipLink}}" target="_blank"><h4 class="label" style="font-size:16px;font-weight: 90; background-color: blue ;color:white; align-content:center" ng-if="pp.CarrierName === 'Store' ">Store @{{pp.shipToRegionName}}</h4>
       </a>
+      <a href="@{{pp.orderShipLink}}" target="_blank"><h4 class="label" style="font-size:16px;font-weight: 90; background-color: gray ;color:white; align-content:center" ng-if="pp.CarrierName === 'Chuyển phát tiêu chuẩn' "> Chuyển phát tiêu chuẩn</h4>
+      </a>
     </div>
     <div class="col-md-1 col-xs-4"><h4>@{{pp.user}}</h4></div>
     <div style="margin-top:10px;margin-left:-108px" class="col-md-2 col-xs-4">

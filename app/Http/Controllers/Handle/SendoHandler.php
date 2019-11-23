@@ -17,7 +17,7 @@ class SendoHandler
     /**
      * authetication for API
      */
-    public function getSendoToken($shopID)
+    public function getSendoToken($shopID = null)
     {
         if ($shopID == null) {
             $shopID ='15a3d1d631f043e49be97eb53ed4a367';
