@@ -158,17 +158,17 @@ class OrderController extends Controller
             ->where('orderStatus', '<>', 'ReturnOK') // sau này bỏ ( dữ liệu giả)
             ->where('orderChannel', '=', 'Sen Đỏ')
             ->whereMonth('orderDate', $month)
-            ->select('orderID')
+            ->select('orderID','orderShopID')
             ->get();
         // nếu có đơn thì mới chạy hàm updateOrder
             if (count($arrayOrderNumber) > 0) {
                 foreach ($arrayOrderNumber as $key => $p) {
-                    $this->updateOrder($p->orderID);
+                    $this->updateOrder($p->orderID, $p->orderShopID);
                 }
             }
 
             return count($arrayOrderNumber);
-        }
+    }
 
     /**
      * Update dữ liệu cho đơn hàng khi click event cập nhật đơn hàng
@@ -177,28 +177,30 @@ class OrderController extends Controller
     public function updateOrder($orderNumber,$shopID)
     {  
         $response = $this->sendo->getOrderDetail($orderNumber,$shopID); //call API ORDER DETAIL - SENDO
-        $p = $response->result->salesOrder;
-        $orderStatus = $p->orderStatus;                          // mã trạng thái của orderstatus
-        $orderStatusDes = $this->parseOrderStatus($orderStatus); // đổi orderstatus sang text
-        $carrierName = $p->carrierName;                          // đơn vị vận chuyển
-        $ordershipID = $p->trackingNumber;                       // mã vân chuyển
-        $ordershipLink = $p->trackingLink;                       // Link vận chuyển
-        $orderSell = $p->totalAmount;                            //Tổng số tiền nhận được
-        // kiểm tra mã đơn nếu tồn tại đúng 1c thì sẽ update đơn hàng đó
-        $duplicateOrder = DB::table('order_tb')->where('orderID', $orderNumber)->get();
-        if (count($duplicateOrder) === 1) {
-            DB::table('order_tb')->where('orderID', $orderNumber)
-            ->update([
-                'orderStatus' => $orderStatus,
-                'orderStatusDes' => $orderStatusDes,
-                'CarrierName' => $carrierName,
-                'ordershipID' => $ordershipID,
-                'ordershipLink' => $ordershipLink,
-                'orderSell' => $orderSell,
-            ]);
+        if (isset($response->result->salesOrder)) {
+            $p = $response->result->salesOrder;
+            $orderStatus = $p->orderStatus;                          // mã trạng thái của orderstatus
+            $orderStatusDes = $this->parseOrderStatus($orderStatus); // đổi orderstatus sang text
+            $carrierName = $p->carrierName;                          // đơn vị vận chuyển
+            $ordershipID = $p->trackingNumber;                       // mã vân chuyển
+            $ordershipLink = $p->trackingLink;                       // Link vận chuyển
+            $orderSell = $p->totalAmount;                            //Tổng số tiền nhận được
+            // kiểm tra mã đơn nếu tồn tại đúng 1c thì sẽ update đơn hàng đó
+            $duplicateOrder = DB::table('order_tb')->where('orderID', $orderNumber)->get();
+            if (count($duplicateOrder) === 1) {
+                DB::table('order_tb')->where('orderID', $orderNumber)
+                ->update([
+                    'orderStatus' => $orderStatus,
+                    'orderStatusDes' => $orderStatusDes,
+                    'CarrierName' => $carrierName,
+                    'ordershipID' => $ordershipID,
+                    'ordershipLink' => $ordershipLink,
+                    'orderSell' => $orderSell,
+                ]);
 
-            $this->getProductFromOrder($response, $orderNumber); //Insert list product each order
-        }
+                $this->getProductFromOrder($response, $orderNumber); //Insert list product each order
+            }
+        }  
     }
 
     /**

@@ -12,7 +12,7 @@
     <div class="title_left">
       <h3>Danh sách đơn hàng <span><a href="{{url('admin/order-add')}}" class="btn btn-primary">
         <i class="fa fa-plus"></i> Tạo Đơn Mới </a></span>
-        <a href="" class="btn btn-success" ng-click="updateExceptDone()">Đồng Bộ Đơn Sendo</a>
+        <a href="" class="btn btn-success" ng-click="updateExceptDone()">Đồng Bộ Đơn</a>
         </h3>
 
 

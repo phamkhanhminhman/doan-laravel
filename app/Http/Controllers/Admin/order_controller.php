@@ -232,7 +232,25 @@ class order_controller extends Controller
         echo $cancle_return;
     }
 
+    public function count_order_sendo()
+    {
+        $sendo = DB::table('order_tb')->where('orderChannel', 'Sen Đỏ')->get();
 
+        $sendo = count($sendo);
+        $sendo = json_encode($sendo);
+
+        echo $sendo;
+    }
+
+    public function count_order_shopee()
+    {
+        $shopee = DB::table('order_tb')->where('orderChannel', 'Shopee')->get();
+
+        $shopee = count($shopee);
+        $shopee = json_encode($shopee);
+
+        echo $shopee;
+    }
 
 
 

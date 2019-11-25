@@ -93,6 +93,9 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin','middleware'=>'checklogin
    Route::get('/count-order-completed-received', 'order_controller@count_order_completed_received');
    Route::get('/count-order-cancle-return',      'order_controller@count_order_cancle_return');
    Route::get('/count-order-shipping-ready',     'order_controller@count_order_shipping_ready');
+   Route::get('/count-order-sendo',              'order_controller@count_order_sendo');
+   Route::get('/count-order-shopee',              'order_controller@count_order_shopee');
+
 
 
 

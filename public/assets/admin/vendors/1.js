@@ -143,9 +143,13 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
     $http.post($scope.baseURL + '/admin/api-selected-channel?page=' + $scope.page + '&limit=' + $scope.pageLimit, data, config)
       .then(function (res) {
         $scope.all = res.data;
-        arrayPage(res.data.length);
-      },
-        function (res) { if (res.data == "thatbai") { console.log("update thatbai ") } });
+      });
+
+    if ($scope.xyz !== "Shopee") {
+      $http.get($scope.baseURL + '/admin/count-order-sendo').then(function (res) { arrayPage(res.data) });  
+    } else {
+      $http.get($scope.baseURL + '/admin/count-order-shopee').then(function (res) { arrayPage(res.data) });
+    }
   }
 
   //START SELECT ĐƠN VỊ GIAO HÀNG----------------------------------------------------------------------------------------------------
