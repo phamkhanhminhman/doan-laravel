@@ -70,8 +70,8 @@ class OrderController extends Controller
      */
     public function addNewOrder()
     {
-        $arrOrderStatus = [2,3,6];
-        $shopList = DB::table('shop')->get();
+        $arrOrderStatus = [2];
+        $shopList = DB::table('shop')->where('code', 'sd')->get();
         foreach ($shopList as $k) {
             $shopID   = $k->shopID;
             $shopName = $k->shopName;
@@ -97,7 +97,6 @@ class OrderController extends Controller
                         $orderDate = $p->salesOrder->orderDate;
                         $orderChannel = "Sen Đỏ";
                         $shipToRegionId= $p->salesOrder->shipToRegionId;
-                        
                         //convert RegionId -> RegionName
                         $region = DB::table('city')->where('cityId', $shipToRegionId)->select('cityName')->first();
                         $shipToRegionName = $region->cityName;
@@ -234,10 +233,10 @@ class OrderController extends Controller
                             'product_Sell' => $productSell,
                             'Amount' => $quantity,
                         ]);
-
+               
                     $product_variation = DB::table('product_variation')
-                    ->where('productVariationID', $productSKU)
-                    ->first();
+                                         ->where('productVariationID', $productSKU)
+                                         ->first();
                     if ($product_variation !== null) {
                         $cost = intval($product_variation->productCost) * intval($quantity); 
                         $orderCost = $orderCost + $cost;
@@ -256,7 +255,15 @@ class OrderController extends Controller
         }
 
     } 
+    public function updateStockQuantity($variantSKU,$quantity)
+    {
 
+
+        $stockQuantity  = DB::table('product_varation')->where('productVariantId',$variantSKU)
+                                     ->get('stockQuantity');
+        DB::table('product_varation')->where('productVariantId',$variantSKU)
+                                     ->update(['stockQuantity' => $stockQuantity-$quantity]);
+    }
     public function getRegionsSendo()
     {
         $this->sendo->getRegionsSendo();
@@ -264,7 +271,20 @@ class OrderController extends Controller
 
     public function confirmOrderSendo($orderID, $orderShopID)
     {
+         $response = $this->sendo->getOrderDetail($orderID,$orderShopID); //call API ORDER DETAIL - SENDO
+        if (count($response->result->salesOrderDetails) > 0) {
+            $productsList = $response->result->salesOrderDetails;
+            $orderCost = 0;
+            foreach ($productsList as $key => $p) {
+                $productID = $p->productVariantId;
+                $productSKU= $p->storeSku;
+                $productSell = $p->subTotal; // productsell có r mà ở đâu, rồi lại
+                $quantity = $p->quantity;
+                $this->updateStockQuantity($productSKU,$quantity);
+            }
+        }
         $this->sendo->confirmOrderSendo($orderID, $orderShopID);
+        
     }
 
     public function update_report_thang()

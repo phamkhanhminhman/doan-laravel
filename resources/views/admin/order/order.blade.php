@@ -209,19 +209,15 @@
    
    
    <div class="col" style="float: right">
-     <button  type="button" style="background:#2ecc71;color:white"class="btn btn-success" ng-click="confirmOrderSendo(pp.orderID, pp.orderShopID)" ng-if="pp.orderStatus == 2">Xác Nhận Đơn</button>
-     <button  type="button" style="background:#FF5230;color:white" class="btn" ng-click="orderDetailSendo(pp.orderLink)"  onclick="new PNotify({
+     <button  type="button" style="background:#2ecc71;color:white"class="btn btn-success" ng-click="confirmOrderSendo(pp.orderID, pp.orderShopID)" ng-if="pp.orderStatus == 2 && pp.orderChannel === 'Sen Đỏ'">Xác Nhận Đơn</button>
+  <!--    <button  type="button" style="background:#FF5230;color:white" class="btn" ng-click="orderDetailSendo(pp.orderLink)"  onclick="new PNotify({
                                 title: 'Cập nhật thành công',
                                 text: 'Chuyển trạng thái đơn ĐANG VẬN CHUYỂN',
                                 type: 'success',
                                 styling: 'bootstrap3'
-                                });">Chi tiết đơn hàng</button>  
-     <button  type="button" style="background:#101010;color:white"class="btn btn-success"  onclick="new PNotify({
-                                title: 'Cập nhật thành công',
-                                text: 'Chuyển trạng thái đơn ĐANG VẬN CHUYỂN',
-                                type: 'success',
-                                styling: 'bootstrap3'
-                                });">Hủy Đơn</button>  
+                                });">Chi tiết đơn hàng</button>   -->
+    <button  type="button" style="background:#FF5230;color:white" class="btn" ng-click="orderDetailSendo(pp.orderLink)"  >Chi tiết đơn hàng</button>  
+    <button  type="button" style="background:#101010;color:white" class="btn btn-success" ng-if="pp.orderChannel === 'Shopee'">Hủy Đơn</button>  
    </div>
   <div class="col"><h2 style="font-size:19px;font-weight:bold;color:black;margin-top:30px">@{{pp.customerName}} @{{pp.customerTel}}</h2></div>
 

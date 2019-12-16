@@ -14,6 +14,7 @@ use Alert;
 
 class admin_controller extends Controller
 {
+
 	public function index()
 	{
         $this->update_report_ngay();
@@ -29,10 +30,9 @@ class admin_controller extends Controller
         						->orderBy('id','desc')
         						->limit(6)
         						->get();
-        $amount_product   =   DB::table('product')
+        $amount_product      =   DB::table('product')
                                 ->select('*')
-                                ->where('productStatus','Instock')
-                                ->get();
+                                ->get();  
         $don_chua_hoan_thanh = DB::table('order_tb')
         						->select('*')
         						->where('orderStatus','Shipping')
@@ -118,6 +118,7 @@ class admin_controller extends Controller
 	{
 		return view('admin/login');
 	}
+
 	public function check_login(Request $request)
 	{
 		$user = $request->user;

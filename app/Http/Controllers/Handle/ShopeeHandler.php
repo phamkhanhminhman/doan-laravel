@@ -58,6 +58,7 @@ class ShopeeHandler
      */
     public function getOrderList()
     {
+        // lay key xac thuc 
         $client = $this->authorizationShopee();
         // $items = $client->order->getOrdersList(array('pagination_entries_per_page' => 1);
 
@@ -88,6 +89,15 @@ class ShopeeHandler
         $client = $this->authorizationShopee();
 
         $items = $client->order->getEscrowDetails(array('ordersn' => $orderNumber));
+
+        return $items;
+    }
+
+    public function cancelOrder($orderNumber) 
+    {
+        $client = $this->authorizationShopee();
+
+        $items = $client->order->cancelOrder(array('ordersn' => $orderNumber))
 
         return $items;
     }

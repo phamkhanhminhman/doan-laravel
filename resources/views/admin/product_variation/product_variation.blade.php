@@ -27,8 +27,8 @@
         <div class="x_panel">
           <div class="x_title">
             <a href="{{url('admin/product-add')}}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp Thêm Mới</a>
-            <a href="{{url('admin/product-instock')}}" class="btn btn-primary">Tồn kho</a>
-            <a href="{{url('admin/product-done')}}" class="btn btn-primary">Đã bán</a>
+          <!--   <a href="{{url('admin/product-instock')}}" class="btn btn-primary">Tồn kho</a>
+            <a href="{{url('admin/product-done')}}" class="btn btn-primary">Đã bán</a> -->
             <a href="{{url('sendo/update-product')}}" class="btn btn-primary">Đồng Bộ Sản Phẩm</a>
             <ul class="nav navbar-right panel_toolbox">
               <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>

@@ -24,15 +24,23 @@ Route::namespace('Admin')->group(function () {
     
 });
 Route::group(['prefix' => 'admin','namespace'=>'Admin','middleware'=>'checklogin'], function () {
- Route::get('/signup',                       'admin_controller@signup');
+
+ Route::get('/multishop',                     'multishop_controller@index');
+ Route::get('/multishop/add-new-shop',        'multishop_controller@addNewShop');
+ Route::post('/multishop-insert',             'multishop_controller@insertNewShop');
+ Route::get('/multishop-edit/{id}',           'multishop_controller@edit');
+ Route::post('/multishop-update',             'multishop_controller@update');
+
+ Route::get('/signup',                        'admin_controller@signup');
  Route::post('/dangky',                       'admin_controller@dangky');
- Route::get('/',				                  'admin_controller@index');
+ Route::get('/',				                      'admin_controller@index');
  Route::get('/history',                       'admin_controller@history');
  Route::get('/staff',                         'admin_controller@staff');
  Route::get('/staff-edit/{id}',               'admin_controller@edit');
  Route::get('/staff-profile/{id}',            'admin_controller@profile');
  Route::get('/staff-delete/{id}',             'admin_controller@delete');
  Route::post('/staff-update',                 'admin_controller@update');
+
 
  Route::get ('/category'    ,                 'category_controller@index');
  Route::get ('/category-add',                 'category_controller@add')->middleware('checklogin');
@@ -41,6 +49,10 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin','middleware'=>'checklogin
  Route::post('/category-update',              'category_controller@update');
  Route::get ('/category-delete/{id}',         'category_controller@delete');
  Route::get ('/get-data-api',                 'category_controller@get_data_api');
+
+ 
+
+
    // CATEGORY----------------------------------------------------------------------------------------------------------------------------
 
  Route::get ('/order'    ,                    'order_controller@index');

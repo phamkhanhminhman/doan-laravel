@@ -21,7 +21,7 @@
             <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i><?php echo round($tongsodonhang_up);?>% </i> So Với Tháng Trước</span>
           </div>
           <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i>  Tồn Kho </span>
+            <span class="count_top"><i class="fa fa-user"></i> Sản Phẩm Còn Hàng</span>
             <div class="count"style="color:#795548"><?php echo $tonkho ?></div>
             <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i></i>Available</span>
            

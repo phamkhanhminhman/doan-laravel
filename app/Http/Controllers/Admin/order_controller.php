@@ -931,7 +931,9 @@ class order_controller extends Controller
         $customerAddress = "$customerDistrict " . $request->customerAddress;
         $customerTel = $request->customerTel;
         $customerMail = $request->customerMail;
+        date_default_timezone_set("Asia/Bangkok");//set you countary name from below timezone list
         $orderID = date('Y-m-d h:i:s');
+
         //  $orderLink         = "https://ban.sendo.vn/shop#salesorder/detail/12345678/".$orderID;
         $orderShipLink = $request->orderShipLink;
         $orderShipID = $request->orderShipLink;
