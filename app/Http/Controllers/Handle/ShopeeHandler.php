@@ -97,7 +97,7 @@ class ShopeeHandler
     {
         $client = $this->authorizationShopee();
 
-        $items = $client->order->cancelOrder(array('ordersn' => $orderNumber))
+        $items = $client->order->cancelOrder(array('ordersn' => $orderNumber));
 
         return $items;
     }

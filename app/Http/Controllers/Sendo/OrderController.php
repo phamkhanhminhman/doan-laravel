@@ -259,10 +259,15 @@ class OrderController extends Controller
     {
 
 
-        $stockQuantity  = DB::table('product_varation')->where('productVariantId',$variantSKU)
-                                     ->get('stockQuantity');
-        DB::table('product_varation')->where('productVariantId',$variantSKU)
-                                     ->update(['stockQuantity' => $stockQuantity-$quantity]);
+        $quantityArr  = DB::table('product_variation')->where('productVariationID',$variantSKU)
+                                     ->first();
+        
+        $stockQuantity = $quantityArr->stockQuantity;
+       
+        $minusStockQuantity = $stockQuantity - $quantity;
+
+        DB::table('product_variation')->where('productVariationID',$variantSKU)
+                                     ->update(['stockQuantity' => $minusStockQuantity]);
     }
     public function getRegionsSendo()
     {
@@ -271,7 +276,8 @@ class OrderController extends Controller
 
     public function confirmOrderSendo($orderID, $orderShopID)
     {
-         $response = $this->sendo->getOrderDetail($orderID,$orderShopID); //call API ORDER DETAIL - SENDO
+        $response = $this->sendo->getOrderDetail($orderID,$orderShopID); //call API ORDER DETAIL - SENDO
+
         if (count($response->result->salesOrderDetails) > 0) {
             $productsList = $response->result->salesOrderDetails;
             $orderCost = 0;
@@ -280,6 +286,7 @@ class OrderController extends Controller
                 $productSKU= $p->storeSku;
                 $productSell = $p->subTotal; // productsell có r mà ở đâu, rồi lại
                 $quantity = $p->quantity;
+
                 $this->updateStockQuantity($productSKU,$quantity);
             }
         }

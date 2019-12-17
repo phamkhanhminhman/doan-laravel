@@ -55,7 +55,7 @@ class OrderController extends Controller
 
     public function getOrderDetail()
     {
-        $response = $this->shopee->getOrderDetail('19101021190KXY3');
+        $response = $this->shopee->getOrderDetail('19121711460N8SJ');
 
         dd($response->data['orders'][0]);
     }

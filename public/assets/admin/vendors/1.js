@@ -123,6 +123,10 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
     });
   }
 
+  $scope.cancelOrder = function (orderID){
+    console.log(orderID);
+  }
+
   $scope.orderDetailSendo = function (orderLink) {
     window.open(orderLink);;
   }
