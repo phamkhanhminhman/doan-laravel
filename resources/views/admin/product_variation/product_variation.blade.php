@@ -5,7 +5,7 @@
   <div class="">
     <div class="page-title">
       <div class="title_left">
-        <h3><i class="fa fa-tag"></i> Sản Phẩm </h3>
+        <h3><i class="fa fa-tag"></i>&nbsp Phân Cấp Sản Phẩm </h3>
       </div>
 
       <div class="title_right">

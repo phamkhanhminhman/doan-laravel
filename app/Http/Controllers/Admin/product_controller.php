@@ -143,7 +143,7 @@ class product_controller extends Controller
     {
         // $test = DB::table('product')->where('productSKU', $sku)->first();
         $data_product = DB::table('product_variation')
-                    ->where('productSKU','LIKE', "%{$sku}%")
+                    ->where('productSKU','LIKE', '%' . $sku . '-' .'%')
                     ->get();
         return view('admin/product_variation/product_variation', compact('data_product'));
     }
