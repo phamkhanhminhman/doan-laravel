@@ -103,7 +103,7 @@ class SendoHandler
     
             $request = $client->get($url);
             $response = json_decode($request->getBody()->getContents());
-
+            // dd($response);
             return $response;
 
         } catch (\Exception $e) {

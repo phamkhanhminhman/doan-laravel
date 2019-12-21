@@ -119,6 +119,7 @@ class ProductController extends Controller
         $this->insertProducts($listProducts);
 
         $totalRecords = $response->result->totalRecords;
+        // dd($totalRecords);
         $totalPages = (int) ($totalRecords / 10) + 1;
         // lấy product của các page tiếp
         for ($i = 1; $i <= $totalPages; $i++) {

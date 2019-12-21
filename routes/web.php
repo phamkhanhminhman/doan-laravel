@@ -23,6 +23,7 @@ Route::namespace('Admin')->group(function () {
     Route::post('/login',                       'admin_controller@check_login');
     
 });
+//PREFIX ADMIN
 Route::group(['prefix' => 'admin','namespace'=>'Admin','middleware'=>'checklogin'], function () {
 
  Route::get('/multishop',                     'multishop_controller@index');
@@ -177,7 +178,7 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin','middleware'=>'checklogin
 
 
 
-
+//PREFIX SENDO
 Route::group(['prefix' => 'sendo','namespace'=>'Sendo'], function () {
   // Route::get('/getSendoToken', 'OrderController@testSendo');  
   Route::get('/add-new-order',            'OrderController@addNewOrder'); 
