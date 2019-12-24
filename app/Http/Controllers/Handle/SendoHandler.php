@@ -226,11 +226,12 @@ class SendoHandler
         ]);
 
         $response = json_decode($request->getBody()->getContents());
+        // dd($response);
         return $response;
     }
 
     /**
-     * API CONFIRM ORDER
+     * API CONFIRM ORDER ĐÂY LÀ ĐOẠN CALL DÙNG ĐỂ GỌI TỚI API CỦA SEN ĐỎ.
      * @param $orderID
      */
     public function confirmOrderSendo($orderID, $orderShopID)
