@@ -198,6 +198,8 @@ Route::group(['prefix' => 'sendo','namespace'=>'Sendo'], function () {
 
 
   Route::get('/update-report-ngay', 'OrderController@update_report_ngay');
+
+  Route::get('test6', 'OrderController@updateStockShopee');
 });
 
 

@@ -101,4 +101,13 @@ class ShopeeHandler
 
         return $items;
     }
+
+    public function updateVariation($productID, $stock)
+    {
+        $client = $this->authorizationShopee();
+
+        $items = $client->item->updateStock(array('item_id' => $productID, 'stock' => $stock));
+
+        return $item;
+    }
 }

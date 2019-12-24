@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Sendo;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Handle\SendoHandler;
+use App\Http\Controllers\Handle\ShopeeHandler;
 use Illuminate\Support\Facades\DB;
 use Alert;
 
@@ -17,9 +18,10 @@ class OrderController extends Controller
 
     const ORDER_LINK_SENDO = "https://ban.sendo.vn/shop#salesorder/detail/123456/";
 
-    public function __construct(SendoHandler $sendo)
+    public function __construct(SendoHandler $sendo, ShopeeHandler $shopee)
     {
         $this->sendo = $sendo;
+        $this->shopee = $shopee;
     }
 
     /**
@@ -255,19 +257,24 @@ class OrderController extends Controller
         }
 
     } 
+
+    /**
+     *  Update Stock Quantity in DB after Confirm Order 
+     */
     public function updateStockQuantity($variantSKU,$quantity)
     {
-
-
         $quantityArr  = DB::table('product_variation')->where('productVariationID',$variantSKU)
                                      ->first();
-        
+        $productShopeeID = $quantityArr->productShopeeID;
+
         $stockQuantity = $quantityArr->stockQuantity;
        
-        $minusStockQuantity = $stockQuantity - $quantity;
+        $newStockQuantity = $stockQuantity - $quantity;
+
+        $this->shopee->updateVariation($productShopeeID, $newStockQuantity);
 
         DB::table('product_variation')->where('productVariationID',$variantSKU)
-                                     ->update(['stockQuantity' => $minusStockQuantity]);
+                                     ->update(['stockQuantity' => $newStockQuantity]);
     }
     public function getRegionsSendo()
     {
@@ -291,7 +298,6 @@ class OrderController extends Controller
             }
         }
         $this->sendo->confirmOrderSendo($orderID, $orderShopID);
-        
     }
 
     public function update_report_thang()
