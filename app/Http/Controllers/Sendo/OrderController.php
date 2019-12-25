@@ -263,19 +263,23 @@ class OrderController extends Controller
      */
     public function updateStockQuantity($variantSKU,$quantity)
     {
+
         $quantityArr  = DB::table('product_variation')->where('productVariationID',$variantSKU)
                                      ->first();
-        $productShopeeID = $quantityArr->productShopeeID;
 
+        $productShopeeID = $quantityArr->productShopeeID;
+      
         $stockQuantity = $quantityArr->stockQuantity;
        
         $newStockQuantity = $stockQuantity - $quantity;
+
 
         $this->shopee->updateVariation($productShopeeID, $newStockQuantity);
 
         DB::table('product_variation')->where('productVariationID',$variantSKU)
                                      ->update(['stockQuantity' => $newStockQuantity]);
     }
+
     public function getRegionsSendo()
     {
         $this->sendo->getRegionsSendo();
@@ -298,6 +302,7 @@ class OrderController extends Controller
             }
         }
         $this->sendo->confirmOrderSendo($orderID, $orderShopID);
+
     }
 
     public function update_report_thang()

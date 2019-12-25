@@ -104,10 +104,11 @@ class ShopeeHandler
 
     public function updateVariation($productID, $stock)
     {
+        var_dump($productID);
         $client = $this->authorizationShopee();
 
-        $items = $client->item->updateStock(array('item_id' => $productID, 'stock' => $stock));
+        $items = $client->item->updateStock(array('item_id' => intval($productID), 'stock' => $stock));
 
-        return $item;
+        var_dump($items);
     }
 }
