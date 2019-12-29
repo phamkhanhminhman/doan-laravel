@@ -56,6 +56,7 @@
                   <th class="text-center">SKU</th>
                   <th class="text-center">Tên Sản Phẩm</th>
                   <th class="text-center">PID SENDO</th>
+                  <th class="text-center">PID SHOPEE</th>
                   <th class="text-center">Tồn Kho</th>                         
                   <th class="text-center">Giá Nhập</th>
                   <th class="text-center">Giá Bán</th>
@@ -74,6 +75,7 @@
                   <td class="text-center" width="10%">{{$p->productSKU}}</td>
                   <td class="text-center" width="15%;">{{$p->productName}}</td>
                   <td class="text-center">{{$p->productID}}</td>
+                  <td class="text-center">{{$p->productShopeeID}}</td>
                   <td class="text-center">{{$p->stockQuantity}}</td>
                   <td class="text-center">{{$p->productCost}}</td>
                   <td class="text-center">{{$p->productSell}}</td>

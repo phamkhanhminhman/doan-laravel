@@ -75,7 +75,7 @@ class OrderController extends Controller
     {
         $orderStatus = "ALL";
         $responseOrderList = $this->shopee->getOrderList();
-
+        // dd($responseOrderList);
         $orders = $responseOrderList->data['orders'];
 
         $countNewOrder = 0;
@@ -83,6 +83,7 @@ class OrderController extends Controller
             $orderNumber = $order['ordersn'];
 
             $responseOrderDetail = $this->shopee->getOrderDetail($orderNumber);
+            // dd($responseOrderDetail);
             $orderDetail = $responseOrderDetail->data['orders'][0];
 
             $orderStatusDes = $orderDetail['order_status'];

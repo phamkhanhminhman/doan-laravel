@@ -115,6 +115,7 @@ class ProductController extends Controller
     {
         // lấy product của page 1 
         $response = $this->sendo->getProductList(1);
+        // dd($response);
         $listProducts = $response->result->data;
         $this->insertProducts($listProducts);
 

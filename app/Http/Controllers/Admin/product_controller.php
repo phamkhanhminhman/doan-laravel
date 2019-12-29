@@ -31,8 +31,9 @@ class product_controller extends Controller
     public function index() //BY PHƯƠNG
     {
         $data_product        = DB::table('product')
-            ->select('*')
-            ->get();
+                               ->select('*')
+                               ->orderBy('productID','desc')
+                               ->get();
         return view('admin/product/product', compact("data_product"));
     }
 

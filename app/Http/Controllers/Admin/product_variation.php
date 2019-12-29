@@ -13,6 +13,7 @@ class product_variation extends Controller
     {
         $data_product  = DB::table('product_variation')
                                  ->select('*')
+                                 ->orderBy('productID','desc')
                                  ->get();
 
         return view('admin/product_variation/product_variation',compact("data_product"));

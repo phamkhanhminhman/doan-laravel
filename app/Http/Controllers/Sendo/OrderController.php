@@ -154,7 +154,7 @@ class OrderController extends Controller
         $month = date('m');
         // lấy mã đơn hàng cũ từ DB
         $arrayOrderNumber = DB::table('order_tb')
-        ->where('orderStatus', '<>', 8)
+          ->where('orderStatus', '<>', 8)
             ->where('orderStatus', '<>', 'Done') // sau này bỏ ( dữ liệu giả)
             ->where('orderStatus', '<>', 'ReturnOK') // sau này bỏ ( dữ liệu giả)
             ->where('orderChannel', '=', 'Sen Đỏ')
@@ -165,9 +165,9 @@ class OrderController extends Controller
             if (count($arrayOrderNumber) > 0) {
                 foreach ($arrayOrderNumber as $key => $p) {
                     $this->updateOrder($p->orderID, $p->orderShopID);
-                }
             }
-
+            }
+            
             return count($arrayOrderNumber);
     }
 
@@ -178,6 +178,7 @@ class OrderController extends Controller
     public function updateOrder($orderNumber,$shopID)
     {  
         $response = $this->sendo->getOrderDetail($orderNumber,$shopID); //call API ORDER DETAIL - SENDO
+        // dd($response);
         if (isset($response->result->salesOrder)) {
             $p = $response->result->salesOrder;
             $orderStatus = $p->orderStatus;                          // mã trạng thái của orderstatus
@@ -215,6 +216,7 @@ class OrderController extends Controller
             $productsList = $response->result->salesOrderDetails;
             $orderCost = 0;
             foreach ($productsList as $key => $p) {
+                // dd($p);
                 $productID = $p->productVariantId;
                 $productSKU= $p->storeSku;
                 $productSell = $p->subTotal; // productsell có r mà ở đâu, rồi lại
@@ -267,11 +269,10 @@ class OrderController extends Controller
         $quantityArr  = DB::table('product_variation')->where('productVariationID',$variantSKU)
                                      ->first();
 
-        $productShopeeID = $quantityArr->productShopeeID;
-      
-        $stockQuantity = $quantityArr->stockQuantity;
+        $productShopeeID = $quantityArr->productShopeeID; // mã id shopee
+        $stockQuantity = $quantityArr->stockQuantity; // tồn kho hiện tại
        
-        $newStockQuantity = $stockQuantity - $quantity;
+        $newStockQuantity = $stockQuantity - $quantity; // tồn kho hiện tại - số lượng mua
 
 
         $this->shopee->updateVariation($productShopeeID, $newStockQuantity);
@@ -301,7 +302,7 @@ class OrderController extends Controller
                 $this->updateStockQuantity($productSKU,$quantity);
             }
         }
-        $this->sendo->confirmOrderSendo($orderID, $orderShopID);
+        // $this->sendo->confirmOrderSendo($orderID, $orderShopID);
 
     }
 
