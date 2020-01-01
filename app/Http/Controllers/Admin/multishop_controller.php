@@ -68,7 +68,7 @@
 	   			$user = $request->session()->get('name');
 	   			DB::table('history')->insert(['name'=>$history, 'user' =>$user]);
 	   			alert('Multishop Inserted','Successfully', 'success');
-	   			return redirect('/admin/multishop');
+	   			// return redirect('/admin/multishop');
    			} else {
    				alert('Multishop Inserted Failed','Wrong input Client ID', 'err');
    			}
@@ -76,7 +76,7 @@
    		else
    		{
    			alert('Multishop Insert Failed','ID Duplicated', 'error');
-   			return redirect('/admin/multishop/');
+   			// return redirect('/admin/multishop/');
    		}
    		return view('admin/multishop/multishop');
    	}

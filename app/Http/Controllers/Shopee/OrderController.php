@@ -83,7 +83,7 @@ class OrderController extends Controller
             $orderNumber = $order['ordersn'];
 
             $responseOrderDetail = $this->shopee->getOrderDetail($orderNumber);
-            // dd($responseOrderDetail);
+             // dd($responseOrderDetail);
             $orderDetail = $responseOrderDetail->data['orders'][0];
 
             $orderStatusDes = $orderDetail['order_status'];
@@ -101,14 +101,14 @@ class OrderController extends Controller
             $orderShipLink = 'linkcarrier'; 
             $orderSell = $orderDetail['total_amount'] - $orderDetail['estimated_shipping_fee'];
             $orderReceive = $orderDetail['escrow_amount'];
-
+            $orderShopName= 'Kute';
             $shipToRegionId= 1;
             $shipToRegionName = $orderDetail['recipient_address']['state'];
 
             $duplicateOrder = DB::table('order_tb')->where('orderID', $orderNumber)->get();
 
             //Check not duplicate orderID -> insert
-            if (count($duplicateOrder) === 0) {
+            if (count($duplicateOrder) == 0) {
 
                 $countNewOrder++;
 
@@ -128,6 +128,7 @@ class OrderController extends Controller
                     'ordershipID' => $orderShipID,
                     'ordershipLink' => $orderShipLink,
                     'orderSell' => $orderReceive,
+                    'orderShopName' => $orderShopName
                 ]);
 
                 $productItems = $orderDetail['items'];
