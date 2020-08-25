@@ -24,16 +24,25 @@ Route::namespace('Admin')->group(function () {
     Route::post('/login',                       'admin_controller@check_login');
     
 });
+//PREFIX ADMIN
 Route::group(['prefix' => 'admin','namespace'=>'Admin','middleware'=>'checklogin'], function () {
- Route::get('/signup',                       'admin_controller@signup');
+
+ Route::get('/multishop',                     'multishop_controller@index');
+ Route::get('/multishop/add-new-shop',        'multishop_controller@addNewShop');
+ Route::post('/multishop-insert',             'multishop_controller@insertNewShop');
+ Route::get('/multishop-edit/{id}',           'multishop_controller@edit');
+ Route::post('/multishop-update',             'multishop_controller@update');
+
+ Route::get('/signup',                        'admin_controller@signup');
  Route::post('/dangky',                       'admin_controller@dangky');
- Route::get('/',				                  'admin_controller@index');
+ Route::get('/',				                      'admin_controller@index');
  Route::get('/history',                       'admin_controller@history');
  Route::get('/staff',                         'admin_controller@staff');
  Route::get('/staff-edit/{id}',               'admin_controller@edit');
  Route::get('/staff-profile/{id}',            'admin_controller@profile');
  Route::get('/staff-delete/{id}',             'admin_controller@delete');
  Route::post('/staff-update',                 'admin_controller@update');
+
 
  Route::get ('/category'    ,                 'category_controller@index');
  Route::get ('/category-add',                 'category_controller@add')->middleware('checklogin');
@@ -42,6 +51,10 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin','middleware'=>'checklogin
  Route::post('/category-update',              'category_controller@update');
  Route::get ('/category-delete/{id}',         'category_controller@delete');
  Route::get ('/get-data-api',                 'category_controller@get_data_api');
+
+ 
+
+
    // CATEGORY----------------------------------------------------------------------------------------------------------------------------
 
  Route::get ('/order'    ,                    'order_controller@index');
@@ -94,6 +107,9 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin','middleware'=>'checklogin
    Route::get('/count-order-completed-received', 'order_controller@count_order_completed_received');
    Route::get('/count-order-cancle-return',      'order_controller@count_order_cancle_return');
    Route::get('/count-order-shipping-ready',     'order_controller@count_order_shipping_ready');
+   Route::get('/count-order-sendo',              'order_controller@count_order_sendo');
+   Route::get('/count-order-shopee',              'order_controller@count_order_shopee');
+
 
 
 
@@ -125,7 +141,8 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin','middleware'=>'checklogin
    //PRODUCT----------------------------------------------------------------------------------------------------------------
 
    Route::get ('/product-variation',                      'product_variation@index');
-
+   Route::get ('/product-variation-edit/{id}',            'product_variation@edit');
+   Route::post ('/product-variation-update',              'product_variation@update');
 
    Route::get ('/customer',                     'customer_controller@index');
    Route::get ('/customer-table',               'customer_controller@table');
@@ -162,7 +179,7 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin','middleware'=>'checklogin
 
 
 
-
+//PREFIX SENDO
 Route::group(['prefix' => 'sendo','namespace'=>'Sendo'], function () {
   // Route::get('/getSendoToken', 'OrderController@testSendo');  
   Route::get('/add-new-order',            'OrderController@addNewOrder'); 
@@ -176,9 +193,14 @@ Route::group(['prefix' => 'sendo','namespace'=>'Sendo'], function () {
 
   Route::get('/123',                      'ProductController@updateProduct');
 
-  Route::get('/confirm-order-sendo/{orderID}' , 'OrderController@confirmOrderSendo');
+  Route::get('/confirm-order-sendo/{orderID}/{orderShopID}' , 'OrderController@confirmOrderSendo');
 
   Route::get('/update-report-thang', 'OrderController@update_report_thang');  
+
+
+  Route::get('/update-report-ngay', 'OrderController@update_report_ngay');
+
+  Route::get('test6', 'OrderController@updateStockShopee');
 });
 
 

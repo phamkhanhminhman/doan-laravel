@@ -12,19 +12,19 @@
     <div class="title_left">
       <h3>Danh sách đơn hàng <span><a href="{{url('admin/order-add')}}" class="btn btn-primary">
         <i class="fa fa-plus"></i> Tạo Đơn Mới </a></span>
-        <a href="" class="btn btn-success" ng-click="updateExceptDone()">Đồng Bộ Đơn Sendo</a>
+        <a href="" class="btn btn-success" ng-click="updateExceptDone()">Đồng Bộ Đơn</a>
         </h3>
 
 
     </div>
-    <div class="title_right">
+    <!-- <div class="title_right">
       <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
         <div class="input-group">
           <label for="">Sửa đơn hàng &nbsp </label>
           <input type="checkbox" ng-model="show">
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
   <div class="clearfix"></div>
   <div class="row">
@@ -133,13 +133,15 @@
   <div class="x_title">
     <a href="@{{pp.orderLink}}" class="col-md-1" target="_blank" style="color:blue">
       <div style="margin-top:10px">
-      <h4 ng-model="pp.orderChannel" class ="label" style="font-size:18px;background-color:#FA5430; margin-left: -15px" ng-if="pp.orderChannel === 'Shopee' ">@{{pp.orderChannel}}</h4>
-        <h4 ng-model="pp.orderChannel" class ="label" style="font-size:18px;background-color:red; margin-left: -15px " ng-if="pp.orderChannel === 'Sen Đỏ' ">@{{pp.orderChannel}}</h4>
+      <h4 ng-model="pp.orderChannel" class ="label" style="font-size:18px;background-color:#FA5430; margin-left: -15px" ng-if="pp.orderChannel === 'Shopee' ">@{{pp.orderChannel}} - @{{pp.orderShopName}}</h4>
+        <h4 ng-model="pp.orderChannel" class ="label" style="font-size:18px;background-color:red; margin-left: -15px " ng-if="pp.orderChannel === 'Sen Đỏ' ">@{{pp.orderChannel}} - @{{pp.orderShopName}}</h4>
+        <h4 ng-model="pp.orderChannel" class ="label" style="font-size:18px;background-color:#FFA500; margin-left: -15px " ng-if="pp.orderChannel === 'Store' ">@{{pp.orderChannel}}</h4>
       </div>
     </a>
     <div>
-    <a href="@{{pp.orderLink}}" class="col-md-2"target="_blank" style="color:red;font-weight:bold" ng-if ="pp.orderChannel === 'Sen Đỏ'"><h4 ng-model="pp.orderID" style="font-size:18px "  >@{{pp.orderID}}</h4> </a>
+    <a href="@{{pp.orderLink}}" class="col-md-1 col-md-offset-1" target="_blank" style="color:red;font-weight:bold" ng-if ="pp.orderChannel === 'Sen Đỏ'"><h4 ng-model="pp.orderID" style="font-size:18px "  >@{{pp.orderID}}</h4> </a>
     <a href="@{{pp.orderLink}}" class="col-md-2"target="_blank" style="color:orange;font-weight:bold" ng-if ="pp.orderChannel === 'Shopee'"><h4 ng-model="pp.orderID" style="font-size:18px "  >@{{pp.orderID}}</h4> </a>
+    <a href="@{{pp.orderLink}}" class="col-md-2"target="_blank" style="color:orange;font-weight:bold" ng-if ="pp.orderChannel === 'Store'"><h4 ng-model="pp.orderID" style="font-size:18px "  >@{{pp.orderID}}</h4> </a>
     
     </div>
     
@@ -149,7 +151,7 @@
       </a> -->
       <!-- <a href="@{{pp.orderShipLink}}" target="_blank"><h4 class="label" style="font-size:16px;font-weight: 90; background-color: #188038">@{{pp.CarrierName}} @{{pp.orderShipID}} @{{pp.shipToRegionName}}</h4>
       </a> -->
-      <a href="@{{pp.orderShipLink}}" target="_blank"><h4 class="label" style="font-size:16px;font-weight: 90; background-color: #00B3A6;color:white; align-content:center" ng-if="pp.CarrierName === 'VIETTEL-CPN' ">@{{pp.CarrierName}} @{{pp.shipToRegionName}}</h4>
+      <a href="@{{pp.orderShipLink}}" target="_blank"><h4 class="label" style="font-size:16px;font-weight: 90; background-color: #00B3A6;color:white; align-content:center" ng-if="pp.CarrierName === 'VIETTEL-CPN' ">@{{pp.CarrierName}} @{{pp.shipToRegionName}} @{{pp.orderShipID}}</h4>
       </a>
       <a href="@{{pp.orderShipLink}}" target="_blank"><h4 class="label" style="font-size:16px;font-weight: 90; background-color: #FCB71E;color:white" ng-if="pp.CarrierName === 'VNPost' ">@{{pp.CarrierName}} @{{pp.shipToRegionName}}</h4>
       </a>
@@ -158,6 +160,10 @@
       <a href="@{{pp.orderShipLink}}" target="_blank"><h4 class="label" style="font-size:16px;font-weight: 90; background-color: #DB0037;color:white" ng-if="pp.CarrierName === 'NJV-STANDARD' ">@{{pp.CarrierName}} @{{pp.shipToRegionName}}</h4>
       </a>
       <a href="@{{pp.orderShipLink}}" target="_blank"><h4 class="label" style="font-size:16px;font-weight: 90; background-color: #196F3D ;color:white; align-content:center" ng-if="pp.CarrierName === 'Giao Hàng Tiết Kiệm' ">GHTK @{{pp.shipToRegionName}}</h4>
+      </a>
+      <a href="@{{pp.orderShipLink}}" target="_blank"><h4 class="label" style="font-size:16px;font-weight: 90; background-color: blue ;color:white; align-content:center" ng-if="pp.CarrierName === 'Store' ">Store @{{pp.shipToRegionName}}</h4>
+      </a>
+      <a href="@{{pp.orderShipLink}}" target="_blank"><h4 class="label" style="font-size:16px;font-weight: 90; background-color: gray ;color:white; align-content:center" ng-if="pp.CarrierName === 'Chuyển phát tiêu chuẩn' "> Chuyển phát tiêu chuẩn</h4>
       </a>
     </div>
     <div class="col-md-1 col-xs-4"><h4>@{{pp.user}}</h4></div>
@@ -203,19 +209,15 @@
    
    
    <div class="col" style="float: right">
-     <button  type="button" style="background:#2ecc71;color:white"class="btn btn-success" ng-click="confirmOrderSendo(pp.orderID)">Xác Nhận Đơn</button>
-     <button  type="button" style="background:#FF5230;color:white" class="btn"  onclick="new PNotify({
+     <button  type="button" style="background:#2ecc71;color:white"class="btn btn-success" ng-click="confirmOrderSendo(pp.orderID, pp.orderShopID)" ng-if="pp.orderStatus == 2 && pp.orderChannel === 'Sen Đỏ'">Xác Nhận Đơn</button>
+  <!--    <button  type="button" style="background:#FF5230;color:white" class="btn" ng-click="orderDetailSendo(pp.orderLink)"  onclick="new PNotify({
                                 title: 'Cập nhật thành công',
                                 text: 'Chuyển trạng thái đơn ĐANG VẬN CHUYỂN',
                                 type: 'success',
                                 styling: 'bootstrap3'
-                                });">Chi tiết đơn hàng</button>  
-     <button  type="button" style="background:#101010;color:white"class="btn btn-success"  onclick="new PNotify({
-                                title: 'Cập nhật thành công',
-                                text: 'Chuyển trạng thái đơn ĐANG VẬN CHUYỂN',
-                                type: 'success',
-                                styling: 'bootstrap3'
-                                });">Hủy Đơn</button>  
+                                });">Chi tiết đơn hàng</button>   -->
+    <button  type="button" style="background:#FF5230;color:white" class="btn" ng-click="orderDetailSendo(pp.orderLink)"  >Chi tiết đơn hàng</button>  
+    <button  type="button" style="background:#101010;color:white" class="btn btn-success" ng-if="pp.orderChannel === 'Shopee'">Hủy Đơn</button>  
    </div>
   <div class="col"><h2 style="font-size:19px;font-weight:bold;color:black;margin-top:30px">@{{pp.customerName}} @{{pp.customerTel}}</h2></div>
 
@@ -266,76 +268,7 @@
 </div>
 </div>
 <!-- EDIT DON HANG---------------------------------------------------------------------------------------------------------------------->
-<div class="row" ng-repeat="pp in all | filter:searchText " ng-show="show">
-<div class="col-md-12 col-xs-12">
-<div class="x_panel">
-  <div class="x_title">
-    <div class="col-md-2">
-      <input type="text" name="orderID"  class="form-control" ng-model="pp.orderID">
-    </div>
-     <div class="col-md-2"> <select ng-model="pp.orderChannel" id="" class="form-control">
-                <option value="Sendo"> Sendo</option>
-                <option value="Shopee">Shopee</option>
-                <option value="Home"> Home</option>
-    </select></div>
-    <div class="col-md-2"> <select ng-model="pp.orderShip" id="" class="form-control">
-                <option value="">           Nhà Vận Chuyển</option>
-                <option value="GHN" >       GHN</option>
-                <option value="GHTK">       GHTK</option>
-                <option value="VNPost">     VNPost</option>
-                <option value="Viettel">ViettelPost</option>
-                <option value="NJV">        NJV</option>
-                <option value="Home">       Home</option>
-    </select></div>
-    <div class="col-md-2">
-      <input type="text" class="form-control" ng-model="pp.orderShipID">
-    </div>
-    <div class="col-md-2 col-xs-4"><h4>@{{pp.user}}</h4></div>
-    <div style="margin-top:10px" class="col-md-2 col-xs-4">
-      <h4 class="label labels label-primary " id="orderStatus" style="font-size:16px;font-weight: 90">@{{pp.orderStatus_vi}}</h4>
-    </div>
-    <div class="col-md-1 " style="color: red"><h4>@{{pp.orderSell-pp.orderCost}}đ</h4></div>
-    <div class="clearfix"></div>
-  </div>
-  <div class="x_content"  ng-repeat="t in allv2" ng-if="t.orderID==pp.orderID">
-    <div class="row">
-      <div class="col-md-1">
-        <img src="@{{t.productImage}}" alt="" width="80px" height="80px">
-      </div>
-      <div class="col-md-3">
-        <h4>@{{t.productName}}</h4>
-      </div>
-      <div class="col-md-3">
-        <h4>MÃ SP: @{{t.productID}} </h4>
-      </div>
-      <div class="col-md-3">
-        <h4>SỐ LƯỢNG</h4>
-      </div>
-    </div>
-    <hr>
-  </div>
-  <div class="form-group">
-    <h2>@{{pp.customerName}} - @{{pp.customerTel}} - <span>@{{pp.name}}</span></h2>
-    <div class="col-md-3 col-sm-9 col-xs-12 col-md-offset-10">
-      <button type="button" ng-click="editOrder(pp)" style="color:white"class="btn btn-info" ng-model="dnh" ng-click="" onclick="new PNotify({
-                              title: 'Cập nhật đơn hàng thành công',
-                              text: 'Sửa đơn hàng',
-                              type: 'success',
-                              styling: 'bootstrap3'
-                          });">Xác nhận
-      </button>
-      <button type="button" style="background:#EE2A24;color:white" class="btn"  ng-click="" onclick="new PNotify({
-                              title: 'Xóa đơn hàng thành công',
-                              text: '',
-                              type: 'warning',
-                              styling: 'bootstrap3'
-                          });">Delete
-      </button>
-    </div>
-  </div>
-</div>
-</div>
-</div>
+
 <!-- EDIT DON HANG------------------------------------------------------------------------------------------------------------------------------  -->
 </div>
 </div>

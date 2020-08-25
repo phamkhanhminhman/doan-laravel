@@ -232,7 +232,25 @@ class order_controller extends Controller
         echo $cancle_return;
     }
 
+    public function count_order_sendo()
+    {
+        $sendo = DB::table('order_tb')->where('orderChannel', 'Sen Đỏ')->get();
 
+        $sendo = count($sendo);
+        $sendo = json_encode($sendo);
+
+        echo $sendo;
+    }
+
+    public function count_order_shopee()
+    {
+        $shopee = DB::table('order_tb')->where('orderChannel', 'Shopee')->get();
+
+        $shopee = count($shopee);
+        $shopee = json_encode($shopee);
+
+        echo $shopee;
+    }
 
 
 
@@ -896,7 +914,6 @@ class order_controller extends Controller
         echo $data;
     }
     public function insert_order(Request $request) //HAM INSERT MULTIPLE DATA ORDER-----------------------------------------------------
-
     {
         $user = $request->session()->get('name');
         $customerName = $request->customerName;
@@ -914,12 +931,17 @@ class order_controller extends Controller
         $customerAddress = "$customerDistrict " . $request->customerAddress;
         $customerTel = $request->customerTel;
         $customerMail = $request->customerMail;
-        $orderID = $request->orderID;
+        date_default_timezone_set("Asia/Bangkok");//set you countary name from below timezone list
+        $orderID = date('Y-m-d h:i:s');
+
         //  $orderLink         = "https://ban.sendo.vn/shop#salesorder/detail/12345678/".$orderID;
         $orderShipLink = $request->orderShipLink;
         $orderShipID = $request->orderShipLink;
         $orderShip = $request->orderShip;
         $orderChannel = $request->orderChannel;
+        if($customerTel ==null) {
+            $customerTel = '000000';
+        }
         if ($orderChannel == "Sendo") {
             $orderLink = "https://ban.sendo.vn/shop#salesorder/detail/12345678/" . $orderID;
         } elseif ($orderChannel == "Shopee") {
@@ -937,15 +959,15 @@ class order_controller extends Controller
         //TUY THEO NHA VAN CHUYEN DE INSERT LINK TRACKING
         $orderNote = $request->orderNote;
 
-        DB::table('customer')->insert(
-            [
-                'customerName' => $customerName,
-                'customerGender' => $customerGender,
-                'customerProvince' => $customerProvince,
-                'customerAddress' => $customerAddress,
-                'customerTel' => $customerTel,
-                'customerMail' => $customerMail,
-            ]);
+        // DB::table('customer')->insert(
+        //     [
+        //         'customerName' => $customerName,
+        //         'customerGender' => $customerGender,
+        //         'customerProvince' => $customerProvince,
+        //         'customerAddress' => $customerAddress,
+        //         'customerTel' => $customerTel,
+        //         'customerMail' => $customerMail,
+        //     ]);
         // CHECK DUPLICATED ORDER_ID
         $check_orderID = DB::table('order_tb')->select('orderID')->where('orderID', $orderID)->get();
         if (count($check_orderID) == 1) {
@@ -955,7 +977,7 @@ class order_controller extends Controller
             DB::table('order_tb')->insert(
                 [
                     'orderID' => $orderID,
-                    'orderLink' => $orderLink,
+                    // 'orderLink' => $orderLink,
                     'orderShip' => $orderShip,
                     'orderShipID' => $orderShipID,
                     'orderShipLink' => $orderShipLink,
@@ -967,14 +989,21 @@ class order_controller extends Controller
                     'orderCost' => $request->tongnhap,
                     'orderSell' => $request->tongban,
                     'orderChannel' => $orderChannel,
-                    'user' => $user,
+                    // 'user' => $user,
+                    'orderDate' => date("Y-m-d H:i:s"),
+                    'orderStatus' => 8,
+                    'orderStatusDes' => 'Đã Hoàn Tất',
+                    'customerTel' => $customerTel,
+                    'CarrierName' => 'Store',
+
                 ]);
             foreach ($request->countryname as $item => $v) //insert sp đã chọn của đơn vào order_tb_product
             {
                 $data2 = array
                     (
-                    'productID' => $request->productID[$item],
+                    'variantSKU' => $request->countryname[$item],
                     'orderID' => $orderID,
+                    'Amount' => 1,
                     'productCost' => $request->productCost[$item],
                     'product_Sell' => $request->productSell[$item],
                 );
@@ -983,9 +1012,9 @@ class order_controller extends Controller
             }
         }
 
-        //UPDATE STATUS PRODUCT = DONE KHI TẠO ĐƠN MỚI THÀNH CÔNG
-        DB::table('order_tb_product')->join('product', 'order_tb_product.productID', '=', 'product.productID')
-            ->update(['product.productStatus' => 'Done']);
+        // //UPDATE STATUS PRODUCT = DONE KHI TẠO ĐƠN MỚI THÀNH CÔNG
+        // DB::table('order_tb_product')->join('product', 'order_tb_product.productID', '=', 'product.productID')
+        //     ->update(['product.productStatus' => 'Done']);
 
         $history = "Tạo 1 đơn hàng mới từ $orderChannel có mã là $orderID";
         $user = $request->session()->get('name');
@@ -996,9 +1025,9 @@ class order_controller extends Controller
 
     {
         $query = $request->get('term', '');
-        $countries = \DB::table('product');
+        $countries = \DB::table('product_variation');
         if ($request->type == 'countryname') {
-            $countries->where('productName', 'LIKE', '%' . $query . '%')->where('productStatus', '<>', 'Done');
+            $countries->where('productSKU', 'LIKE', '%' . $query . '%')->where('productStatus', '<>', 'Done');
         }
         $countries = $countries->get();
         $data = array();
@@ -1007,6 +1036,7 @@ class order_controller extends Controller
                 'cost' => $country->productCost,
                 'sell' => $country->productSell,
                 'pid' => $country->productID,
+                'sku' => $country->productVariationID,
                 'img' => $country->productImage,
             );
         }

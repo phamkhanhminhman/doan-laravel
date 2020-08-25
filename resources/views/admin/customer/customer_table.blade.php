@@ -55,8 +55,8 @@
                   <th>Số điện thoại</th>                        
                   <th>Giới tính</th>
                   <th>Ghi chú</th>  
-                  <th>Email</th>
-                  <th>Sửa</th>                    
+                  <th>Sửa</th>
+                  <th>Xóa</th>                    
                 </tr>
               </thead>
               <tbody>

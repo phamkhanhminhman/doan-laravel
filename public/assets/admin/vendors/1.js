@@ -39,10 +39,11 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
   $http.get($scope.baseURL + '/admin/best-selling').then(function (res) { $scope.all = res.data; });
 
 
-  //START AUTO GET ORDER RA DS DON HANG----------------------------------------------------------------------------------------------
+  //AUTOMATICALLY ADD ORDER FROM SENDO/SHOPEE TO DATABASE WHEN OPENING----------------------------------------------------------------------------------------------
   $http.get($scope.baseURL + '/sendo/add-new-order').then(function (res) { toastr.success('Có ' + res.data + ' order từ SENDO vừa mới đc thêm vào')});
   $http.get($scope.baseURL + '/shopee/add').then(function(res) { toastr.success('Có ' + res.data + ' order từ SHOPEE vừa mới đc thêm vào')})
 
+  //GET ORDER FROM DATABASE TO SHOW
   $http.get($scope.baseURL + '/admin/api-order-all?page=' + $scope.page + '&limit=' + $scope.pageLimit).then(function (res) { $scope.all = res.data;});
   $http.get($scope.baseURL + '/admin/count-order-all').then(function (res) { $scope.count_all = res.data; arrayPage(res.data)});
   $http.get($scope.baseURL + '/admin/api-order-allv2').then(function (res) { $scope.allv2 = res.data; });
@@ -116,11 +117,19 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
     )
   }
 
-  $scope.confirmOrderSendo = function (orderID) {
-    $http.get($scope.baseURL + '/sendo/confirm-order-sendo/' + orderID).then(
+  $scope.confirmOrderSendo = function (orderID, orderShopID) {
+    $http.get($scope.baseURL + '/sendo/confirm-order-sendo/' + orderID + '/' + orderShopID).then(
       function (res) { 
         toastr.success('Đơn hàng Sen Đỏ ' + orderID + ' đã được xác nhận'); 
     });
+  }
+
+  $scope.cancelOrder = function (orderID){
+    console.log(orderID);
+  }
+
+  $scope.orderDetailSendo = function (orderLink) {
+    window.open(orderLink);;
   }
 
 
@@ -139,9 +148,13 @@ app.controller('MyController', function ($scope, $http, $mdToast, $location, $ti
     $http.post($scope.baseURL + '/admin/api-selected-channel?page=' + $scope.page + '&limit=' + $scope.pageLimit, data, config)
       .then(function (res) {
         $scope.all = res.data;
-        arrayPage(res.data.length);
-      },
-        function (res) { if (res.data == "thatbai") { console.log("update thatbai ") } });
+      });
+
+    if ($scope.xyz !== "Shopee") {
+      $http.get($scope.baseURL + '/admin/count-order-sendo').then(function (res) { arrayPage(res.data) });  
+    } else {
+      $http.get($scope.baseURL + '/admin/count-order-shopee').then(function (res) { arrayPage(res.data) });
+    }
   }
 
   //START SELECT ĐƠN VỊ GIAO HÀNG----------------------------------------------------------------------------------------------------

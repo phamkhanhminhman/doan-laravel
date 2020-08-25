@@ -55,7 +55,7 @@ class OrderController extends Controller
 
     public function getOrderDetail()
     {
-        $response = $this->shopee->getOrderDetail('19101021190KXY3');
+        $response = $this->shopee->getOrderDetail('19121711460N8SJ');
 
         dd($response->data['orders'][0]);
     }
@@ -75,7 +75,7 @@ class OrderController extends Controller
     {
         $orderStatus = "ALL";
         $responseOrderList = $this->shopee->getOrderList();
-
+        // dd($responseOrderList);
         $orders = $responseOrderList->data['orders'];
 
         $countNewOrder = 0;
@@ -83,6 +83,7 @@ class OrderController extends Controller
             $orderNumber = $order['ordersn'];
 
             $responseOrderDetail = $this->shopee->getOrderDetail($orderNumber);
+             // dd($responseOrderDetail);
             $orderDetail = $responseOrderDetail->data['orders'][0];
 
             $orderStatusDes = $orderDetail['order_status'];
@@ -100,14 +101,14 @@ class OrderController extends Controller
             $orderShipLink = 'linkcarrier'; 
             $orderSell = $orderDetail['total_amount'] - $orderDetail['estimated_shipping_fee'];
             $orderReceive = $orderDetail['escrow_amount'];
-
+            $orderShopName= 'Kute';
             $shipToRegionId= 1;
             $shipToRegionName = $orderDetail['recipient_address']['state'];
 
             $duplicateOrder = DB::table('order_tb')->where('orderID', $orderNumber)->get();
 
             //Check not duplicate orderID -> insert
-            if (count($duplicateOrder) === 0) {
+            if (count($duplicateOrder) == 0) {
 
                 $countNewOrder++;
 
@@ -127,6 +128,7 @@ class OrderController extends Controller
                     'ordershipID' => $orderShipID,
                     'ordershipLink' => $orderShipLink,
                     'orderSell' => $orderReceive,
+                    'orderShopName' => $orderShopName
                 ]);
 
                 $productItems = $orderDetail['items'];

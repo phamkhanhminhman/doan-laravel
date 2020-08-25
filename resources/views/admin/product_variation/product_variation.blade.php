@@ -5,7 +5,7 @@
   <div class="">
     <div class="page-title">
       <div class="title_left">
-        <h3><i class="fa fa-tag"></i> Sản Phẩm </h3>
+        <h3><i class="fa fa-tag"></i>&nbsp Phân Cấp Sản Phẩm </h3>
       </div>
 
       <div class="title_right">
@@ -27,8 +27,8 @@
         <div class="x_panel">
           <div class="x_title">
             <a href="{{url('admin/product-add')}}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp Thêm Mới</a>
-            <a href="{{url('admin/product-instock')}}" class="btn btn-primary">Tồn kho</a>
-            <a href="{{url('admin/product-done')}}" class="btn btn-primary">Đã bán</a>
+          <!--   <a href="{{url('admin/product-instock')}}" class="btn btn-primary">Tồn kho</a>
+            <a href="{{url('admin/product-done')}}" class="btn btn-primary">Đã bán</a> -->
             <a href="{{url('sendo/update-product')}}" class="btn btn-primary">Đồng Bộ Sản Phẩm</a>
             <ul class="nav navbar-right panel_toolbox">
               <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -56,6 +56,7 @@
                   <th class="text-center">SKU</th>
                   <th class="text-center">Tên Sản Phẩm</th>
                   <th class="text-center">PID SENDO</th>
+                  <th class="text-center">PID SHOPEE</th>
                   <th class="text-center">Tồn Kho</th>                         
                   <th class="text-center">Giá Nhập</th>
                   <th class="text-center">Giá Bán</th>
@@ -74,6 +75,7 @@
                   <td class="text-center" width="10%">{{$p->productSKU}}</td>
                   <td class="text-center" width="15%;">{{$p->productName}}</td>
                   <td class="text-center">{{$p->productID}}</td>
+                  <td class="text-center">{{$p->productShopeeID}}</td>
                   <td class="text-center">{{$p->stockQuantity}}</td>
                   <td class="text-center">{{$p->productCost}}</td>
                   <td class="text-center">{{$p->productSell}}</td>
@@ -81,7 +83,7 @@
                   <td class="text-center"><?php echo date('d-m-Y H:m',strtotime("$p->Updated"));?></td>
 
                   <td class="text-center">{{$p->productStatus}}</td>
-                  <td><a href="{{url('admin/product-edit',$p->productID)}}" class="btn btn-warning"><i class="fa fa-pencil"></i></i></a></td>
+                  <td><a href="{{url('admin/product-variation-edit',$p->productVariationID)}}" class="btn btn-warning"><i class="fa fa-pencil"></i></i></a></td>
                   <!-- <td><a href="{{url('admin/product-delete',$p->productID)}}" onclick="return confirm('Are you sure?')" class="btn btn-danger"><i class="fa fa-close"></i></a></td> -->
                   
                 </tr>
