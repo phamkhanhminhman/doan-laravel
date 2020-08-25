@@ -15,6 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('test','test@index');
+Route::get('test2','test@index2');
 
 Route::namespace('Admin')->group(function () {
     Route::get('/',                             'admin_controller@login');
